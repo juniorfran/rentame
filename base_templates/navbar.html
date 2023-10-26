@@ -1,0 +1,114 @@
+     {% load static %}
+     <!-- Topbar Start -->
+     <div class="topbar">
+       <div class="container-fluid">
+           <div class="container">
+               <div class="row">
+                   <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                       <div class="topbar-left">
+                           <a><i class="fa fa-phone-alt"></i>+503 2222-0522</a>
+                           <span class="text-body">|</span>
+                           <a><i class="fa fa-envelope mr-2"></i>contacto@rentamesv.com</a>
+                       </div>
+                   </div>
+                   <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                       <div class="topbar-right">
+                           <a class="px-3" href="#">
+                               <i class="fab fa-facebook-f"></i>
+                           </a>
+                           <a class="px-3" href="#">
+                               <i class="fab fa-twitter"></i>
+                           </a>
+                           <a class="px-3" href="#">
+                               <i class="fab fa-linkedin-in"></i>
+                           </a>
+                           <a class="px-3" href="#">
+                               <i class="fab fa-instagram"></i>
+                           </a>
+                           <a class="pl-3" href="#">
+                               <i class="fab fa-youtube"></i>
+                           </a>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+   <!-- Topbar End -->
+
+   <!-- Navbar Start -->
+   <div class="container-fluid position-relative  nav-bar">
+       <div class="position-relative px-lg-5" style="z-index: 9;">
+           <nav class="navbar navbar-expand-lg bg-secondary navbar-dark py-3 py-lg-0 pl-3 pl-lg-5">
+               <div class="container">
+                   <a href="{% url "home" %}">
+                       <img src="{% static "image/logotipo.png" %} "  alt="football" height="70">
+                   </a>
+                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                       <span class="navbar-toggler-icon"></span>
+                   </button>
+                   <div class="collapse navbar-collapse" id="navbarCollapse">
+                       <ul class="navbar-nav mx-auto py-0">
+                           <li><a href="{% url "home" %}" class="nav-item nav-link active">Inicio</a></li>
+                           <li><a href="#" class="nav-item nav-link">Nosotros</a></li>
+                           <li><a href="{% url "vehicle_list" %}" class="nav-item nav-link">Autos</a></li>
+                           <li class="nav-item dropdown">
+                               <a href="#" id="menu" data-bs-toggle="dropdown" class="nav-link dropdown-toggle" data-bs-display="static">Tipos</a>
+                               <ul class="dropdown-menu">
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Economicos</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Compactos</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Tamaño Grande</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Mejor Estado</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Minivans</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">SUV</a>
+                                   </li>
+                                   {% comment %} <li class="dropdown-submenu">
+                                       <a href="category.html" class="dropdown-item">Luxury</a>
+                                   </li> {% endcomment %}
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">Electricos</a>
+                                   </li>
+                                   <li class="dropdown-submenu">
+                                       <a href="#" class="dropdown-item">De Carga</a>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li><a href="#" class="nav-item nav-link">Servicios</a></li>
+                           <li><a href="#" class="nav-item nav-link">Contactanos</a></li>
+                           {% if user.is_authenticated %}
+                           {% comment %} <li class="nav-item dropdown">
+                               <a href="#" data-bs-toggle="dropdown" class="dropdown-item dropdown-toggle nav-item nav-link">Perfil</a>
+                               <ul class="dropdown-menu">
+                                   <li><a href="{% url "perfil" %}" class="dropdown-item">Mi Perfil</a></li>
+                                   <li><a href="#" class="dropdown-item">Mis Autos</a></li>
+                                   <li>
+                                   <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <div class="sign_btn">
+                                      <button class="dropdown-item" type="submit">Cerrar sesión</button>
+                                    </div>
+                                  </form>
+                                </li>
+                               </ul>
+                           </li> {% endcomment %}
+                           {% else %}
+                          <li><a href="{%  url "login" %}" class="nav-item nav-link active">Iniciar Sesion</a></li>
+                           {% endif %}
+                       </ul>
+                   </div>
+               </div>
+           </nav>
+       </div>
+   </div>
+   <!-- Navbar End -->

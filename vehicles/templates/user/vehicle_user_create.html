@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Section: Design Block -->
+<section class="text-center text-lg-start">
+    <style>
+      .cascading-right {
+        margin-right: -50px;
+      }
+  
+      @media (max-width: 991.98px) {
+        .cascading-right {
+          margin-right: 0;
+        }
+      }
+    </style>
+  
+    <!-- Jumbotron -->
+    <div class="container py-7">
+      <div class="row g-0 align-items-center">
+        
+        <div class="col-10 mb-5 mb-lg-0" style="
+        z-index: 2;
+        ">
+          <div class="card cascading-right" style="
+              background: hsla(0, 0%, 100%, 0.55);
+              backdrop-filter: blur(30px);
+              ">
+            <div class="card-body pr-2  shadow-5 text-center">
+              <h2 class="fw-bold mb-5">Registrar un Vehiculo</h2>
+  
+              <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Por favor, corrige los siguientes errores:
+                    <ul>
+                        {% for field, error_list in form.errors.items %}
+                        {% for error in error_list %}
+                        <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- 2 column grid layout with text inputs for the MARCA and MODELO -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="marca" name="marca" class="form-control border border-primary-subtle" required/>
+                        <label class="form-label" for="form3Example1">Marca</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="modelo" name="modelo" class="form-control border border-primary-subtle" required/>
+                        <label class="form-label" for="form3Example2">Modelo</label>
+                      </div>
+                    </div>
+                  </div>
+
+                 <!-- 2 column grid layout with text inputs for the ANO and COLOR -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="anio" name="anio" class="form-control border border-primary-subtle" required/>
+                        <label class="form-label" for="form3Example1">Año</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <input type="text" id="color" name="color" class="form-control border border-primary-subtle" required/>
+                        <label class="form-label" for="form3Example2">Color</label>
+                      </div>
+                    </div>
+                  </div>
+
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                      <input type="text" id="first_name" name="first_name" class="form-control border border-primary-subtle" />
+                      <label class="form-label" for="form3Example1">Nombres</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                      <input type="text" id="last_name" name="last_name" class="form-control border border-primary-subtle" />
+                      <label class="form-label" for="form3Example2">Apellidos</label>
+                    </div>
+                  </div>
+                </div>
+  
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <input type="email" id="email" name="email" class="form-control border border-primary-subtle" />
+                  <label class="form-label" for="form3Example3">Direccion de correo</label>
+                </div>
+  
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <input type="password" id="password" name="password" class="form-control border border-primary-subtle" />
+                  <label class="form-label" for="form3Example4">Contraseña</label>
+                </div>
+  
+                <!-- Confirm Password input -->
+                <div class="form-outline mb-4">
+                  <input type="password" id="confirm_password" name="confirm_password" class="form-control border border-primary-subtle" />
+                  <label class="form-label" for="form3Example4">Confirmar Contraseña</label>
+                </div>
+  
+                <!-- Checkbox -->
+                <div class="form-check d-flex justify-content-center mb-4">
+                  <label class="form-check-label pr-2" for="form2Example33">
+                    Vas a alquilar tu auto?
+                  </label>
+                  <input class="form-check form-switch" type="checkbox" name="is_owner" id="is_owner" />
+                </div>
+  
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">
+                  Registrar
+                </button>
+  
+               
+              </form>
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+
+{% comment %} <div class="container mt-2">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Crear Vehículo</div>
+                <div class="card-body form-inline">
+                    <form method="post" class="form-inline" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Por favor, corrige los siguientes errores:
+                            <ul>
+                                {% for field, error_list in form.errors.items %}
+                                {% for error in error_list %}
+                                <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <!-- grupo MARCA, MODELO -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Marca</span>
+                                <input type="text" class="form-control" id="marca" name="marca" required>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Modelo</span>
+                                <input type="text" class="form-control" id="modelo" name="modelo" required>
+                            </div>
+                        </div>
+
+                        <!-- grupo AÑO, COLOR -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Año</span>
+                                <input type="text" class="form-control" id="anio" name="anio" required>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Color</span>
+                                <input type="color" class="form-control form-control-color" id="color" name="color" />
+                            </div>
+                        </div>
+
+                        <!-- grupo PUERTAS, TRANSMISION -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Puertas</span>
+                                <select class="form-select" aria-label="Selecciona tipo de Puerta" name="puertas" id="puertas">
+                                    <option selected>--Opciones--</option>
+                                    <option value="2">Dos con Baul</option>
+                                    <option value="3">Tres Puertas</option>
+                                    <option value="4">Cuatro con Baul</option>
+                                    <option value="5">Cinco Puertas</option>
+                                    <option value="Corrediza">Puerta Corrediza</option>
+                                  </select>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Transmision</span>
+                                <select class="form-select" aria-label="Selecciona el tipo de Transmision" name="transmision" id="transmision">
+                                    <option selected>--Opciones--</option>
+                                    <option value="automatico">Automatico</option>
+                                    <option value="estandar">Estandar</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- grupo TIPO CILINDRAJE, IMAGEN -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Tipo Cilindraje</span>
+                                <input type="text" class="form-control" id="cilindraje" name="cilindraje" required>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Combustible</span>
+                                <select class="form-select" aria-label="Selecciona el tipo de Transmision" name="combustible" id="combustible">
+                                    <option selected>--Opciones--</option>
+                                    <option value="gasolina superior">Gasolina Superior</option>
+                                    <option value="gasolina regular">Gasolina Estandar</option>
+                                    <option value="diesel">Diesel</option>
+                                    <option value="gas">Gas</option>
+                                    <option value="hybrido">Hybrido</option>
+                                    <option value="otro">Otros</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- grupo TIPO VEHICULO, UBICACION -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Hubicacion</span>
+                                <select class="form-select form-control" id="ubicacion" name="ubicacion" required>
+                                    <option value="">--Ubicaciones--</option>
+                                    {% for location in locations %}
+                                        <option value="{{ location.id }}">{{ location.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Tipo</span>
+                                <select class="form-select form-control" id="tipo_vehiculo" name="tipo_vehiculo" required>
+                                    <option value="">--Tipos--</option>
+                                    {% for vehicle_type in vehicle_types %}
+                                        <option value="{{ vehicle_type.id }}">{{ vehicle_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <!-- grupo PRECIO POR HORA, PRECIO POR DIA -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Precio Hora</span>
+                                <input type="number" class="form-control" id="precio_por_hora" name="precio_por_hora" step="0.01" required>
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Precio Dia</span>
+                                <input type="number" class="form-control" id="precio_por_dia" name="precio_por_dia" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <!-- grupo TIPO MOTOR, TIPO FRENO -->
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Tipo Motor</span>
+                                <input type="text" class="form-control" id="motor" name="motor">
+                            </div>
+                            <div class="col input-group">
+                                <span class="input-group-text" id="basic-addon1">Tipo Freno</span>
+                                <input type="text" class="form-control" id="tipo_freno" name="tipo_freno">
+                            </div>
+                            <div class="mb-3 form-check">
+                                <span class="form-check-label" id="basic-addon1">Disponible</span>
+                                <input type="checkbox" class="form-check-input" id="disponibilidad" name="disponibilidad" value="true" checked>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <label for="descripcion" class="form-label">Descripción del vehículo</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row  mb-3">
+                            <div class="col input-group">
+                                <label for="formFileLg" class="form-label">Imagen</label>
+                                <input type="file" class="form-control form-control-lg" name="imagenes[]" id="imagenes" multiple required >
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col input-group">
+                                <button type="submit" id="crear-vehiculo-btn" class="btn btn-primary">Guardar Vehículo</button>
+                            </div>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+
+<script>
+    // Escucha el cambio en la casilla de verificación
+    document.getElementById('is_owner_checkbox').addEventListener('change', function() {
+      if (this.checked) {
+        // Si se marca la casilla, actualiza el valor del campo oculto a "true"
+        document.querySelector('input[name="is_owner"]').value = "true";
+      } else {
+        // Si se desmarca la casilla, actualiza el valor del campo oculto a "false"
+        document.querySelector('input[name="is_owner"]').value = "false";
+      }
+    });
+  </script>
+
+{% endblock content %}

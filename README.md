@@ -1,2 +1,2 @@
-# rentame
-sistema de renta de vehiculos
+# RENTAMESV
+sistema de renta de alquileres "plataforma web"

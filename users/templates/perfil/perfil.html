@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <img src="{{ perfil.imagen.url }}" alt="{{ request.user.username }}" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+                <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
+                    Editar Perfil
+                </button>
+              </div>
+              {% if user.is_authenticated %}
+              <div class="ms-3" style="margin-top: 130px;">
+                <h5>{{ full_name }}</h5>
+                <p>{{ email }} </p>
+              </div>
+              {% endif %}
+            </div>
+            <div class="p-4 text-black" style="background-color: #f8f9fa;">
+              <div class="d-flex justify-content-end text-center py-1">
+                <div>
+                  <p class="mb-1 h5">253</p>
+                  <p class="small text-muted mb-0">Vehiculos</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5">1026</p>
+                  <p class="small text-muted mb-0">Alquileres</p>
+                </div>
+                <div>
+                  <p class="mb-1 h5">$ 478.00</p>
+                  <p class="small text-muted mb-0">Ganancias</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-4 text-black">
+              <div class="mb-5">
+                <p class="lead fw-normal mb-1">About</p>
+                <div class="p-4" style="background-color: #f8f9fa;">
+                  <p class="font-italic mb-1">Web Developer</p>
+                  <p class="font-italic mb-1">Lives in New York</p>
+                  <p class="font-italic mb-0">Photographer</p>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="lead fw-normal mb-0">Mis vehiculos</p>
+                <p class="mb-0">
+                  <a href="#!" class="text-muted">Ver todo</a>
+                </p>
+
+
+               {% if user.is_owner %}
+                {# El usuario es propietario, muestra el botón para registrar un vehículo #}
+                <p class="mb-0">
+                  <button id="crear-vehiculo" class="btn btn-primary">Crear Vehiculo</button>
+                </p>
+                <script>
+                  document.getElementById('crear-vehiculo').onclick = function() {
+                    // Reemplaza 'TU_URL_AQUI' con la URL a la que deseas redirigir
+                    window.location.href = '{% url "crear_vehiculo_paso1" %}';
+                  };
+                  </script>
+              {% else %}
+                {# El usuario no es propietario, muestra un enlace que redirige a la vista de create_vehicle_or_modal #}
+                <p class="mb-0">
+                  <a id="crear-vehiculo-btn" class="btn btn-primary" href="{% url "perfil" %}">Crear Vehículo</a>
+                </p>
+              {% endif %}               
+              
+                
+              </div>
+              <div class="row g-2">
+                <div class="col mb-2">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+                <div class="col mb-2">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+                <div class="col">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                    alt="image 1" class="w-100 rounded-3">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Modal -->
+  <div class="modal fade text-start" role="dialog" tabindex="-1" data-aos="flip-left" data-aos-once="true" id="modal-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="owner-modal-label">Hola {{ user.first_name }} Quieres ser Arrendante </h5>
+          <button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body"><p></p></div>
+
+        <div class="modal-body">
+          Para crear un vehículo, debe ser propietario. 
+          <p>¿Desea registrarse como propietario?</p>
+          <br>
+          {% include "owner/become_owner.html" %}
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+<script>
+  $(document).ready(function () {
+    // Captura el clic en el botón "Crear Vehículo"
+    $('#crear-vehiculo-btn').click(function () {
+      // Verifica si el usuario es propietario
+      var esPropietario = {{ user.is_owner|yesno:"true,false" }};
+      if (esPropietario) {
+        // El usuario es propietario, permite la creación del vehículo
+        window.location.href = "{% url 'create_user_vehicle' %}";
+      } else {
+        // El usuario no es propietario, muestra el modal
+        $('#owner-modal').modal('show');
+      }
+    });
+  });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+{% endblock content %}

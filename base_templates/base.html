@@ -1,0 +1,131 @@
+{% load static %}
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+     <!-- site metas -->
+     <title>{% block title %}RENTAME SV{% endblock %}</title>
+     <meta name="keywords" content="">
+     <meta name="description" content="">
+     <meta name="author" content="">
+
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+     <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+    <!-- MDB -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet"/>
+     <!-- Tweaks for older IEs-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+
+
+     <!-- STATICS DOCUMENTS -->
+     <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="{% static "font-awesome/css/all.min.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+     <link href="{% static "css/slick.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="{% static "css/slick-theme.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="{% static "css/datepicker.css" %}" rel="stylesheet" type="text/css"/> 
+     <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="{% static "css/mobyle.css" %}" rel="stylesheet" type="text/css"/>
+     <link href="{% static "css/animate.min.css" %}" rel="stylesheet" type="text/css"/>
+
+     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet">
+
+  </head>
+
+  <body>
+    {% include "navbar.html" %}
+    
+    {% if user.is_authenticated %}
+      {% include "filtro_busqueda.html" %}
+      
+      <!-- My Account Start -->
+      <div class="my-account">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="page-container-title">
+                            <h2>{% block name_tab %}{% endblock %}</h2>                               
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
+                        <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                            <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-credit-card"></i>Mi Perfil</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="my-address.html" role="tab"><i class="fa fa-map-marker-alt"></i>Mis Autos</a>
+                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-shopping-bag"></i>Mi Historial</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="my-payment.html" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="my-address.html" role="tab"><i class="fa fa-map-marker-alt"></i>Direcciones</a>
+                            <a class="nav-link" id="account-nav" data-toggle="pill" href="my-account-details.html" role="tab"><i class="fa fa-user"></i>Detalles de Perfil</a>
+                            <form method="post" action="{% url 'logout' %}">
+                              {% csrf_token %}
+                              <div class="sign_btn">
+                                <button class="nav-link" type="submit">Cerrar sesión</button>
+                              </div>
+                            </form>
+                            {% comment %} <a class="nav-link" href="index.html"><i class="fa fa-sign-out-alt"></i>Cerrar Sesion</a> {% endcomment %}
+                        </div>
+                    </div>
+                    <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12">
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" aria-labelledby="dashboard-nav">
+                                {% block content %}
+
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+        </div>
+      </div>        
+      <!-- My Account End -->
+
+      {% include "footer.html" %}
+
+    {% else %}
+
+      {% include "filtro_busqueda.html" %}
+      {% block content1 %}
+
+        {% include "carusel.html" %}
+        {% include "tipos_autos.html" %}
+        {% include "choice_section.html" %}
+        {% include "encuentra_tu_auto.html" %}
+        {% include "contact.html" %}
+
+      {% endblock %}
+      {% include "footer.html" %}
+
+    {% endif %}
+
+
+    <script src="{% static "jquery/jquery-3.6.0.min.js" %}"></script>
+    <script src="{% static "js/scroll.js" %}"></script>
+    <script src="{% static "js/slick.js" %}"></script>
+    <script src="{% static "bootstrap/js/bootstrap.bundle.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script src="{% static "js/datepicker.min.js" %}"></script>
+    <script src="{% static "js/datecar.js" %}"></script>
+
+  </body>
+</html>
