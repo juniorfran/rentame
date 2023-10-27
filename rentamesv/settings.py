@@ -29,9 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_0e!is#@uo$15*0=yl)%a#!$dpn(yr$8ma!qus-dsfkqw2(^xl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['rentamesv.azurewebsites.net', 'https://rentamesv.azurewebsites.net']
+ALLOWED_HOSTS = ['rentamesv.azurewebsites.net']
+CORS_ALLOWED_ORIGINS = ['https://rentamesv.azurewebsites.net'] 
 
 LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'users.User'
