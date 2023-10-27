@@ -32,7 +32,15 @@ SECRET_KEY = 'django-insecure-_0e!is#@uo$15*0=yl)%a#!$dpn(yr$8ma!qus-dsfkqw2(^xl
 DEBUG = True
 
 ALLOWED_HOSTS = ['rentamesv.azurewebsites.net', '0.0.0.0:8000']
-CORS_ALLOWED_ORIGINS = ['https://rentamesv.azurewebsites.net'] 
+CORS_ALLOWED_ORIGINS = ['https://rentamesv.azurewebsites.net']
+
+# Security & HTTPS settings
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['https://rentamesv.azurewebsites.net']
 
 LOGIN_URL = 'login'
 AUTH_USER_MODEL = 'users.User'
@@ -70,13 +78,12 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    "django.middleware.security.SecurityMiddleware",
-#     "whitenoise.middleware.WhiteNoiseMiddleware",
+    'django.middleware.common.CommonMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'rentamesv.urls'
