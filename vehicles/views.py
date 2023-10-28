@@ -1,4 +1,3 @@
-from tkinter import Message
 from django.shortcuts import get_object_or_404, render, redirect
 from vehicles.models import Imagen, Vehicle, VehicleType, Location
 from reviews.models import Review
