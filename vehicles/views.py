@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
+from .forms import VehicleTypeForm, LocationForm
 
 # Create your views here.
 
@@ -132,8 +133,6 @@ def crear_vehiculo(request):
 
 
 
-
-
 @login_required
 def crear_vehiculo_paso1(request):
     user = request.user
@@ -254,3 +253,37 @@ def crear_vehiculo_paso3(request):
             return redirect('become_owner')
 
     return render(request, 'crear_vehiculo_paso3.html', {'locations': locations, 'vehicle_types': vehicle_types})
+
+
+
+def vehicle_type_create(request):
+    form = VehicleTypeForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        form = VehicleTypeForm()
+    context = {'form': form}
+    return render(request, 'create_edit.html', context)
+
+def vehicle_type_edit(request, pk):
+    vehicle_type = VehicleType.objects.get(id=pk)
+    form = VehicleTypeForm(request.POST or None, instance=vehicle_type)
+    if form.is_valid():
+        form.save()
+    context = {'form': form}
+    return render(request, 'create_edit.html', context)
+
+def location_create(request):
+    form = LocationForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        form = LocationForm()
+    context = {'form': form}
+    return render(request, 'create_edit.html', context)
+
+def location_edit(request, pk):
+    location = Location.objects.get(id=pk)
+    form = LocationForm(request.POST or None, instance=location)
+    if form.is_valid():
+        form.save()
+    context = {'form': form}
+    return render(request, 'create_edit.html', context)
