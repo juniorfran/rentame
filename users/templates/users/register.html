@@ -36,12 +36,12 @@
             <form method="post">
               {% csrf_token %}
               <div class="mb-3">
-                 <label for="username" class="form-label">Username</label>
-                 <input type="text" class="form-control" id="username" name="username" value="{{ form.username.value }}" required>
+                 <label for="username" class="form-label">Usuario</label>
+                 <input type="text" class="form-control" id="username" name="username" required>
               </div>
               <div class="mb-3">
                  <label for="email" class="form-label">Email</label>
-                 <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}" required>
+                 <input type="email" class="form-control" id="email" name="email"  required>
               </div>
               {% comment %} <div class="mb-3">
                  <label for="groups" class="form-label">Groups</label>
@@ -65,17 +65,17 @@
               </div> {% endcomment %}
               <div class="mb-3 form-check">
                  <input type="checkbox" class="form-check-input" id="is_owner" name="is_owner"{% if form.is_owner.value %} checked{% endif %}>
-                 <label class="form-check-label" for="is_owner">Is Owner</label>
+                 <label class="form-check-label" for="is_owner">Vas a alquilar tu auto?</label>
               </div>
               <div class="mb-3">
-                 <label for="password1" class="form-label">Password</label>
-                 <input type="password" class="form-control" id="password1" name="password1" value="{{ form.password1.value }}" required>
+                 <label for="password1" class="form-label">Contraseña</label>
+                 <input type="password" class="form-control" id="password1" name="password1" required>
               </div>
               <div class="mb-3">
-                 <label for="password2" class="form-label">Confirm Password</label>
-                 <input type="password" class="form-control" id="password2" name="password2" value="{{ form.password2.value }}" required>
+                 <label for="password2" class="form-label">Confirmar Contraseña</label>
+                 <input type="password" class="form-control" id="password2" name="password2" required>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Registrarse</button>
              </form>
              
              {% for error in form.non_field_errors %}
