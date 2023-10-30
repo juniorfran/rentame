@@ -185,6 +185,9 @@ def update_profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     vehicle_owner_profile = VehicleOwner.objects.get(user=request.user)
 
+     if not UserProfile.objects.filter(user=user).exists():
+        return redirect('crear_perfil')  # Redireccionar a la vista de creación de perfil
+          
     if request.method == 'POST':
         # Procesa el formulario de UserProfile
         user_profile.email = request.POST['email']
