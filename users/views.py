@@ -336,18 +336,17 @@ def complete_verification(request):
 
 
 @login_required
-def ultimos_4_vehicle_list(request):
-    # Filtra los vehículos del usuario autenticado y obtén los últimos 4 registros
-    user_vehicles = Vehicle.objects.filter(owner=request.user).order_by('-id')[:4]
-
-    vehicle_types = VehicleType.objects.all()
-    locations = Location.objects.all()
+def ultimos_4_vehicle_list(request, usuario_id):
+    try:
+        usuario = VehicleOwner.objects.get(id=usuario_id)  # Supongamos que tienes un ID de usuario
+        ultimos_vehiculos = Vehicle.objects.filter(owner=usuario).order_by('-create_add')[:4]
+    except VehicleOwner.DoesNotExist:
+        usuario = None
+        ultimos_vehiculos = []
 
     context = {
-        'user_vehicles': user_vehicles,
-        'vehicle_types': vehicle_types,
-        'locations': locations
+        'usuario': usuario,
+        'ultimos_vehiculos': ultimos_vehiculos,
     }
 
-    return render(request, 'after_4_vehic.html', context)
-
+    return render(request, 'perfil/after_4_vehicle.html', context)

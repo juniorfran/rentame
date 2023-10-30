@@ -221,24 +221,37 @@ def crear_vehiculo_paso3(request):
         # Crea un nuevo vehículo con el propietario y otros datos
         vehicle = Vehicle(owner=vehicle_owner)
         vehicle.availability = datos_combinados.get('disponibilidad', False)
-        vehicle.marca = datos_combinados.get('marca', '')
-        vehicle.modelo = datos_combinados.get('modelo', '')
+        vehicle.make = datos_combinados.get('marca', '')
+        vehicle.model = datos_combinados.get('modelo', '')
         vehicle.year = datos_combinados.get('anio', 0)
         vehicle.cilindraje = datos_combinados.get('cilindraje', 0)
-        vehicle.descripcion = datos_combinados.get('descripcion', '')
+        vehicle.description = datos_combinados.get('descripcion', '')
         vehicle.price_hourly = datos_combinados.get('precio_por_hora', 0)
         vehicle.price_daily = datos_combinados.get('precio_por_dia', 0)
+        vehicle.color = datos_combinados.get('color')
+        vehicle.puertas = datos_combinados.get('puertas')
+        vehicle.climatizacion = datos_combinados.get('climatizacion')
+        vehicle.transmision = datos_combinados.get('transmision')
+        vehicle.kilometraje = datos_combinados.get('kilometraje', 0)
+        vehicle.combustible = datos_combinados.get('combustible')
+        vehicle.motor = datos_combinados.get('motor')
+        vehicle.tipo_freno = datos_combinados.get('tipo_freno')
         # Otros campos según tus modelos
 
         try:
             tipo_vehiculo_id = request.POST.get('tipo_vehiculo')
             location_id = request.POST.get('ubicacion')
+            tarjeta_circulacion_1 = request.POST.get('tarjeta_circulacion1')
+            tarjeta_circulacion_2 = request.POST.get('tarjeta_circulacion2')
 
             vehicle_type = vehicle_types.get(id=tipo_vehiculo_id)
             location = locations.get(id=location_id)
 
             vehicle.vehicle_type = vehicle_type
             vehicle.location = location
+            vehicle.foto_tarjeta_circulacion_1 = tarjeta_circulacion_1
+            vehicle.foto_tarjeta_circulacion_2 = tarjeta_circulacion_2
+            
             vehicle.save()
 
             imagenes = request.FILES.getlist('imagenes[]')

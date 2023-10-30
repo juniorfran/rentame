@@ -23,7 +23,7 @@
                       {% for vehicle in vehicles %}
                           <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12">
                               <div class="car-rent-item d-flex flex-column align-items-end">
-                                  <h4>{{ vehicle.make }} {{ vehicle.modelo }}</h4>
+                                  <h4>{{ vehicle.make }} {{ vehicle.model }}</h4>
                                   <div class="listing-img mr-4">
                                       {% if vehicle.image.all %}
                                           <img src="{{ vehicle.image.first.image.url }}" class="card-img-top img-fluid" alt="{{ vehicle.make }} {{ vehicle.model }}">
@@ -48,19 +48,19 @@
                                           </div>
                                           <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                               <i class="fa fa-bar-chart text-primary"></i>
-                                              <span class="description-title">Climatización: </span> A / C
+                                              <span class="description-title">Climatización: </span> {{ vehicle.climatizacion }}
                                           </div>
                                           <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                               <i class="fa fa-car-alt text-primary"></i>
-                                              <span class="description-title">Tipo: </span> Hatchback
+                                              <span class="description-title">Tipo: </span> {{ vehicle.vehicle_type }}
                                           </div>
                                           <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                               <i class="fa fa-users text-primary"></i>
-                                              <span class="description-title">Capacidad: </span> {{ vehicle.capacidad }}
+                                              <span class="description-title">Capacidad: </span> {{ vehicle.vehicle_type.capacidad }}
                                           </div>
                                           <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                               <i class="fa fa-suitcase text-primary"></i>
-                                              <span class="description-title">Equipaje: </span> 3
+                                              <span class="description-title">Equipaje: </span> {{ vehicle.capacidad }}
                                           </div>
                                           <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                                               <i class="fa fa-car-side text-primary"></i>
