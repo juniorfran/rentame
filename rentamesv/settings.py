@@ -116,20 +116,24 @@ WSGI_APPLICATION = 'rentamesv.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'mysql_db': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rentamesv',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',  # O la dirección IP de tu servidor de MySQL
-        'PORT': '3306',       # Puerto de MySQL (por defecto es 3306)
+        'NAME': 'rentamesv_mysql',
+        'USER': 'rentameroot',
+        'PASSWORD': 'R3nt4m32023',
+        'HOST': 'rentamesv.mysql.database.azure.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'ssl': {
+                'ca': 'DigiCertGlobalRootCA.crt.pem',
+            },
+        }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
