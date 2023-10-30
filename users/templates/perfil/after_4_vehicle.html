@@ -1,0 +1,14 @@
+{% load static %}
+
+  <div class="row g-2">
+    {% for vehicle in user_vehicles %}
+      <div class="card mb-2">
+        <img src="{{ vehicle.image.url }}" class="card-img-top" alt="Imagen del vehículo">
+        <div class="card-body">
+          <h5 class="card-title">{{ vehicle.name }}</h5>
+          <p class="card-text">{{ vehicle.description }}</p>
+          <button class="btn btn-primary btn-edit" data-vehicle-id="{{ vehicle.id }}">Editar Vehículo</button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>

@@ -46,9 +46,10 @@ class UserProfile(models.Model):
     numero_telefono = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
     nombre = models.CharField(max_length=100)
-    
+    fecha_nacimeinto = models.DateField(auto_now=False, auto_now_add=True, null=True)
     imagen = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
     create_add = models.DateField(auto_now=True, auto_now_add=False,  null=True)
+    
     
     # Otros campos adicionales, como dirección, imagen de perfil, etc.
 class VehicleOwner(models.Model):
@@ -63,8 +64,8 @@ class VehicleOwner(models.Model):
     # Historial de alquiler de vehículos
     rented_vehicles = models.ManyToManyField('vehicles.Vehicle', blank=True, related_name='owners')
     # Preferencias de alquiler
-    rental_price_hourly = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    rental_price_daily = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    rental_price_hourly = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True)
+    rental_price_daily = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True)
     availability_hours = models.CharField(max_length=100)  # Horarios disponibles
     rental_conditions = models.TextField()  # Condiciones de alquiler
     create_add = models.DateField(auto_now_add=True, null=True)

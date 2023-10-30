@@ -33,7 +33,60 @@
           <div class="card-body pr-2  shadow-5 text-center">
             <h2 class="fw-bold mb-5">Registrate</h2>
 
-            <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                 <label for="username" class="form-label">Username</label>
+                 <input type="text" class="form-control" id="username" name="username" value="{{ form.username.value }}" required>
+              </div>
+              <div class="mb-3">
+                 <label for="email" class="form-label">Email</label>
+                 <input type="email" class="form-control" id="email" name="email" value="{{ form.email.value }}" required>
+              </div>
+              {% comment %} <div class="mb-3">
+                 <label for="groups" class="form-label">Groups</label>
+                 <select multiple class="form-select" id="groups" name="groups" required>
+                   {% for group in form.groups.field.queryset %}
+                     <option value="{{ group.pk }}"{% if group.pk in form.groups.value %} selected{% endif %}>{{ group.name }}</option>
+                   {% endfor %}
+                 </select>
+              </div>
+              <div class="mb-3">
+                 <label for="user_permissions" class="form-label">User Permissions</label>
+                 <select multiple class="form-select" id="user_permissions" name="user_permissions" required>
+                   {% for permission in form.user_permissions.field.queryset %}
+                     <option value="{{ permission.pk }}"{% if permission.pk in form.user_permissions.value %} selected{% endif %}>{{ permission.name }}</option>
+                   {% endfor %}
+                 </select>
+              </div>
+              <div class="mb-3">
+                 <label for="create_add" class="form-label">Create Add</label>
+                 <input type="datetime-local" class="form-control" id="create_add" name="create_add" value="{{ form.create_add.value|date:'Y-m-d\TH:i' }}" required>
+              </div> {% endcomment %}
+              <div class="mb-3 form-check">
+                 <input type="checkbox" class="form-check-input" id="is_owner" name="is_owner"{% if form.is_owner.value %} checked{% endif %}>
+                 <label class="form-check-label" for="is_owner">Is Owner</label>
+              </div>
+              <div class="mb-3">
+                 <label for="password1" class="form-label">Password</label>
+                 <input type="password" class="form-control" id="password1" name="password1" value="{{ form.password1.value }}" required>
+              </div>
+              <div class="mb-3">
+                 <label for="password2" class="form-label">Confirm Password</label>
+                 <input type="password" class="form-control" id="password2" name="password2" value="{{ form.password2.value }}" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+             </form>
+             
+             {% for error in form.non_field_errors %}
+             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ error }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+             {% endfor %}
+        
+
+            {% comment %} <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
               {% csrf_token %}
               <!-- Username input -->
               <div class="form-outline mb-4">
@@ -106,7 +159,7 @@
                   <i class="bi bi-github"></i>
                 </button>
               </div>
-            </form>
+            </form> {% endcomment %}
             
           </div>
         </div>

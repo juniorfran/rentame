@@ -26,6 +26,7 @@ urlpatterns = [
     path('perfil/', views.profileView, name='perfil'),
     path('become_owner/', views.become_owner, name='become_owner'),
     path('complete_verification/', views.complete_verification, name='complete_verification'),
+    path('editar_perfil/', views.update_profile, name='editar_perfil'),
     
     
     

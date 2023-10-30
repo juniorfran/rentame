@@ -38,23 +38,6 @@ def vehicle_list(request):
     
     return render(request, 'vehicle_list.html', context)
 
-
-@login_required
-def ultimos_4_vehicle_list(request):
-    # Filtra los vehículos del usuario autenticado y obtén los últimos 4 registros
-    user_vehicles = Vehicle.objects.filter(owner=request.user).order_by('-id')[:4]
-
-    vehicle_types = VehicleType.objects.all()
-    locations = Location.objects.all()
-
-    context = {
-        'user_vehicles': user_vehicles,
-        'vehicle_types': vehicle_types,
-        'locations': locations
-    }
-
-    return render(request, 'vehicle_list.html', context)
-
 @login_required
 def crear_vehiculo(request):
     # Mueve la definición de las listas locations y vehicle_types aquí para que estén disponibles en el alcance de la vista
@@ -154,31 +137,40 @@ def crear_vehiculo(request):
 
 @login_required
 def crear_vehiculo_paso1(request):
-    if request.method == 'POST':
-        marca = request.POST['marca']
-        modelo = request.POST['modelo']
-        anio = request.POST['anio']
-        color = request.POST['color']
-        puertas = request.POST['puertas']
-        transmision = request.POST['transmision']
-        cilindraje = request.POST['cilindraje']
-        descripcion = request.POST['descripcion']
+    user = request.user
+    
+    if not hasattr(user, 'vehicle_owner_profile'):
+        # El usuario no tiene un registro como VehicleOwner, redirigir a la vista para crear el perfil de propietario
+        return redirect('complete_verification')
+    
+    if user.is_owner:
+        if request.method == 'POST':
+            marca = request.POST['marca']
+            modelo = request.POST['modelo']
+            anio = request.POST['anio']
+            color = request.POST['color']
+            puertas = request.POST['puertas']
+            transmision = request.POST['transmision']
+            cilindraje = request.POST['cilindraje']
+            descripcion = request.POST['descripcion']
 
-        datos_paso1 = {
-            'marca': marca,
-            'modelo': modelo,
-            'anio': anio,
-            'color': color,
-            'puertas': puertas,
-            'transmision': transmision,
-            'cilindraje': cilindraje,
-            'descripcion': descripcion,
-        }
+            datos_paso1 = {
+                'marca': marca,
+                'modelo': modelo,
+                'anio': anio,
+                'color': color,
+                'puertas': puertas,
+                'transmision': transmision,
+                'cilindraje': cilindraje,
+                'descripcion': descripcion,
+            }
 
-        request.session['datos_paso1'] = datos_paso1
+            request.session['datos_paso1'] = datos_paso1
 
-        return redirect('crear_vehiculo_paso2')
-
+            return redirect('crear_vehiculo_paso2')
+    else:
+        return redirect('complete_verification')
+    
     return render(request, 'crear_vehiculo_paso1.html')
 
 @login_required
