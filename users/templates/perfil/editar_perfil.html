@@ -36,6 +36,11 @@
                                                     <div class="mb-3">
                                                         <label for="imagen" class="form-label">Imagen de Perfil</label>
                                                         <input type="file" class="form-control" id="imagen" name="imagen">
+                                                        {% if user_profile.imagen %}
+                                                            <img src="{{ user_profile.imagen.url }}" alt="{{ usuario.user.username }}"  class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+                                                        {% else %}
+                                                            <p>No hay imagen actual.</p>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -49,19 +54,19 @@
                                                         <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="{{ vehicle_owner_profile.emergency_contact }}">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="rental_price_hourly" class="form-label">Precio de Alquiler por Hora</label>
-                                                        <input type="text" class="form-control" id="rental_price_hourly" name="rental_price_hourly" value="{{ vehicle_owner_profile.rental_price_hourly }}">
+                                                        <label for="rental_price_hourly" class="form-label">Precio de Alquiler por Dia</label>
+                                                        <input type="text" class="form-control" id="rental_price_daily" name="rental_price_daily" value="{{ vehicle_owner_profile.rental_price_daily }}">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="rental_conditions" class="form-label">Condiciones de Alquiler</label>
                                                         <textarea class="form-control" id="rental_conditions" name="rental_conditions">{{ vehicle_owner_profile.rental_conditions }}</textarea>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="foto1_dui" class="form-label">Foto 1 del DUI</label>
+                                                        <label for="foto1_dui" class="form-label">Foto Frontal del DUI</label>
                                                         <input type="file" class="form-control" id="foto1_dui" name="foto1_dui">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="foto2_dui" class="form-label">Foto 2 del DUI</label>
+                                                        <label for="foto2_dui" class="form-label">Foto Trasera del DUI</label>
                                                         <input type="file" class="form-control" id="foto2_dui" name="foto2_dui">
                                                     </div>
                                                     <div class="mb-3">

@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, password_validation
+from django.contrib.auth import get_user_model
 from .models import UserProfile, VehicleOwner, User
+from vehicles.models import Vehicle
 
 
 ##FORM PARA EDITAR EL PERFIL
@@ -28,14 +30,43 @@ class UserProfilCreateForm(forms.ModelForm):
         
         
 ##FORMULARIO PARA CREAR USUARIO
-class UserCreationForm(forms.ModelForm):
+
+class UserCreationForm(UserCreationForm):
     email = forms.EmailField()
     is_owner = forms.BooleanField(required=False)
-
-    # Campos que faltaban
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
 
     class Meta:
         model = User
         fields = ('username', 'email', 'is_owner', 'password1', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for fieldname in ['password1', 'password2']:
+            self.fields[fieldname].help_text = None  # Eliminar la ayuda predeterminada
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Las contraseñas no coinciden.")
+        return password2
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get("password1")
+        if password1:
+            password_validation.validate_password(password1, self.instance)
+        return password1
+##########################################################################################################
+## FORMULARIOS PARA VEHICULO DEL USUARIO
+class AddVehicleUserForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        fields = '__all__'
+
+#formulario para editar el vehiculo
+class EditVehicleUserForm(forms.ModelForm):
+    class Meta:
+        model = Vehicle
+        exclude = ['user']
+        fields = '__all__'
+        

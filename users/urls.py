@@ -26,8 +26,15 @@ urlpatterns = [
     path('perfil/', views.profileView, name='perfil'),
     path('become_owner/', views.become_owner, name='become_owner'),
     path('complete_verification/', views.complete_verification, name='complete_verification'),
-    path('deitar_perfil/', views.update_profile, name='editar_perfil'),
+    path('editar_perfil/', views.update_profile, name='editar_perfil'),
     path('ultimos_4_vehiculos/', views.ultimos_4_vehicle_list, name='ultimos_4_vehiculos'),
+    
+    
+    # ... vehicle user URL ...
+    path('lista_vehiculos/', views.lista_vehiculos, name='lista_vehiculos'),
+    path('ver_vehiculo/<int:vehiculo_id>/', views.ver_vehiculo, name='ver_vehiculo'),
+    path('editar_vehiculo/<int:vehiculo_id>/', views.editar_vehiculo, name='editar_vehiculo'),
+    path('deshabilitar_vehiculo/<int:vehiculo_id>/', views.deshabilitar_vehiculo, name='deshabilitar_vehiculo'),
     
     
     

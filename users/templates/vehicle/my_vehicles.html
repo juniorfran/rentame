@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    
+<div class="container">
+    <h1 class="my-4">Lista de Vehículos de {{ usuario.user.username }}</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Precio por Hora</th>
+                <th>Precio por Día</th>
+                <th>Disponibilidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehiculo in vehiculos %}
+                <tr>
+                    <td>{{ vehiculo.make }}</td>
+                    <td>{{ vehiculo.model }}</td>
+                    <td>{{ vehiculo.year }}</td>
+                    <td>{{ vehiculo.price_hourly }}</td>
+                    <td>{{ vehiculo.price_daily }}</td>
+                    <td>
+                        {% if vehiculo.availability %}
+                            <span class="text-success">Disponible</span>
+                        {% else %}
+                            <span class="text-danger">No disponible</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% comment %} <a href="{% url 'ver_vehiculo' vehiculo.id %}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Ver</a> {% endcomment %}
+                        <a href="#" class="btn btn-info view-vehicle" data-vehiculo-id="{{ vehiculo.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">Ver</a>
+                        <a href="{% url 'editar_vehiculo' vehiculo.id %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url 'deshabilitar_vehiculo' vehiculo.id %}" class="btn btn-danger" >Deshabilitar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Button trigger modal -->
+ 
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          {% include "vehicle/view_vehicle.html" %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}
+
+<script>
+    $(document).ready(function() {
+        $('.view-vehicle').click(function() {
+            var vehiculoId = $(this).data('vehiculo-id');
+            var modalTitle = $('#exampleModalLabel');
+            var modalBody = $('.modal-body');
+            
+            // Actualiza el título del modal
+            modalTitle.text('Detalles del Vehículo');
+            
+            // Carga el contenido del vehículo en el modal mediante AJAX o como prefieras
+            // Esto depende de cómo tengas configurada la vista ver_vehiculo
+            
+            $.get('{% url 'ver_vehiculo' 0 %}' + vehiculoId, function(data) {
+                modalBody.html(data);
+            });
+        });
+    });
+</script>

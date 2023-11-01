@@ -33,7 +33,7 @@
           <div class="card-body pr-2  shadow-5 text-center">
             <h2 class="fw-bold mb-5">Registrate</h2>
 
-            <form method="post">
+            {% comment %} <form method="post">
               {% csrf_token %}
               <div class="mb-3">
                  <label for="username" class="form-label">Usuario</label>
@@ -43,26 +43,6 @@
                  <label for="email" class="form-label">Email</label>
                  <input type="email" class="form-control" id="email" name="email"  required>
               </div>
-              {% comment %} <div class="mb-3">
-                 <label for="groups" class="form-label">Groups</label>
-                 <select multiple class="form-select" id="groups" name="groups" required>
-                   {% for group in form.groups.field.queryset %}
-                     <option value="{{ group.pk }}"{% if group.pk in form.groups.value %} selected{% endif %}>{{ group.name }}</option>
-                   {% endfor %}
-                 </select>
-              </div>
-              <div class="mb-3">
-                 <label for="user_permissions" class="form-label">User Permissions</label>
-                 <select multiple class="form-select" id="user_permissions" name="user_permissions" required>
-                   {% for permission in form.user_permissions.field.queryset %}
-                     <option value="{{ permission.pk }}"{% if permission.pk in form.user_permissions.value %} selected{% endif %}>{{ permission.name }}</option>
-                   {% endfor %}
-                 </select>
-              </div>
-              <div class="mb-3">
-                 <label for="create_add" class="form-label">Create Add</label>
-                 <input type="datetime-local" class="form-control" id="create_add" name="create_add" value="{{ form.create_add.value|date:'Y-m-d\TH:i' }}" required>
-              </div> {% endcomment %}
               <div class="mb-3 form-check">
                  <input type="checkbox" class="form-check-input" id="is_owner" name="is_owner"{% if form.is_owner.value %} checked{% endif %}>
                  <label class="form-check-label" for="is_owner">Vas a alquilar tu auto?</label>
@@ -83,10 +63,10 @@
               {{ error }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
              </div>
-             {% endfor %}
+             {% endfor %} {% endcomment %}
         
 
-            {% comment %} <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
+            <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
               {% csrf_token %}
               <!-- Username input -->
               <div class="form-outline mb-4">
@@ -94,7 +74,7 @@
                 <label class="form-label" for="form3Example3">Usuario</label>
               </div>
               <!-- 2 column grid layout with text inputs for the first and last names -->
-              <div class="row">
+              {% comment %} <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
                     <input type="text" id="first_name" name="first_name" class="form-control border border-primary-subtle" />
@@ -107,7 +87,7 @@
                     <label class="form-label" for="form3Example2">Apellidos</label>
                   </div>
                 </div>
-              </div>
+              </div> {% endcomment %}
 
               <!-- Email input -->
               <div class="form-outline mb-4">
@@ -159,7 +139,7 @@
                   <i class="bi bi-github"></i>
                 </button>
               </div>
-            </form> {% endcomment %}
+            </form>
             
           </div>
         </div>

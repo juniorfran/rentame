@@ -1,16 +1,16 @@
 from multiprocessing import AuthenticationError
-from django.contrib.auth import logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.contrib.auth import logout, login, authenticate
+from django.shortcuts import get_object_or_404, render, redirect
+from django.http import Http404, JsonResponse
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 #from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .forms import UserCreationForm, UserForm, UserProfileForm, VehicleOwnerForm, UserProfilCreateForm, EditVehicleUserForm
+#models
 from .models import UserProfile, VehicleOwner, Renter, User
 from vehicles.models import Location, Vehicle, VehicleType
-from django.contrib.auth.decorators import login_required
-from .forms import UserCreationForm, UserForm, UserProfileForm, VehicleOwnerForm, UserProfilCreateForm
 
 
 # @login_required
@@ -39,6 +39,65 @@ from .forms import UserCreationForm, UserForm, UserProfileForm, VehicleOwnerForm
 #     return render(request, 'perfil/editar_perfil.html', context)
 
 
+### VISTAS PARA EL VEHICULO DEL USUARIO
+## VISTA PARA LISTAR LOS VEHICULOS RELACIONADOS AL USUARIO LOGUEADO
+@login_required
+def lista_vehiculos(request):
+    user = request.user
+    
+     # Verificar si el usuario tiene un perfil
+    if not UserProfile.objects.filter(user=user).exists():
+        messages.info(request, "Completa tu informacion personal y conviertete en arrendante", "alert-info")
+        return redirect('crear_perfil')   # Redireccionar a la vista de creación de perfil
+    elif not VehicleOwner.objects.filter(user=user).exists():
+        messages.warning(request, "Convierte en arrendante y publica tus autos", "alert-warning")
+        return redirect('complete_verification')  # Redireccionar a la vista de creación de perfil de owner
+   
+    
+    usuario = VehicleOwner.objects.get(user=user)
+    vehiculos = Vehicle.objects.filter(owner=usuario)
+
+    context = {
+        'usuario': usuario,
+        'vehiculos': vehiculos,
+    }
+
+    return render(request, 'vehicle/my_vehicles.html', context)
+
+
+## VISTA PARA EDITAR VEHICULO DEL USUARIO ACTUAL SEGUN ID SELECCIONADO EN LA TABLA
+def editar_vehiculo(request, vehiculo_id):
+    vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
+    
+    if request.method == 'POST':
+        form = EditVehicleUserForm(request.POST, instance=vehiculo)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_vehiculos')  # Redirige a la lista de vehículos después de la edición
+    else:
+        form = EditVehicleUserForm(instance=vehiculo)
+
+    return render(request, 'editar_vehiculo.html', {'form': form})
+
+## VISTA PARA DESHABILITAR EL VEHICULO Y QUE NO SE MUESTRE MAS
+def deshabilitar_vehiculo(request, vehiculo_id):
+    vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
+    
+    if request.method == 'POST':
+        vehiculo.availability = False
+        vehiculo.save()
+        return redirect('lista_vehiculos')  # Redirige a la lista de vehículos después de la deshabilitación
+
+    return render(request, 'deshabilitar_vehiculo.html', {'vehiculo': vehiculo})
+
+## VISTA PARA VER EL VEHICULO
+def ver_vehiculo(request, vehiculo_id):
+    vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
+    return render(request, 'vehicle/view_vehicle.html', {'vehiculo': vehiculo})
+
+
+#####################################################################################
+
 #VISTA PARA VER EL PERFIL DEL USUARIO
 @login_required
 def profileView(request):
@@ -64,58 +123,58 @@ def profileView(request):
     return render(request, 'perfil/perfil.html', context)
 
 #VISTA PARA REGISTRAR USUARIO SIN ARCHIVO FORM
-# def register_view(request):
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         first_name = request.POST['first_name']
-#         last_name = request.POST['last_name']
-#         email = request.POST['email']
-#         password = request.POST['password']
-#         confirm_password = request.POST['confirm_password']
-        
-#         # Verifica si 'is_owner' está en la solicitud POST y es 'on', de lo contrario, establece False.
-#         is_owner = request.POST.get('is_owner', False)
-        
-#         # Valida que las contraseñas coincidan
-#         if password != confirm_password:
-#             messages.error(request, 'Las contraseñas no coinciden.')
-#             return redirect('register')
-
-#         # Verifica si el usuario ya existe
-#         if User.objects.filter(username=username).exists():
-#             messages.error(request, 'El nombre de usuario ya está en uso.')
-#             return redirect('register')
-
-#         # Crea el nuevo usuario
-#         user = User.objects.create_user(
-#             username=username,
-#             first_name=first_name,
-#             last_name=last_name,
-#             email=email,
-#             password=password
-#         )
-#         user.is_owner = is_owner
-#         user.save()
-        
-#         # Redirige al usuario al formulario de llenado de campos de VehicleOwner si es propietario
-#         if is_owner:
-#             return redirect('login')  # Cambia a la vista que muestra el formulario de VehicleOwner
-
-#         messages.success(request, 'Registro exitoso. Ahora puedes iniciar sesión.')
-#         return redirect('login')
-
-#     return render(request, 'users/register.html')
-
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('perfil') # Reemplazar con la URL de la página principal
-    else:
-        form = UserCreationForm()
-    return render(request, 'users/register.html', {'form': form})
+        username = request.POST['username']
+        # first_name = request.POST['first_name']
+        # last_name = request.POST['last_name']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        
+        # Verifica si 'is_owner' está en la solicitud POST y es 'on', de lo contrario, establece False.
+        is_owner = request.POST.get('is_owner') == 'on'
+        
+        # Valida que las contraseñas coincidan
+        if password != confirm_password:
+            messages.error(request, 'Las contraseñas no coinciden.')
+            return redirect('register')
+
+        # Verifica si el usuario ya existe
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'El nombre de usuario ya está en uso.')
+            return redirect('register')
+
+        # Crea el nuevo usuario
+        user = User.objects.create_user(
+            username=username,
+            # first_name=first_name,
+            # last_name=last_name,
+            email=email,
+            password=password
+        )
+        user.is_owner = is_owner
+        user.save()
+        
+        # Redirige al usuario al formulario de llenado de campos de VehicleOwner si es propietario
+        if is_owner:
+            return redirect('login')  # Cambia a la vista que muestra el formulario de VehicleOwner
+
+        messages.success(request, 'Registro exitoso. Ahora puedes iniciar sesión.')
+        return redirect('login')
+
+    return render(request, 'users/register.html')
+
+# def register_view(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('login') # Reemplazar con la URL de la página principal
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'users/register.html', {'form': form})
 
 
 # VISTA PARA REGISTRAR UN PERFIL
@@ -181,11 +240,14 @@ def crear_perfil(request):
 ##EDITAR PERFIL
 @login_required
 def update_profile(request):
-    # Recupera los objetos UserProfile y VehicleOwner asociados al usuario actual
-    user_profile = UserProfile.objects.get(user=request.user)
-    vehicle_owner_profile = VehicleOwner.objects.get(user=request.user)
-
-    if not UserProfile.objects.filter(user=request.user).exists():
+    
+    user = request.user
+    
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        vehicle_owner_profile = VehicleOwner.objects.get(user=user)
+    except ObjectDoesNotExist:
+        messages.error(request, 'Crea un perfil antes de continuar o conviertete en arrendante ', 'alert-warning')
         return redirect('crear_perfil')  # Redireccionar a la vista de creación de perfil
           
     if request.method == 'POST':
@@ -201,7 +263,7 @@ def update_profile(request):
         # Procesa el formulario de VehicleOwner
         vehicle_owner_profile.id_document = request.POST['id_document']
         vehicle_owner_profile.emergency_contact = request.POST['emergency_contact']
-        vehicle_owner_profile.rental_price_hourly = request.POST['rental_price_hourly']
+        vehicle_owner_profile.rental_price_hourly = request.POST['rental_price_daily']
         vehicle_owner_profile.emergency_contact = request.POST['emergency_contact']
         vehicle_owner_profile.rental_conditions = request.POST['rental_conditions']
         
@@ -227,7 +289,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, 'Inicio de sesión exitoso.')
+            messages.success(request, 'Inicio de sesión exitoso.', 'alert-warning')
 
             # Verificar si el usuario ya tiene un perfil
             if UserProfile.objects.filter(user=user).exists():
@@ -237,7 +299,7 @@ def login_view(request):
                 # El usuario no tiene un perfil, redirigir a la creación de perfil
                 return redirect('crear_perfil')
         else:
-            messages.error(request, 'Nombre de usuario o contraseña incorrectos.')
+            
             return redirect('login')
 
     return render(request, 'users/login.html')
@@ -331,6 +393,7 @@ def complete_verification(request):
         request.user.save()
 
         return redirect('crear_vehiculo_paso1')  # Redirige al panel de control
+      
 
     return render(request, 'owner/complete_verification.html')
 
