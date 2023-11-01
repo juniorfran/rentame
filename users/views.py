@@ -95,6 +95,21 @@ def ver_vehiculo(request, vehiculo_id):
     vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
     return render(request, 'vehicle/view_vehicle.html', {'vehiculo': vehiculo})
 
+# Vista para cargar el contenido del vehículo a través de AJAX
+def cargar_contenido_vehiculo(request, vehiculo_id):
+    vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
+    vehiculo_data = {
+        'make': vehiculo.make,
+        'model': vehiculo.model,
+        'year': vehiculo.year,
+        'price_hourly': vehiculo.price_hourly,
+        'price_daily': vehiculo.price_daily,
+        'description': vehiculo.description,
+        'color': vehiculo.color,
+        # Agrega más campos según sea necesario
+    }
+    return JsonResponse(vehiculo_data)
+
 
 #####################################################################################
 

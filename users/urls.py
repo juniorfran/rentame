@@ -35,6 +35,7 @@ urlpatterns = [
     path('ver_vehiculo/<int:vehiculo_id>/', views.ver_vehiculo, name='ver_vehiculo'),
     path('editar_vehiculo/<int:vehiculo_id>/', views.editar_vehiculo, name='editar_vehiculo'),
     path('deshabilitar_vehiculo/<int:vehiculo_id>/', views.deshabilitar_vehiculo, name='deshabilitar_vehiculo'),
+    path('cargar_contenido_vehiculo/<int:vehiculo_id>/', views.cargar_contenido_vehiculo, name='cargar_contenido_vehiculo'),
     
     
     

@@ -66,10 +66,6 @@
     </div>
   </div>
 
-
-
-{% endblock content %}
-
 <script>
     $(document).ready(function() {
         $('.view-vehicle').click(function() {
@@ -80,12 +76,22 @@
             // Actualiza el título del modal
             modalTitle.text('Detalles del Vehículo');
             
-            // Carga el contenido del vehículo en el modal mediante AJAX o como prefieras
-            // Esto depende de cómo tengas configurada la vista ver_vehiculo
-            
-            $.get('{% url 'ver_vehiculo' 0 %}' + vehiculoId, function(data) {
-                modalBody.html(data);
+            // Carga el contenido del vehículo en el modal mediante AJAX
+            $.get('{% url 'cargar_contenido_vehiculo' 0 %}' + vehiculoId, function(data) {
+                modalBody.html(
+                    '<p>Marca: ' + data.make + '</p>' +
+                    '<p>Modelo: ' + data.model + '</p>' +
+                    '<p>Año: ' + data.year + '</p>' +
+                    '<p>Precio por Hora: ' + data.price_hourly + '</p>' +
+                    '<p>Precio por Día: ' + data.price_daily + '</p>' +
+                    '<p>Descripción: ' + data.description + '</p>' +
+                    '<p>Color: ' + data.color + '</p>'
+                    // Agrega más campos según sea necesario
+                );
             });
         });
     });
 </script>
+
+{% endblock content %}
+
