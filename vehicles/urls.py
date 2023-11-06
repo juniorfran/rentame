@@ -12,7 +12,7 @@ urlpatterns = [
     
     ## URL PARA VEHICULO RELACIONADA AL USUARIO
     path("create_user_vehicle/", views.crear_vehiculo, name="create_user_vehicle"),
-    
+    path('vehicle/detail/<int:vehicle_id>/', views.vehicledetail, name='vehicle_detail'),
     
     path('crear_vehiculo/paso1/', views.crear_vehiculo_paso1, name='crear_vehiculo_paso1'),
     path('crear_vehiculo/paso2/', views.crear_vehiculo_paso2, name='crear_vehiculo_paso2'),

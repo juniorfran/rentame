@@ -1,94 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<i class="fas fa-h1 fa-2x">{{ vehicle.make }} {{ vehicle.model }}</i>
 <div class="container my-5">
+        
     <div class="row">
-        <div class="col-md-5">
-            <div class="main-img">
-                <img class="img-fluid" src="https://cdn.pixabay.com/photo/2015/07/24/18/40/model-858753_960_720.jpg" alt="ProductS">
-                <div class="row my-3 previews">
-                    <div class="col-md-3">
-                        <img class="w-100" src="https://cdn.pixabay.com/photo/2015/07/24/18/40/model-858754_960_720.jpg" alt="Sale">
+        <div class="col-md-4">
+            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for imagen in vehicle.image.all %}
+                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                            <img class="d-block w-100 mx-auto" src="{{ imagen.image.url }}" alt="Image {{ forloop.counter }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#imageCarousel" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#imageCarousel" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" ariahidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </a>
+            </div>
+            <div>
+                <div class="product-details my-4">
+                    <p class="details-title text-color mb-1">Detalles de producto</p>
+                    <p class="description">{{ vehicle.description }}</p>
+                </div>
+                <div class="row questions bg-light p-3">
+                    <div class="col-md-1 icon">
+                        <i class="fa-brands fa-rocketchat questions-icon"></i>
                     </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="https://cdn.pixabay.com/photo/2015/07/24/18/38/model-858749_960_720.jpg" alt="Sale">
+                    <div class="col-md-11 text">
+                        ¿Tiene alguna pregunta sobre nuestros productos en RENTAME-SV? No dude en ponerse en contacto con nuestros representantes a través de chat en vivo o correo electrónico.
                     </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="https://cdn.pixabay.com/photo/2015/07/24/18/39/model-858751_960_720.jpg" alt="Sale">
-                    </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="https://cdn.pixabay.com/photo/2015/07/24/18/37/model-858748_960_720.jpg" alt="Sale">
+                </div>
+    
+                <div class="delivery my-4">
+                    <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-truck"></i></span> <b>Ubicación:</b> {{ vehicle.location.address }}</p>
+                    <p class="text-secondary">Puedes cambiar la ubicacion de entrega.</p>
+                    <div class="block">
+                        <a class="btn btn-primary px-3 ml-auto" href="#">Contactar</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-7">
-            <div class="main-description px-2">
-                <div class="category text-bold">
-                    Category: Women
-                </div>
-                <div class="product-title text-bold my-3">
-                    Black dress for Women
-                </div>
-
-
-                <div class="price-area my-4">
-                    <p class="old-price mb-1"><del>$100</del> <span class="old-price-discount text-danger">(20% off)</span></p>
-                    <p class="new-price text-bold mb-1">$80</p>
-                    <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
-
-                </div>
-
-
-                <div class="buttons d-flex my-5">
-                    <div class="block">
-                        <a href="#" class="shadow btn custom-btn ">Wishlist</a>
-                    </div>
-                    <div class="block">
-                        <button class="shadow btn custom-btn">Add to cart</button>
-                    </div>
-
-                    <div class="block quantity">
-                        <input type="number" class="form-control" id="cart_quantity" value="1" min="0" max="5" placeholder="Enter email" name="cart_quantity">
-                    </div>
-                </div>
-
-
-
-
+            <div class="price-area my-4">
+                <p class="old-price mb-1">
+                    <del><i class="bi bi-currency-dollar"></i>{{ vehicle.price_daily }} / Dia </del> 
+                    <span class="old-price-discount text-danger">(20% off)</span>
+                </p>
+                <p class="new-price text-bold mb-1"> <i class="bi bi-currency-dollar"></i>{{ precio_con_descuento|floatformat:2 }} (Precio con descuento)</p>
+                <p class="text-secondary mb-1">(Impuesto adicionales se consideran en la facturacion.)</p>
             </div>
 
-            <div class="product-details my-4">
-                <p class="details-title text-color mb-1">Product Details</p>
-                <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat excepturi odio recusandae aliquid ad impedit autem commodi earum voluptatem laboriosam? </p>
-            </div>
-          
-                     <div class="row questions bg-light p-3">
-                <div class="col-md-1 icon">
-                    <i class="fa-brands fa-rocketchat questions-icon"></i>
+            <div class="buttons d-flex my-5">
+                <div class="block">
+                    <a class="btn btn-primary px-3 ml-auto" href="#">Lista de deseos</a>
                 </div>
-                <div class="col-md-11 text">
-                    Have a question about our products at E-Store? Feel free to contact our representatives via live chat or email.
+                <div class="block">
+                    <button class="shadow px-3 mx-2 btn btn-primary custom-btn">Reservar</button>
                 </div>
             </div>
-
-            <div class="delivery my-4">
-                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-truck"></i></span> <b>Delivery done in 3 days from date of purchase</b> </p>
-                <p class="text-secondary">Order now to get this product delivery</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Primera columna -->
+                        <div class="main-description px-2">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <i class="fas fa-car"></i> Categoría: {{ vehicle.Category }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-calendar"></i> Año del vehículo: {{ vehicle.year }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-car"></i> Tipo de vehículo: {{ vehicle.vehicle_type }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-check-circle"></i> Disponibilidad: {{ vehicle.availability }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-paint-brush"></i> Color: {{ vehicle.color }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-door-open"></i> Puertas: {{ vehicle.puertas }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- Segunda columna -->
+                    <!-- Puedes agregar aquí el contenido que desees, como un mapa de ubicación o cualquier otro detalle adicional. -->
+                    <div class="main-description px-2">
+                            <li class="list-group-item">
+                                <i class="fas fa-snowflake"></i> Climatización: {{ vehicle.climatizacion }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-cogs"></i> Transmisión: {{ vehicle.transmision }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-road"></i> Kilometraje: {{ vehicle.kilometraje }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-users"></i> Capacidad: {{ vehicle.capacidad }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-gas-pump"></i> Combustible: {{ vehicle.combustible }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-wrench"></i> Motor: {{ vehicle.motor }}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-shield-alt"></i> Tipo de freno: {{ vehicle.tipo_freno }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="delivery-options my-4">
-                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-filter"></i></span> <b>Delivery options</b> </p>
-                <p class="text-secondary">View delivery options here</p>
+                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-filter"></i></span> <b>Opciones de entrega</b></p>
+                
+                <p class="text-secondary"><a class="btn btn-primary px-3 ml-auto" href="#">Ver opciones de entrega o recepcion de vehiculo</a>.</p>
             </div>
-            
-         
         </div>
     </div>
 </div>
 
-
-
 <div class="container similar-products my-4">
     <hr>
     <p class="display-5">Similar Products</p>
-
     <div class="row">
         <div class="col-md-3">
             <div class="similar-product">
@@ -105,7 +147,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="similar-product">
+            <div class "similar-product">
                 <img class="w-100" src="https://source.unsplash.com/gJZQcirK8aw" alt="Preview">
                 <p class="title">Lovely fashion dress</p>
                 <p class="price">$200</p>
@@ -121,7 +163,63 @@
     </div>
 </div>
 
-
-
-
+<!-- Sección de reseñas -->
+<div class="reviews-section my-5">
+    <h2 class="mb-4">Reseñas de este vehículo</h2>
+    <div id="review-list">
+        {% for review in reviews %}
+        <div class="card mb-3">
+            <div class="card-header text-end">
+                {{ review.date_added }}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Calificación: {{ review.rating }}</h5>
+                <p class="card-text">Comentario: {{ review.comment }}</p>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-primary"><i class="bi bi-hand-thumbs-up"></i></button>
+                    <p class="card-text text-end">Valorado por: {{ review.reviewed_by.username }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">No hay reseñas para este vehículo.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
+    <div class="add-review">
+        <h4>Agrega tu reseña</h4>
+        {% if user_has_renter_profile %}
+            <form id="review-form" method="POST">
+            {% csrf_token %}
+                <div class="form-group">
+                <label for="rating">Calificación (de 1 a 5):</label>
+                <input type="number" name="rating" min="1" max="5" required class="form-control">
+                </div>
+                <div class="form-group">
+                <label for="comment">Comentario:</label>
+                <textarea name="comment" required class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar Comentario</button>
+            </form>
+        {% else %}
+        <div class="block">
+            <a class="btn btn-primary px-3 ml-auto" href="{% url "create_renter" %}">Completa tu perfil</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+
+{% endblock extrajs %}
+
+
+
+

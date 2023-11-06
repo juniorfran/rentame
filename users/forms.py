@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, password_validation
 from django.contrib.auth import get_user_model
-from .models import UserProfile, VehicleOwner, User
-from vehicles.models import Vehicle
+from .models import UserProfile, VehicleOwner, User, Renter
+from vehicles.models import Vehicle, Imagen, VehicleType
 
 
 ##FORM PARA EDITAR EL PERFIL
@@ -65,8 +65,32 @@ class AddVehicleUserForm(forms.ModelForm):
 
 #formulario para editar el vehiculo
 class EditVehicleUserForm(forms.ModelForm):
+    vehicle_type = forms.ModelChoiceField(
+        queryset=VehicleType.objects.all(),  # Queryset para obtener los tipos de vehículos
+        empty_label=None,  # No muestra una etiqueta vacía en el select
+    )
+    images = forms.ModelMultipleChoiceField(
+        queryset=Imagen.objects.all(),  # Reemplaza 'Imagen' con el nombre correcto de tu modelo de imágenes
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
     class Meta:
         model = Vehicle
-        exclude = ['user']
         fields = '__all__'
+        exclude = ['user', 'image', 'vehicle_type']
         
+class DeshabilitarVehiculoForm(forms.Form):
+    vehiculo = forms.ModelChoiceField(queryset=Vehicle.objects.all(), widget=forms.HiddenInput())
+
+    def __init__(self, *args, **kwargs):
+        self.vehiculo = kwargs.pop('vehiculo')
+        super(DeshabilitarVehiculoForm, self).__init__(*args, **kwargs)
+        self.fields['vehiculo'].initial = self.vehiculo.id
+        
+
+##########################################################################################################
+## FORMULARIOS PARA RENTER PERFIL DEL USUARIO
+class RenterForm(forms.ModelForm):
+    class Meta:
+        model = Renter
+        fields = '__all__'

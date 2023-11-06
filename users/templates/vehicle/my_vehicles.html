@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
+
 {% block content %}
     
 <div class="container">
@@ -34,10 +35,12 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% comment %} <a href="{% url 'ver_vehiculo' vehiculo.id %}" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Ver</a> {% endcomment %}
-                        <a href="#" class="btn btn-info view-vehicle" data-vehiculo-id="{{ vehiculo.id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">Ver</a>
-                        <a href="{% url 'editar_vehiculo' vehiculo.id %}" class="btn btn-primary">Editar</a>
-                        <a href="{% url 'deshabilitar_vehiculo' vehiculo.id %}" class="btn btn-danger" >Deshabilitar</a>
+                        <button type="button" class="btn btn-primary open-vehicle-modal" data-vehiculo-id="{{ vehiculo.id }}">Ver</button>
+                        <button type="button" class="btn btn-primary open-vehicle-edit-modal" data-vehiculo-id="{{ vehiculo.id }}">Editar</button>
+                        <button type="button" class=" {% if vehiculo.availability %}btn btn-danger{% else %}btn btn-success{% endif %}
+                         open-vehicle-disable" data-vehiculo-id="{{ vehiculo.id }}">
+                        {% if vehiculo.availability %} <i class="bi bi-x-lg"></i> {% else %}<i class="bi bi-check-circle"></i>{% endif %}
+                      </button>
                     </td>
                 </tr>
             {% endfor %}
@@ -46,52 +49,97 @@
 </div>
 
 <!-- Button trigger modal -->
- 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+
+<!-- Contenido del modal -->
+<div class="modal fade" id="vehicleModal" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h5 class="modal-title" id="vehicleModalLabel">Vehículo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {% include "vehicle/view_vehicle.html" %}
+        <div id="vehicleContent">
+          
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-<script>
-    $(document).ready(function() {
-        $('.view-vehicle').click(function() {
+
+{% endblock content %}
+
+
+
+
+
+
+{% block extrajs %}
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('.open-vehicle-modal').click(function () {
+          var vehiculoId = $(this).data('vehiculo-id');
+        $.ajax({
+          type: 'GET',
+          url: `/users/ver_vehiculo/${vehiculoId}/`,  // URL DE LA VISTA
+          success: function (data) {
+            $('#vehicleContent').html(data);
+            $('#vehicleModal').modal('show');
+          },
+          error: function () {
+            alert('No se pudo cargar la información del vehículo');
+          }
+        });
+      });
+    });
+
+    $(document).ready(function () {
+        $('.open-vehicle-edit-modal').click(function () {
             var vehiculoId = $(this).data('vehiculo-id');
-            var modalTitle = $('#exampleModalLabel');
-            var modalBody = $('.modal-body');
+          $.ajax({
+            type: 'GET',
+            url: `/users/editar_vehiculo/${vehiculoId}/`,  // URL DE LA VISTA
+            success: function (data) {
+              $('#vehicleContent').html(data);
+              $('#vehicleModal').modal('show');
+            },
+            error: function () {
+              alert('No se pudo cargar la información del vehículo');
+            }
+          });
+        });
+      });
+
+      $(document).ready(function () {
+        $('.open-vehicle-disable').click(function () {
+            var vehiculoId = $(this).data('vehiculo-id');
             
-            // Actualiza el título del modal
-            modalTitle.text('Detalles del Vehículo');
+            // Obtener el token CSRF
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
             
-            // Carga el contenido del vehículo en el modal mediante AJAX
-            $.get('{% url 'cargar_contenido_vehiculo' 0 %}' + vehiculoId, function(data) {
-                modalBody.html(
-                    '<p>Marca: ' + data.make + '</p>' +
-                    '<p>Modelo: ' + data.model + '</p>' +
-                    '<p>Año: ' + data.year + '</p>' +
-                    '<p>Precio por Hora: ' + data.price_hourly + '</p>' +
-                    '<p>Precio por Día: ' + data.price_daily + '</p>' +
-                    '<p>Descripción: ' + data.description + '</p>' +
-                    '<p>Color: ' + data.color + '</p>'
-                    // Agrega más campos según sea necesario
-                );
+            // Datos que se enviarán en la solicitud POST
+            var data = { vehiculo_id: vehiculoId, csrfmiddlewaretoken: csrftoken };
+    
+            $.ajax({
+                type: 'POST',
+                url: `/users/deshabilitar_vehiculo/${vehiculoId}/`,
+                data: data, // Incluir el token CSRF en los datos
+                success: function (data) {
+                    // Manejar la respuesta (si es necesario)
+                    $('#vehicleContent').html(data);
+                    $('#vehicleModal').modal('show');
+                },
+                error: function () {
+                    alert('No se pudo cargar la información del vehículo');
+                }
             });
         });
     });
-</script>
+  </script>
+{% endblock extrajs %}
 
-{% endblock content %}
+
+
 

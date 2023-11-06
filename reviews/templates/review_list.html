@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Lista de Revisiones</h1>
+    <a class="btn btn-primary" href="{% url 'add_review' %}">Agregar Nueva Revisión</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Calificación</th>
+                <th>Comentario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}
+                <tr>
+                    <td>{{ review.rating }}</td>
+                    <td>{{ review.comment }}</td>
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="{% url 'review-update' review.pk %}">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'review-delete' review.pk %}">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

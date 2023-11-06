@@ -1,7 +1,9 @@
+from decimal import ROUND_HALF_UP, Decimal
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from vehicles.models import Imagen, Vehicle, VehicleType, Location
 from reviews.models import Review
-from users.models import User, UserProfile, VehicleOwner
+from users.models import Renter, User, UserProfile, VehicleOwner
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,11 +12,77 @@ from django.views.generic.edit import CreateView
 from .forms import VehicleTypeForm, LocationForm
 
 # Create your views here.
+# @login_required
+# def add_review(request, vehicle_id):
+#     vehicle = Vehicle.objects.get(pk=vehicle_id)
+    
+#     # Verifica si el usuario tiene un perfil de "renter"
+#     if not request.user.renter_profile:  # Supongamos que tienes un campo llamado "renter_profile" en tu modelo de usuario
+#         # Si el usuario no tiene un perfil de "renter", redirige a la página de creación de perfil
+#         return redirect('create_renter')  # Reemplaza 'crear_perfil_renter' con la URL real de creación de perfil
+    
+#     if request.method == 'POST':
+#         # Procesar el formulario enviado en la plantilla
+#         rating = request.POST.get('rating')
+#         comment = request.POST.get('comment')
+#         reviewed_by = request.user
 
+#         review = Review(vehicle=vehicle, rating=rating, comment=comment, reviewed_by=reviewed_by)
+#         review.save()
+
+#         return redirect('vehicle_detail', vehicle_id=vehicle.id)
+
+#     return render(request, 'review_create.html', {'vehicle': vehicle})
+@login_required
+def vehicledetail(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    imagen = vehicle.image.all()
+    reviews = vehicle.reviews_vehicle.all()
+
+    # Verificar si el usuario tiene un perfil de Renter
+    user_renter_profile = Renter.objects.filter(user=request.user).first()
+    user_has_renter_profile = user_renter_profile is not None
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+
+        # Verificar si el usuario tiene un perfil de Renter
+        if user_renter_profile:
+            # Si el usuario tiene un perfil de Renter, usa ese perfil como reviewed_by
+            reviewed_by = user_renter_profile
+        else:
+            # Si el usuario no tiene un perfil de Renter, puedes manejarlo según tus necesidades.
+            # Por ejemplo, puedes mostrar un mensaje de error o simplemente no asignar un reviewed_by.
+            # Aquí, asignamos None.
+            reviewed_by = None
+
+        review = Review(vehicle=vehicle, rating=rating, comment=comment, reviewed_by=reviewed_by)
+        review.save()
+
+        return redirect('vehicle_detail', vehicle_id=vehicle.id)
+    
+    # Realiza los cálculos para aplicar el descuento
+    precio_original = vehicle.price_daily
+    descuento = precio_original * Decimal('0.20')
+    precio_con_descuento = precio_original - descuento
+    
+    # Redondea el precio con descuento a dos decimales
+    precio_con_descuento = precio_con_descuento.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+    
+    context = {
+        'vehicle': vehicle,
+        'imagen': imagen,
+        'reviews': reviews,
+        'user_has_renter_profile': user_has_renter_profile,
+        'precio_con_descuento': precio_con_descuento,
+    }
+
+    return render(request, 'vehicle_detail.html', context)
 
 @login_required
 def vehicle_list(request):
-    vehicles = Vehicle.objects.order_by('-id')  # Ordena la lista de vehículos por fecha de creación en orden descendente
+    vehicles = Vehicle.objects.filter(availability=True).order_by('-id')  # Ordena la lista de vehículos por fecha de creación en orden descendente
     vehicle_types = VehicleType.objects.all()
     locations = Location.objects.all()
     
@@ -117,20 +185,6 @@ def crear_vehiculo(request):
     }
 
     return render(request, 'user/vehicle_user_create.html', context)
-
-
-# class VehicleCreateView(LoginRequiredMixin, CreateView):
-#     model = Vehicle
-#     template_name = 'crear_vehiculo.html'  # Reemplaza con la ruta a tu plantilla HTML
-#     fields = ['make', 'model', 'year', 'vehicle_type', 'description', 'image', 'price_hourly', 'price_daily', 'availability', 'location', 'color', 'puertas', 'capacidad', 'combustible', 'motor', 'tipo_freno']
-
-#     def form_valid(self, form):
-#         # Asigna el propietario del vehículo como el usuario autenticado
-#         form.instance.owner = self.request.user.vehicleowner
-#         return super().form_valid(form)
-
-#     success_url = reverse_lazy('nombre_de_la_url_a_la_que_redireccionar_despues_de_guardar')
-
 
 
 @login_required

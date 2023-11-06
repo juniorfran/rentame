@@ -73,6 +73,8 @@ class VehicleOwner(models.Model):
     foto2_dui = models.FileField( upload_to=user_directory_path, max_length=100, null=True)
     foto_licencia = models.FileField( upload_to=user_directory_path, max_length=100, null=True)
     # Otros campos según tus necesidades
+    def __str__(self):
+        return self.user.first_name
 
 class Renter(models.Model):
     user = models.OneToOneField(
@@ -90,10 +92,12 @@ class Renter(models.Model):
     budget = models.DecimalField(max_digits=10, decimal_places=2)
     preferred_rental_dates = models.CharField(max_length=100)  # Fechas y horarios preferidos
     preferred_payment_methods = models.ManyToManyField('paymentmethod.PaymentMethod', related_name='preferred_pago_renters')
-    required_documents = models.TextField()  # Documentos requeridos para alquilar
-    driving_history = models.TextField()  # Historial de conducción
+    required_documents = models.CharField(max_length=100)  # Documentos requeridos para alquilar
+    driving_history = models.CharField(max_length=100)  # Historial de conducción
     create_add = models.DateField(auto_now=True, auto_now_add=False, null=True)
     # Otros campos según tus necesidades
+    def __str__(self):
+        return self.user.first_name
 
 class Review(models.Model):
     rating = models.PositiveIntegerField()  # Calificación (de 1 a 5)

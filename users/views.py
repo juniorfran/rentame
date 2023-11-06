@@ -1,16 +1,19 @@
 from multiprocessing import AuthenticationError
 from django.contrib.auth import logout, login, authenticate
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import Http404, JsonResponse
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 #from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .forms import UserCreationForm, UserForm, UserProfileForm, VehicleOwnerForm, UserProfilCreateForm, EditVehicleUserForm
+from django.urls import reverse
+from django.views import View
+from .forms import DeshabilitarVehiculoForm, UserCreationForm, UserForm, UserProfileForm, VehicleOwnerForm, UserProfilCreateForm, EditVehicleUserForm, RenterForm
 #models
 from .models import UserProfile, VehicleOwner, Renter, User
 from vehicles.models import Location, Vehicle, VehicleType
+from django.utils.decorators import method_decorator
 
 
 # @login_required
@@ -39,7 +42,30 @@ from vehicles.models import Location, Vehicle, VehicleType
 #     return render(request, 'perfil/editar_perfil.html', context)
 
 
+@login_required
+def create_renter_profile(request):
+    if request.method == 'POST':
+        id_document = request.POST.get('id_document')
+        emergency_contact = request.POST.get('emergency_contact')
+        budget = request.POST.get('budget')
+        preferred_rental_dates = request.POST.get('preferred_rental_dates')
+        driving_history = request.POST.get('driving_history')
+        # Otros campos que desees procesar
+        
+        user = request.user
+
+        # Crear el perfil de Renter
+        renter = Renter(user=user, id_document=id_document, emergency_contact=emergency_contact, budget=budget,
+                        preferred_rental_dates=preferred_rental_dates, driving_history=driving_history)
+        renter.save()
+
+        # Redirigir a la página de perfil de Renter o a donde desees
+        return redirect('vehicle_list')  # Ajusta el nombre de la vista de perfil de Renter
+
+    return render(request, 'renter/create_renter.html')
+
 ### VISTAS PARA EL VEHICULO DEL USUARIO
+
 ## VISTA PARA LISTAR LOS VEHICULOS RELACIONADOS AL USUARIO LOGUEADO
 @login_required
 def lista_vehiculos(request):
@@ -75,41 +101,36 @@ def editar_vehiculo(request, vehiculo_id):
             form.save()
             return redirect('lista_vehiculos')  # Redirige a la lista de vehículos después de la edición
     else:
-        form = EditVehicleUserForm(instance=vehiculo)
+        initial_data = {
+            'vehicle_type': vehiculo.vehicle_type.name,
+            'images': vehiculo.image.all()  # Puedes usar .values_list() si es necesario
+        }
+        form = EditVehicleUserForm(instance=vehiculo, initial=initial_data)
 
-    return render(request, 'editar_vehiculo.html', {'form': form})
+    return render(request, 'vehicle/update_vehicle.html', {'form': form})
 
-## VISTA PARA DESHABILITAR EL VEHICULO Y QUE NO SE MUESTRE MAS
+##DESHABILITAR Y HABILITAR VEHICULO
 def deshabilitar_vehiculo(request, vehiculo_id):
     vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
-    
-    if request.method == 'POST':
-        vehiculo.availability = False
-        vehiculo.save()
-        return redirect('lista_vehiculos')  # Redirige a la lista de vehículos después de la deshabilitación
 
-    return render(request, 'deshabilitar_vehiculo.html', {'vehiculo': vehiculo})
+    if request.method == 'POST':
+        vehiculo_id = request.POST.get('vehiculo_id')
+
+        if vehiculo_id == str(vehiculo.id):
+            if vehiculo.availability:
+                vehiculo.availability = False
+            else:
+                vehiculo.availability = True
+
+            vehiculo.save()
+            return render(request, 'vehicle/deshabilitar_vehicle.html', {'vehiculo': vehiculo, 'message': 'El vehículo se ha deshabilitado/habilitado correctamente.'})
+
+    return render(request, 'vehicle/deshabilitar_vehicle.html', {'vehiculo': vehiculo})
 
 ## VISTA PARA VER EL VEHICULO
 def ver_vehiculo(request, vehiculo_id):
     vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
     return render(request, 'vehicle/view_vehicle.html', {'vehiculo': vehiculo})
-
-# Vista para cargar el contenido del vehículo a través de AJAX
-def cargar_contenido_vehiculo(request, vehiculo_id):
-    vehiculo = get_object_or_404(Vehicle, id=vehiculo_id)
-    vehiculo_data = {
-        'make': vehiculo.make,
-        'model': vehiculo.model,
-        'year': vehiculo.year,
-        'price_hourly': vehiculo.price_hourly,
-        'price_daily': vehiculo.price_daily,
-        'description': vehiculo.description,
-        'color': vehiculo.color,
-        # Agrega más campos según sea necesario
-    }
-    return JsonResponse(vehiculo_data)
-
 
 #####################################################################################
 
@@ -226,7 +247,7 @@ def crear_perfil(request):
 
         if is_owner:
             # El usuario es propietario, redirigir a llenar los datos de VehicleOwner
-            return redirect('complete_verification')
+            return redirect('become_owner')
         else:
             # El usuario no es propietario, redirigir al perfil
             return redirect('perfil')

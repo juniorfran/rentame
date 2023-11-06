@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User  # Importa el modelo de usuario de Django si aún no lo has hecho
+from users.models import User  # Importa el modelo de usuario de Django si aún no lo has hecho
 from transactions.models import Transaction  # Importa el modelo de transacción de tu aplicación de transacciones
 
 class PaymentMethod(models.Model):
@@ -18,6 +18,13 @@ class PaymentMethod(models.Model):
         return self.name
 
 class CreditCardPayment(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='credit_card_user',
+        null=True
+    )
+    typemethod = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE, null=True)
     cardholder_name = models.CharField(max_length=100, verbose_name="Nombre del titular de la tarjeta")
     card_number = models.CharField(max_length=16, verbose_name="Número de tarjeta")
     expiration_date = models.DateField(verbose_name="Fecha de expiración")
@@ -55,6 +62,12 @@ class PayPalPayment(models.Model):
         return self.email
 
 class BankTransferPayment(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='bank_transfer_user',
+        null=True
+    )
     account_holder = models.CharField(max_length=100, verbose_name="Nombre del titular de la cuenta")
     account_number = models.CharField(max_length=20, verbose_name="Número de cuenta")
     bank_name = models.CharField(max_length=100, verbose_name="Nombre del banco")

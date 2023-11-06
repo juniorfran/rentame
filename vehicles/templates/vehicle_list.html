@@ -69,9 +69,9 @@
                                       </div>
                                   </div>
                               </div>
-                              <div class="d-grid gap-2">
-                                <a class="btn btn-primary px-3 ml-auto" href="car-detail.html">{{ vehicle.price_daily }}/Día</a>
-                              </div>
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary px-3 ml-auto" href="{% url 'vehicle_detail' vehicle.id %}">{{ vehicle.price_daily }}/Día</a>
+                            </div>
                           </div>
                       {% endfor %}
                   </div>

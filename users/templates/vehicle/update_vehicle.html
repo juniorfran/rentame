@@ -1,0 +1,72 @@
+ {% load static %}
+
+
+<div class="container">
+    <h1 class="my-4">Editar Vehículo</h1>
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.make.id_for_label }}" class="form-label">Marca</label>
+            {{ form.make }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.model.id_for_label }}" class="form-label">Modelo</label>
+            {{ form.model }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.year.id_for_label }}" class="form-label">Año</label>
+            {{ form.year }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.vehicle_type.id_for_label }}" class="form-label">Tipo de Vehículo</label>
+            {{ form.vehicle_type }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Descripción</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.price_daily.id_for_label }}" class="form-label">Precio por Día</label>
+            {{ form.price_daily }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.availability.id_for_label }}" class="form-label">Disponibilidad</label>
+            {{ form.availability }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.location.id_for_label }}" class="form-label">Ubicación</label>
+            {{ form.location }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.owner.id_for_label }}" class="form-label">Dueño</label>
+            {{ form.owner }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.color.id_for_label }}" class="form-label">Color</label>
+            {{ form.color }}
+        </div>
+        <!-- Agrega más campos según sea necesario -->
+        
+        <div class="mb-3">
+            <label class="form-label">Imágenes</label>
+            <div class="form-check">
+                {% for image in form.images %}
+                <input type="checkbox" class="form-check-input" name="{{ image.name }}" id="{{ image.id_for_label }}">
+                <label class="form-check-label" for="{{ image.id_for_label }}">
+                    <img src="{{ image.url }}" alt="{{ image.name }}" class="img-thumbnail">
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.foto_tarjeta_circulacion_1.id_for_label }}" class="form-label">Foto Tarjeta de Circulación 1</label>
+            {{ form.foto_tarjeta_circulacion_1 }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.foto_tarjeta_circulacion_2.id_for_label }}" class="form-label">Foto Tarjeta de Circulación 2</label>
+            {{ form.foto_tarjeta_circulacion_2 }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>

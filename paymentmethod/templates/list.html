@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <a href="{% url "crear_credit_card_payment" %}" class="btn btn-primary " >Agregar</a>
+    <h1 class="my-4">Lista de Pagos con Tarjeta de Crédito</h1>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Titular</th>
+                <th>Número de Tarjeta</th>
+                <th>Fecha de Expiración</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in credit_card_payments %}
+            <tr>
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.cardholder_name }}</td>
+                <td>{{ payment.card_number }}</td>
+                <td>{{ payment.expiration_date }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary open-credit-card-edit-modal" data-payment-id="{{ payment.id }}">Editar</a>
+                    <a href="#" class="btn btn-danger deshabilitar-credit-card-payment" data-payment-id="{{ payment.id }}">Deshabilitar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+$(document).ready(function () {
+    // Abre el modal de edición
+    $('.open-credit-card-edit-modal').click(function () {
+        var paymentId = $(this).data('payment-id');
+        $.ajax({
+            type: 'GET',
+            url: `/credit_card_payments/editar/${paymentId}/`,
+            success: function (data) {
+                $('#creditCardEditModalContent').html(data);
+                $('#creditCardEditModal').modal('show');
+            },
+            error: function () {
+                alert('No se pudo cargar la información del pago');
+            }
+        });
+    });
+
+    // Deshabilita el pago con tarjeta de crédito
+    $('.deshabilitar-credit-card-payment').click(function () {
+        var paymentId = $(this).data('payment-id');
+        if (confirm('¿Deseas deshabilitar este pago?')) {
+            $.ajax({
+                type: 'POST',
+                url: `/credit_card_payments/deshabilitar/${paymentId}/`,
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val
+</script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+{% endblock extrajs %}

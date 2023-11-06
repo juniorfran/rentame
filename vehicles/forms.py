@@ -1,6 +1,6 @@
 # forms.py
 from django import forms
-from .models import VehicleType, Location
+from .models import VehicleType, Location, Vehicle
 
 class VehicleTypeForm(forms.ModelForm):
     class Meta:

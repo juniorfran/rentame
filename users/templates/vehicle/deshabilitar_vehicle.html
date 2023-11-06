@@ -1,0 +1,11 @@
+<h2>Detalles del Vehículo</h2>
+<p><strong>Marca:</strong> {{ vehiculo.make }}</p>
+<p><strong>Modelo:</strong> {{ vehiculo.model }}</p>
+<p><strong>Estado Actual:</strong> {% if vehiculo.availability %} No Disponible {% else %}  Disponible {% endif %}</p>
+<p><strong>Precio por Día:</strong> ${{ vehiculo.price_daily }}</p>
+
+<form method="post" enctype="multipart/form-data" class="needs-validation">
+    {% csrf_token %}
+    <input type="hidden" name="vehiculo_id" value="{{ vehiculo.id }}">
+    <button type="submit" class="btn btn-primary">{% if vehiculo.availability %} Habilitar{% else %} Deshabilitar{% endif %}</button>
+</form>

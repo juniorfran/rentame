@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Detalles de la Revisión</h1>
+    <dl class="row">
+        <dt class="col-sm-3">Calificación</dt>
+        <dd class="col-sm-9">{{ review.rating }}</dd>
+        <dt class="col-sm-3">Comentario</dt>
+        <dd class="col-sm-9">{{ review.comment }}</dd>
+    </dl>
+    <a class="btn btn-secondary" href="{% url 'review-list' %}">Volver a la Lista</a>
+</div>
+{% endblock %}

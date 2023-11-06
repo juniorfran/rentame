@@ -73,7 +73,7 @@
                             <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-credit-card"></i>Mi Perfil</a>
                             <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "lista_vehiculos" %}" role="tab"><i class="fa fa-map-marker-alt"></i>Mis Autos</a>
                             <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-shopping-bag"></i>Mi Historial</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="my-payment.html" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "lista_credit_card_payments" %}" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
                             <a class="nav-link" id="address-nav" data-toggle="pill" href="my-address.html" role="tab"><i class="fa fa-map-marker-alt"></i>Direcciones</a>
                             <a class="nav-link" id="account-nav" data-toggle="pill" href="{% url "editar_perfil" %}" role="tab"><i class="fa fa-user"></i>Detalles de Perfil</a>
                             <form method="post" action="{% url 'logout' %}">
@@ -127,6 +127,9 @@
     <script src="{% static "js/main.js" %}"></script>
     <script src="{% static "js/datepicker.min.js" %}"></script>
     <script src="{% static "js/datecar.js" %}"></script>
+
+    {% block extrajs %}
+    {% endblock extrajs %}
 
   </body>
 </html>
