@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% comment %} <head>
+    <!-- Agrega las referencias a las bibliotecas externas aquí -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head> {% endcomment %}
+
+{% block content %}
+<div class="container">
+    <h1>Reservar Vehículo</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="start_date">Fecha de inicio:</label>
+            <input type="text" class="form-control datepicker" id="start_date" name="start_date" readonly>
+        </div>
+        <div class="form-group">
+            <label for="end_date">Fecha de finalización:</label>
+            <input type="text" class="form-control datepicker" id="end_date" name="end_date" readonly>
+        </div>
+        <div class="form-group">
+            <label for="descuento">Descuento:</label>
+            <input type="text" class="form-control" id="descuento" name="descuento">
+        </div>
+        <div class="form-group">
+            <label for="seguro">Seguro:</label>
+            <select class="form-control" id="seguro" name="seguro">
+                <option value="" disabled selected>Selecciona un seguro</option>
+                {% for seguro in seguros_disponibles %}
+                    <option value="{{ seguro.id }}">{{ seguro.nombre }} {{ seguro.costo_diario}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Agrega más campos según tus necesidades -->
+
+        <button type="submit" class="btn btn-primary">Reservar</button>
+    </form>
+</div>
+{% endblock content %}
+{% block extrajs %}
+<script>
+    
+    var date = new Date();
+    var options = { timeZone: 'America/El_Salvador' };
+    var formattedDate = date.toLocaleDateString('es-SV', options);
+    var fechas_disponibles = {{ fechas_disponibles_json|safe }};
+    var fechas_no_disponibles = {{ fechas_no_disponibles_json|safe }};
+
+
+    $(document).ready(function() { 
+        //////// 
+        $(function() { 
+            $("#start_date, #end_date ").datepicker({ 
+                dateFormat: 'yy-mm-dd', 
+                startDate: 'today', 
+                beforeShowDay: my_check 
+
+            }); 
+        }); 
+
+        function my_check(in_date) { 
+            in_date = in_date.getDate() + '/' 
+            + (in_date.getMonth() + 1) + '/' + in_date.getFullYear(); 
+            var my_array = new Array('9/11/2023', '13/11/2023'); 
+            //$('#d1').append(in_date+'<br>') 
+            if (fechas_no_disponibles.indexOf(in_date) >= 0) { 
+                return [false, "notav", 'Not Available']; 
+            } else { 
+                return [true, "av", "available"]; 
+            } 
+        } 
+    }) 
+
+</script>
+{% endblock extrajs %}
+{% comment %} 
+
+ <!-- Booking Start -->
+ <div class="featured-category category booking">
+    <div class="container-fluid">
+        <div class="container">
+            <div class="booking-container">
+                <div class="row">
+                    <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="personal-detail">
+                            <h3>Detalles del la reserva</h3>
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control p-4" placeholder="First Name" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control p-4" placeholder="Last Name" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control p-4" placeholder="Your Email" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control p-4" placeholder="Mobile Number" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-detail">
+                            <h3>Booking Detail</h3>
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Pickup Location</option>
+                                            <option value="1">Toronto Airport</option>
+                                            <option value="2">Birmingham</option>
+                                            <option value="3">Cardiff</option>
+                                            <option value="4">Coventry</option>
+                                            <option value="5">Edinburgh</option>
+                                            <option value="6">Leeds</option>
+                                            <option value="7">Liverpool</option>
+                                            <option value="8">Leicester</option>
+                                            <option value="9">London</option>
+                                            <option value="10">London City</option>
+                                            <option value="11">London Gatwick</option>
+                                            <option value="12">London Heathrow</option>
+                                            <option value="13">London Luton</option>
+                                            <option value="14">London Stansted</option>
+                                            <option value="15">Manchester</option>
+                                            <option value="16">Nottingham</option>
+                                            <option value="17">Sheffield</option>
+                                            <option value="18">Sunderland</option>
+                                            <option value="19">Southampton</option>
+                                            <option value="20">Tottenham</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Drop Location</option>
+                                            <option value="1">Birmingham</option>
+                                            <option value="2">Bristol</option>
+                                            <option value="3">Cardiff</option>
+                                            <option value="4">Coventry</option>
+                                            <option value="5">Edinburgh</option>
+                                            <option value="6">Leeds</option>
+                                            <option value="7">Liverpool</option>
+                                            <option value="8">Leicester</option>
+                                            <option value="9">London</option>
+                                            <option value="10">London City</option>
+                                            <option value="11">London Gatwick</option>
+                                            <option value="12">London Heathrow</option>
+                                            <option value="13">London Luton</option>
+                                            <option value="14">London Stansted</option>
+                                            <option value="15">Manchester</option>
+                                            <option value="16">Nottingham</option>
+                                            <option value="17">Sheffield</option>
+                                            <option value="18">Sunderland</option>
+                                            <option value="19">Southampton</option>
+                                            <option value="20">Tottenham</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <input name="check-in" type="text" class="form-control" id="inputCheckOut" placeholder="Pickup Date">
+                                </div>
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Drop Off Time</option>
+                                            <option value="00:30" >12:30 AM</option>
+                                            <option value="01:00" >01:00 AM</option>
+                                            <option value="01:30" >01:30 AM</option>
+                                            <option value="02:00" >02:00 AM</option>
+                                            <option value="02:30" >02:30 AM</option>
+                                            <option value="03:00" >03:00 AM</option>
+                                            <option value="03:30" >03:30 AM</option>
+                                            <option value="04:00" >04:00 AM</option>
+                                            <option value="04:30" >04:30 AM</option>
+                                            <option value="05:00" >05:00 AM</option>
+                                            <option value="05:30" >05:30 AM</option>
+                                            <option value="06:00" >06:00 AM</option>
+                                            <option value="06:30" >06:30 AM</option>
+                                            <option value="07:00" >07:00 AM</option>
+                                            <option value="07:30" >07:30 AM</option>
+                                            <option value="08:00" >08:00 AM</option>
+                                            <option value="08:30" >08:30 AM</option>
+                                            <option value="09:00" >09:00 AM</option>
+                                            <option value="09:30" >09:30 AM</option>
+                                            <option value="10:00" >10:00 AM</option>
+                                            <option value="10:30" >10:30 AM</option>
+                                            <option value="11:00" >11:00 AM</option>
+                                            <option value="11:30" >11:30 AM</option>
+                                            <option value="12:00" >12:00 PM</option>
+                                            <option value="12:30" >12:30 PM</option>
+                                            <option value="13:00" >01:00 PM</option>
+                                            <option value="13:30" >01:30 PM</option>
+                                            <option value="14:00" >02:00 PM</option>
+                                            <option value="14:30" >02:30 PM</option>
+                                            <option value="15:00" >03:00 PM</option>
+                                            <option value="15:30" >03:30 PM</option>
+                                            <option value="16:00" >04:00 PM</option>
+                                            <option value="16:30" >04:30 PM</option>
+                                            <option value="17:00" >05:00 PM</option>
+                                            <option value="17:30" >05:30 PM</option>
+                                            <option value="18:00" >06:00 PM</option>
+                                            <option value="18:30" >06:30 PM</option>
+                                            <option value="19:00" >07:00 PM</option>
+                                            <option value="19:30" >07:30 PM</option>
+                                            <option value="20:00" >08:00 PM</option>
+                                            <option value="20:30" >08:30 PM</option>
+                                            <option value="21:00" >09:00 PM</option>
+                                            <option value="21:30" >09:30 PM</option>
+                                            <option value="22:00" >10:00 PM</option>
+                                            <option value="22:30" >10:30 PM</option>
+                                            <option value="23:00" >11:00 PM</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Select A Car</option>
+                                            <option value="1">Economy</option>
+                                            <option value="2">Compact</option>
+                                            <option value="3">Full Size</option>
+                                            <option value="4">Estate</option>
+                                            <option value="5">Minivan</option>
+                                            <option value="6">SUV</option>
+                                            <option value="7">Luxury</option>
+                                            <option value="8">Electric</option>
+                                            <option value="9">Cargo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Select A Navigation</option>
+                                            <option value="1">With Navigation</option>
+                                            <option value="2">Without  Navigation</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <select class="custom-select px-4">
+                                            <option selected>Select A Driver</option>
+                                            <option value="1">With Driver</option>
+                                            <option value="2">Without  Driver</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" placeholder="Special Request" required="required"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                        <div class="payment-detail">
+                            <h3>Payment</h3>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="paypal">
+                                    <label class="custom-control-label" for="paypal">Paypal</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="directcheck">
+                                    <label class="custom-control-label" for="directcheck">Direct Check</label>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
+                                    <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-primary py-3 payment-bt">Reserve Now</button>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>            
+<!-- Booking End -->
+ {% endcomment %}

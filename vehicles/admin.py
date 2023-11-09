@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vehicle, VehicleType, Location, Booking
+from .models import Vehicle, VehicleType, Location, Booking, Seguro
 
 # Register your models here.
 
@@ -21,5 +21,10 @@ class LocationAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('renter', 'vehicle', 'start_date', 'end_date')
+    
+@admin.register(Seguro)
+class SeguroAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion', 'costo_diario')
+    
     
 

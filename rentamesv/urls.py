@@ -36,6 +36,8 @@ urlpatterns = [
     #urls de metodos de pago
     path('paymentmethod/', include('paymentmethod.urls')),
     
+    #urls de reserva
+    path('booking/', include('bookings.urls')),
     
 ]
 

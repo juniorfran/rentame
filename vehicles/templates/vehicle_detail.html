@@ -4,164 +4,94 @@
 <i class="fas fa-h1 fa-2x">{{ vehicle.make }} {{ vehicle.model }}</i>
 <div class="container my-5">
         
-    <div class="row">
-        <div class="col-md-4">
-            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    {% for imagen in vehicle.image.all %}
-                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                            <img class="d-block w-100 mx-auto" src="{{ imagen.image.url }}" alt="Image {{ forloop.counter }}">
-                        </div>
-                    {% endfor %}
-                </div>
-                <a class="carousel-control-prev" href="#imageCarousel" role="button" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </a>
-                <a class="carousel-control-next" href="#imageCarousel" role="button" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" ariahidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </a>
-            </div>
-            <div>
-                <div class="product-details my-4">
-                    <p class="details-title text-color mb-1">Detalles de producto</p>
-                    <p class="description">{{ vehicle.description }}</p>
-                </div>
-                <div class="row questions bg-light p-3">
-                    <div class="col-md-1 icon">
-                        <i class="fa-brands fa-rocketchat questions-icon"></i>
+        <!-- Car Details Start -->
+        <div class="featured-category category">
+            <div class="container-fluid">
+                <div class="container">
+                    <div class="car-detail-container">
+                        <i class="fas fa-h1 fa-2x">{{ vehicle.make }} {{ vehicle.model }}</i>
+                        <div class="row">
+                            <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        {% for imagen in vehicle.image.all %}                                        
+                                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                                            <img src="{{ imagen.image.url }}" alt="Image {{ forloop.counter }}" class="d-block w-100" alt="Ice Cream">
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Siguiente</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+                                </div>
+                                <h4>Especificaciones Tecnicas</h4>
+                                <div class="car-info">
+                                    <div class="row">
+                                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="car-info-left">
+                                                <h6>Marca: <span>{{ vehicle.make }}</span></h6>
+                                                <h6>Modelo: <span>{{ vehicle.model }}</span></h6>
+                                                <h6>Tipo: <span>{{ vehicle.Category }}</span></h6>
+                                                <h6>Combustible: <span>{{ vehicle.combustible }}</span></h6>
+                                                <h6>transmision: <span>{{vehicle.transmision}}</span></h6>
+                                                <h6>Puertas: <span>{{vehicle.puertas}}</span></h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                            <div class="car-info-right">
+                                                <h6>Capacidad: <span>{{vehicle.capacidad}}</span></h6>
+                                                <h6>Fabricacion: <span>{{vehicle.year}}</span></h6>
+                                                <h6>Climatizacion: <span>{{vehicle.climatizacion}}</span></h6>
+                                                <h6>Motor: <span>{{vehicle.motor}}</span></h6>
+                                                <h6>Kilometraje: <span>{{vehicle.kilometraje}}</span></h6>
+                                                <h6>Tipo de Freno: <span>{{vehicle.tipo_freno}}</span></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <h5>${{vehicle.price_daily}}/Dia</h5>
+                                <div class="d-flex mb-3">
+                                    <h6 class="mr-2">Valoracion:</h6>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                        <small>(250)</small>
+                                    </div>
+                                </div>
+                                <h5>Descripcion del {{vehicle.make}} {{vehicle.model}}</h5>
+                                <p>
+                                    {{vehicle.description}}
+                                </p>
+                                <div class="d-flex pt-1">
+                                    <h6>Compartir en:</h6>
+                                    <div class="d-flex">
+                                        <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
+                                        <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                                        <a class="btn btn-secondary btn-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                                        <a class="btn btn-secondary btn-square rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                                <p class="mb-0">
+                                    <a class="btn btn-primary" href="{% url "create_reserva" vehicle.id %}">Reservar</a>
+                                </p>
+                            </div>
+                        </div>                                              
                     </div>
-                    <div class="col-md-11 text">
-                        ¿Tiene alguna pregunta sobre nuestros productos en RENTAME-SV? No dude en ponerse en contacto con nuestros representantes a través de chat en vivo o correo electrónico.
-                    </div>
-                </div>
-    
-                <div class="delivery my-4">
-                    <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-truck"></i></span> <b>Ubicación:</b> {{ vehicle.location.address }}</p>
-                    <p class="text-secondary">Puedes cambiar la ubicacion de entrega.</p>
-                    <div class="block">
-                        <a class="btn btn-primary px-3 ml-auto" href="#">Contactar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7">
-            <div class="price-area my-4">
-                <p class="old-price mb-1">
-                    <del><i class="bi bi-currency-dollar"></i>{{ vehicle.price_daily }} / Dia </del> 
-                    <span class="old-price-discount text-danger">(20% off)</span>
-                </p>
-                <p class="new-price text-bold mb-1"> <i class="bi bi-currency-dollar"></i>{{ precio_con_descuento|floatformat:2 }} (Precio con descuento)</p>
-                <p class="text-secondary mb-1">(Impuesto adicionales se consideran en la facturacion.)</p>
-            </div>
 
-            <div class="buttons d-flex my-5">
-                <div class="block">
-                    <a class="btn btn-primary px-3 ml-auto" href="#">Lista de deseos</a>
-                </div>
-                <div class="block">
-                    <button class="shadow px-3 mx-2 btn btn-primary custom-btn">Reservar</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <!-- Primera columna -->
-                        <div class="main-description px-2">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <i class="fas fa-car"></i> Categoría: {{ vehicle.Category }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-calendar"></i> Año del vehículo: {{ vehicle.year }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-car"></i> Tipo de vehículo: {{ vehicle.vehicle_type }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-check-circle"></i> Disponibilidad: {{ vehicle.availability }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-paint-brush"></i> Color: {{ vehicle.color }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-door-open"></i> Puertas: {{ vehicle.puertas }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <!-- Segunda columna -->
-                    <!-- Puedes agregar aquí el contenido que desees, como un mapa de ubicación o cualquier otro detalle adicional. -->
-                    <div class="main-description px-2">
-                            <li class="list-group-item">
-                                <i class="fas fa-snowflake"></i> Climatización: {{ vehicle.climatizacion }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-cogs"></i> Transmisión: {{ vehicle.transmision }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-road"></i> Kilometraje: {{ vehicle.kilometraje }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-users"></i> Capacidad: {{ vehicle.capacidad }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-gas-pump"></i> Combustible: {{ vehicle.combustible }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-wrench"></i> Motor: {{ vehicle.motor }}
-                            </li>
-                            <li class="list-group-item">
-                                <i class="fas fa-shield-alt"></i> Tipo de freno: {{ vehicle.tipo_freno }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="delivery-options my-4">
-                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-filter"></i></span> <b>Opciones de entrega</b></p>
-                
-                <p class="text-secondary"><a class="btn btn-primary px-3 ml-auto" href="#">Ver opciones de entrega o recepcion de vehiculo</a>.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container similar-products my-4">
-    <hr>
-    <p class="display-5">Similar Products</p>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/gsKdPcIyeGg" alt="Preview">
-                <p class="title">Lovely black dress</p>
-                <p class="price">$100</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/sg_gRhbYXhc" alt="Preview">
-                <p class="title">Lovely Dress with patterns</p>
-                <p class="price">$85</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class "similar-product">
-                <img class="w-100" src="https://source.unsplash.com/gJZQcirK8aw" alt="Preview">
-                <p class="title">Lovely fashion dress</p>
-                <p class="price">$200</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/qbB_Z2pXLEU" alt="Preview">
-                <p class="title">Lovely red dress</p>
-                <p class="price">$120</p>
-            </div>
-        </div>
-    </div>
-</div>
+        </div>            
+        <!-- Car Details End -->
 
 <!-- Sección de reseñas -->
 <div class="reviews-section my-5">
@@ -223,3 +153,8 @@
 
 
 
+
+
+
+
+       

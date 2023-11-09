@@ -35,14 +35,18 @@ class Vehicle(models.Model):
     combustible = models.CharField(max_length=50, null=True)
     motor = models.CharField(max_length=50, null=True)
     tipo_freno = models.CharField(max_length=50, null=True)
+    seguro = models.ForeignKey('Seguro', on_delete=models.CASCADE, related_name='seguros', null=True)
     create_add = models.DateField(auto_now_add=True, null=True)
     foto_tarjeta_circulacion_1 = models.FileField( upload_to=vehicle_directory_path, max_length=100, null=True)
     foto_tarjeta_circulacion_2 = models.FileField( upload_to=vehicle_directory_path, max_length=100, null=True)
     
-# class seguro_vehiculo(models.model):
-#     create_add = models.DateField(auto_now=False, auto_now_add=False, null=True)
-#     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
-#     vehiculo = models.ForeignKey('vehicles.Vehicle', on_delete=models.CASCADE)
+class Seguro(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    costo_diario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.nombre
     
 ##MODELO DE CTAEGORIA DE VEHICULOS
 class Category(models.Model):

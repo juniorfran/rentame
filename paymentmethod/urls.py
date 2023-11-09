@@ -3,6 +3,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    
+    path('credit_card/create/', views.create_payment_methodCredit, name='creditcard_create'),
+    path('estatus_method/<int:paymentmethod_id>/', views.method_estatus, name='estatus_method'),
+    
+    
     path('credit_card_payments/', views.lista_credit_card_payments, name='lista_credit_card_payments'),
     path('credit_card_payments/crear/', views.crear_credit_card_payment, name='crear_credit_card_payment'),
     path('credit_card_payments/editar/<int:payment_id>/', views.editar_credit_card_payment, name='editar_credit_card_payment'),

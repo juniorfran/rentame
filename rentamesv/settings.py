@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
     'rest_framework',
     'users',
     'bookings',
@@ -96,6 +97,9 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'vehicles/templates'),
             os.path.join(BASE_DIR, 'users/templates'),
             os.path.join(BASE_DIR, 'paymentmethod/templates'),
+            os.path.join(BASE_DIR, 'booking/templates'),
+            os.path.join(BASE_DIR, 'reviews/templates'),
+            os.path.join(BASE_DIR, 'transactions/templates'),
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -117,11 +121,11 @@ WSGI_APPLICATION = 'rentamesv.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'otro': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'otro': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rentamesv_mysql',
         'USER': 'rentameroot',
@@ -130,7 +134,20 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'ssl': {
-                'ca': 'DigiCertGlobalRootCA.crt.pem',
+                'key': 'DigiCertGlobalRootCA.crt.pem',
+                # 'cert': 'cert.pem',
+                # 'key': 'key.pem',
+                # 'check_hostname': True,
+                # 'sslmode': 'require',
+                # 'sslcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslkey': 'key.pem',
+                # 'sslrootcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslpassword': 'R3nt4m32023',
+                # 'sslcert': 'cert.pem',
+                # 'sslkey': 'key.pem',
+                # 'sslrootcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslpassword': 'R3nt4m32023',
+                
             },
         }
     }

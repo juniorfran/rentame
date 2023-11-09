@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Detalles de la Reserva</h1>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Reserva ID: {{ reserva.id }}</h3>
+            <p><strong>Fecha de Inicio:</strong> {{ reserva.start_date }}</p>
+            <p><strong>Fecha de Finalización:</strong> {{ reserva.end_date }}</p>
+            <p><strong>Precio:</strong> ${{ reserva.precio }}</p>
+            <p><strong>Descuento:</strong> {{ reserva.descuento }}</p>
+            <p><strong>Seguro:</strong> {{ reserva.seguro }}</p>
+            <!-- Otros detalles de la reserva -->
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

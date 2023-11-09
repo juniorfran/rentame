@@ -33,7 +33,8 @@ class CreditCardPayment(models.Model):
         Transaction,
         on_delete=models.CASCADE,
         related_name='credit_card_payments',
-        verbose_name="Transacción asociada"
+        verbose_name="Transacción asociada",
+        null=True
     )
     create_add = models.DateField(auto_now=False, auto_now_add=False,  null=True)
 

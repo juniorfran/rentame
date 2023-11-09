@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <h1>Create Payment Method</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Tipo de método de pago -->
+        <div class="mb-3">
+            <label for="type_method" class="form-label">Select Payment Method</label>
+            <select class="form-select" id="type_method" name="type_method">
+                {% for method in payment_methods %}
+                    <option value="{{ method.id }}">{{ method.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Nombre del titular de la tarjeta -->
+        <div class="mb-3">
+            <label for="cardholder_name" class="form-label">Cardholder Name</label>
+            <input type="text" class="form-control" id="cardholder_name" name="cardholder_name">
+        </div>
+
+        <!-- Número de tarjeta -->
+        <div class="mb-3">
+            <label for="card_number" class="form-label">Card Number</label>
+            <input type="text" class="form-control" id="card_number" name="card_number">
+        </div>
+
+        <!-- Fecha de vencimiento -->
+        <div class="mb-3">
+            <label for="expiration_date" class="form-label">Expiration Date</label>
+            <input type="text" class="form-control" id="expiration_date" name="expiration_date">
+        </div>
+
+        <!-- CVV -->
+        <div class="mb-3">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" class="form-control" id="cvv" name="cvv">
+        </div>
+
+        <!-- ID de la transacción -->
+        <div class="mb-3">
+            <label for="transaction" class="form-label">Transaction ID</label>
+            <input type="text" class="form-control" id="transaction" name="transaction">
+        </div>
+
+        <!-- Botón de enviar -->
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock content %}
