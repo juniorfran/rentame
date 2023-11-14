@@ -17,8 +17,6 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('admin/', admin.site.urls),
     #path('lista_vehiculos/', views.vehicle_list, name='lista_vehiculos'),
-    path('search/', views.search_results, name='search_results'),
-    path('', views.search_form, name='search_form'),
     
     #url api
     #path('api/', include(router.urls)),

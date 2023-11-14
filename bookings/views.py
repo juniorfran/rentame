@@ -2,61 +2,42 @@ from decimal import Decimal
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from paymentmethod.models import PaymentMethod
-from users.models import Renter, UserProfile, User, VehicleOwner
+
+from users.models import Renter
 from vehicles.models import Seguro
 from .models import Booking, Vehicle, Descuento
 from datetime import date, timedelta
 from django.contrib import messages
 
 
-def calcular_precio(vehicle, start_date, end_date, descuento, seguro_id):
-    precio_base = Decimal(str(vehicle.price_daily))
+def calcular_precio(vehicle, start_date, end_date, descuento, seguro):
+    # Lógica para calcular el precio de la reserva
+    precio_base = Decimal(str(vehicle.price_daily))  # Convierte el precio diario a Decimal
+    seguro = Seguro.objects.filter(id=id)
 
+    # Calcula la duración de la reserva
     start_date = date.fromisoformat(start_date)
     end_date = date.fromisoformat(end_date)
     duracion = (end_date - start_date).days
 
-    # Obtiene la instancia de Descuento si se proporciona un código de descuento
-    descuento_instancia = None
-    if descuento:
-        try:
-            descuento_instancia = Descuento.objects.get(codigo=descuento)
-        except Descuento.DoesNotExist:
-            pass
+    # Obtiene la instancia de Descuento
+    descuento_instancia = Descuento.objects.get(codigo=descuento)  # Asume que descuento es el código del descuento
 
     # Aplica el descuento si es válido
-    if descuento_instancia:
-        descuento_porcentaje = descuento_instancia.porcentaje_descuento
-        precio_base = precio_base * (1 - descuento_porcentaje / 100)
+    descuento_porcentaje = descuento_instancia.porcentaje_descuento
+    precio_con_descuento = precio_base * (1 - descuento_porcentaje / 100)
+    
 
     # Calcula el precio total con el seguro
-    precio_total = precio_base * duracion
+    precio_total = precio_con_descuento * duracion
     precio_total = Decimal(str(precio_total))
-
-    # Obtiene la instancia de Seguro basada en el ID proporcionado
-    seguro_instancia = None
-    if seguro_id is not None:
-        try:
-            seguro_instancia = Seguro.objects.get(id=seguro_id)
-        except Seguro.DoesNotExist:
-            pass
-
-    # Añade el costo del seguro si es necesario
-    if seguro_instancia:
-        precio_total += seguro_instancia.costo_adicional
+    if seguro == 'seguro1':
+        precio_total += Decimal('50')  # Utiliza Decimal para representar el seguro
 
     return precio_total
 
 def reserva(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
-    
-    # obtener el usuario actual
-    user = request.user
-    #obtener el perfil del usuario actual
-    profile = UserProfile.objects.get(user=request.user)
-    # Obtener el VehicleOwner actual
-    vehicle_owner = VehicleOwner.objects.get(user=user)
 
     # Obtén la lista de seguros disponibles desde la base de datos
     seguros_disponibles = Seguro.objects.all()
@@ -84,10 +65,6 @@ def reserva(request, vehicle_id):
                 break
         if fecha_disponible:
             fechas_disponibles.append(fecha)
-            
-    # Obtener los métodos de pago disponibles
-    metodos_pago_disponibles = PaymentMethod.objects.all()
-            
     if request.method == 'POST':
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -99,42 +76,23 @@ def reserva(request, vehicle_id):
             messages.error(request, 'El vehículo no está disponible en esas fechas.')
             return redirect('create_reserva', vehicle_id=vehicle.id)
         descuento = request.POST.get('descuento')
-          
+        seguro_id = request.POST.get('seguro')  # Obtén el ID del seguro
         # Calcula el precio de la reserva
-        seguro_id = None
+        precio = calcular_precio(vehicle, start_date, end_date, descuento, seguro_id)  # Pasa el ID del seguro en lugar de la cadena
         renter, created = Renter.objects.get_or_create(user=request.user)
-
-        # Obtén el ID del seguro del formulario
-        seguro_id_from_form = request.POST.get('seguro')
-
-        if seguro_id_from_form is not None:
-            seguro_id = int(seguro_id_from_form)
-
-        # Calcula el precio usando el ID del seguro
-        precio = calcular_precio(vehicle, start_date, end_date, descuento, seguro_id)
-
         # Obtén la instancia de Descuento basada en el valor proporcionado (código de descuento, por ejemplo)
         try:
             descuento_instancia = Descuento.objects.get(codigo=descuento)
         except Descuento.DoesNotExist:
             # Maneja el caso en el que el descuento no se encuentra
-            descuento_instancia = None
+            raise ValueError("Descuento no encontrado")
 
         # Obtén la instancia de Seguro basada en el ID proporcionado
         try:
             seguro_instancia = Seguro.objects.get(id=seguro_id)
         except Seguro.DoesNotExist:
             # Maneja el caso en el que el seguro no se encuentra
-            seguro_instancia = None
-            
-        # Verifica si descuento_instancia es válida antes de asignarla
-        if descuento_instancia:
-            reserva.descuento = descuento_instancia
-
-        # Verifica si seguro_instancia es válida antes de asignarla
-        if seguro_instancia:
-            reserva.seguro = seguro_instancia
-            
+            raise ValueError("Seguro no encontrado")
         # Crea la reserva y asigna el descuento y el seguro
         reserva = Booking(
             vehicle=vehicle,
@@ -160,10 +118,6 @@ def reserva(request, vehicle_id):
         'fechas_no_disponibles_json': fechas_no_disponibles_json,
         'fechas_disponibles_json': fechas_disponibles_json,
         'seguros_disponibles': seguros_disponibles,
-        'user':user,
-        'profile':profile,
-        'vehicle_owner':vehicle_owner,
-        'metodos_pago_disponibles': metodos_pago_disponibles
     }
     return render(request, 'booking/create_booking.html', context)
 

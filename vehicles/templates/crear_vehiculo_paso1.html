@@ -11,39 +11,27 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="marca">Marca:</label>
-            <select class="form-control" onchange="cargarModelos()" name="marca" id="marcaDropdown" required>
-            </select>
+            <input type="text" class="form-control" name="marca" required>
         </div>
         <div class="form-group">
             <label for="modelo">Modelo:</label>
-            <select class="form-control" id="modelo" name="modelo" required>
-                <!-- Los modelos se cargarán dinámicamente aquí -->
-            </select>
+            <input type="text" class="form-control" name="modelo" required>
         </div>
         <div class="form-group">
             <label for="anio">Año:</label>
-            <select class="form-control" name="anio" id="anio" required>
-                <!-- La lista de años se generará aquí mediante JavaScript -->
-            </select>
+            <input type="number" class="form-control" name="anio" required>
         </div>
         <div class="form-group">
             <label for="color">Color:</label>
-            <div class="form-group">
-            <div class="color-preview" id="colorPreview"></div>
-            <label class="rgb-display" id="rgbDisplay"></label>
-            <input type="color" class="form-control" id="colorInput" name="color" onchange="actualizarColor()">
-            </div>
+            <input type="text" class="form-control" name="color">
         </div>
-        
         <div class="form-group">
-            <label for="marca">Número de puertas:</label>
-            <select class="form-control" name="puertas" id="puertasDropdown" required>
-            </select>
+            <label for="puertas">Número de puertas:</label>
+            <input type="number"  class="form-control" name="puertas">
         </div>
         <div class="form-group">
             <label for="transmision">Transmisión:</label>
-            <select class="form-control"name="transmision" id="transmisionDropdown" required>
-            </select>
+            <input type="text" class="form-control" name="transmision">
         </div>
         <div class="form-group">
             <label for="cilindraje">Cilindraje:</label>
@@ -59,171 +47,3 @@
 </div>
 
 {% endblock content %}
-
-{% block extrajs %}
-
-<script>
-    function actualizarColor() {
-        // Obtener el valor de color del input
-        var colorSeleccionado = document.getElementById("colorInput").value;
-    
-        // Actualizar el fondo del elemento de vista previa de color
-        document.getElementById("colorPreview").style.backgroundColor = colorSeleccionado;
-    
-        // Convertir el valor hexadecimal a componentes RGB
-        var r = parseInt(colorSeleccionado.substring(1, 3), 16);
-        var g = parseInt(colorSeleccionado.substring(3, 5), 16);
-        var b = parseInt(colorSeleccionado.substring(5, 7), 16);
-    
-        // Mostrar el código RGB
-        document.getElementById("rgbDisplay").innerHTML = "RGB: " + r + ", " + g + ", " + b;
-    }
-</script>
-
-
-<!-- LOS DESDE 1960 -->
-<script>
-    // Obtener el elemento select
-    var selectAnio = document.getElementById("anio");
-    
-    // Obtener el año actual
-    var anioActual = new Date().getFullYear();
-    var anioActual = anioActual + 1
-    
-    // Generar la lista de años desde 1960 hasta el año actual
-    for (var i = 1960; i <= anioActual; i++) {
-        var option = document.createElement("option");
-        option.value = i;
-        option.text = i;
-        selectAnio.appendChild(option);
-    }
-    </script>
-
-
-<!-- TODOS LOS MODELOS POR MARCA -->
-<script>
-    // Datos de modelos por marca
-    var modelosPorMarca = {
-        //Toyota
-        Toyota: ["Camry", "Corolla", "Rav4", "Prius", "Highlander", "Tacoma", "Tundra", "4Runner", "Avalon", "Sienna", "C-HR", "Land Cruiser"],
-        //volkswagen
-        Volkswagen: ["Golf", "Passat", "Tiguan", "Atlas", "Jetta", "Arteon", "Beetle", "ID.4", "Taos", "Touareg"],
-        //Ford
-        Ford: ["F-150", "Mustang", "Escape", "Explorer", "Focus", "Fusion", "Edge", "Ranger", "Expedition", "Bronco", "EcoSport", "Transit"],
-        // Chevrolet
-        Chevrolet: ["Silverado", "Equinox", "Malibu", "Traverse", "Camaro", "Colorado", "Tahoe", "Suburban", "Impala", "Corvette", "Trax", "Sonic", "Bolt EV", "Trailblazer", "Express"],
-        // Honda
-        Honda : ["Accord", "Civic", "CR-V", "Pilot", "Odyssey", "Fit", "HR-V", "Ridgeline", "Insight", "Passport", "Clarity", "Prelude", "S2000"],
-        // Kia
-        Kia : ["Forte", "Optima", "Cadenza", "Stinger", "Soul", "Niro", "Sportage", "Telluride", "Rio", "Seltos", "Carnival", "Sorento", "K900"],
-        // Subaru
-        Subaru : ["Impreza", "Legacy", "Outback", "Forester", "Crosstrek", "Ascent", "BRZ", "WRX", "Crosstrek o XV", "Levorg", "Justy", "Sambar", "Baja", "Tribeca"],
-        // Nissan
-        Nissan : ["Altima", "Sentra", "Rogue", "Murano", "Pathfinder", "Titan", "Armada", "Maxima", "370Z", "GT-R", "Versa", "Kicks", "Frontier", "Juke", "Leaf"],
-        // BMW
-        BMW : ["Serie 3", "Serie 5", "X3", "X5", "Serie 7", "X1", "X6", "Z4", "M3", "M5", "i3", "i8", "2 Series", "4 Series", "6 Series"],
-        // Mercedes-Benz
-        MercedesBenz : ["Clase C", "Clase E", "Clase S", "GLC", "GLE", "GLA", "GLS", "CLA", "CLS", "A-Class", "B-Class", "G-Class", "SLC", "SL", "AMG GT"],
-        // Audi
-        Audi : ["Audi A3", "Audi A4", "Audi A6", "Audi A8", "Audi Q3", "Audi Q5", "Audi Q7", "Audi Q8", "Audi S3", "Audi S4", "Audi S5", "Audi S6", "Audi S7", "Audi S8", "Audi RS3", "Audi RS4", "Audi RS5", "Audi RS6", "Audi RS7", "Audi TT"],
-        // Hyundai
-        Hyundai : ["Elantra", "Sonata", "Tucson", "Santa Fe", "Kona", "Palisade", "Accent", "Veloster", "Venue", "Ioniq", "Genesis", "Nexo", "Azera", "Starex", "Creta"],
-        // Mazda
-        Mazda : ["Mazda3", "Mazda6", "MX-5 Miata", "CX-3", "CX-30", "CX-5", "CX-9", "MX-30", "Mazda2", "Mazda5", "Mazda8", "RX-8"],
-        // Fiat
-        Fiat : ["500", "Panda", "Tipo", "Punto", "Bravo", "500X", "500L", "Ducato", "Fullback", "Qubo", "124 Spider", "Fiorino", "Doblo", "Talento", "500e Electrico"],
-        // Volvo
-        Volvo : ["S60", "S90", "V60", "V90", "XC40", "XC60", "XC90", "C40 Recharge", "V40", "V40 Cross Country", "S40", "V70", "V90 Cross Country", "XC70", "Polestar 1"],
-        // Porsche
-        Porsche : ["911", "Cayenne", "Panamera", "Macan", "Boxster", "Cayman", "Taycan", "718 Boxster", "718 Cayman", "911 Turbo", "911 GT3", "Panamera Sport Turismo", "911 Targa"],
-        // Tesla
-        Tesla : ["Model S", "Model 3", "Model X", "Model Y", "Cybertruck", "Roadster", "Semi"],
-        // Ferrari
-        Ferrari : ["Ferrari 488 GTB", "Ferrari F8 Tributo", "Ferrari SF90 Stradale", "Ferrari Portofino", "Ferrari Roma", "Ferrari 812 Superfast", "Ferrari GTC4Lusso", "Ferrari LaFerrari (híbrido)", "Ferrari Monza SP1 y SP2", "Ferrari 296 GTB"],
-
-        // Agrega más marcas y modelos según sea necesario
-    };
-    
-    function cargarModelos() {
-        var marcaSelect = document.getElementById("marcaDropdown");
-        var modeloSelect = document.getElementById("modelo");
-        var marcaSeleccionada = marcaSelect.value;
-    
-        // Limpiar los modelos actuales
-        modeloSelect.innerHTML = '';
-    
-        // Obtener modelos de la marca seleccionada
-        var modelos = modelosPorMarca[marcaSeleccionada] || [];
-    
-        // Agregar modelos al select
-        for (var i = 0; i < modelos.length; i++) {
-            var opcion = document.createElement("option");
-            opcion.value = modelos[i];
-            opcion.text = modelos[i];
-            modeloSelect.add(opcion);
-        }
-    }
-    
-    // Cargar modelos al inicio si hay una marca preseleccionada
-    document.addEventListener("DOMContentLoaded", cargarModelos);
-    </script>
-
-<!-- CARGA DINAMICA DE MARCAS -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Datos de las marcas
-        var marcas = ["Selecciona una opcion","Toyota", "Volkswagen", "Ford", "Chevrolet", "Honda", "Nissan", "BMW", "Mercedes-Benz", "Audi", "Hyundai", "Kia", "Subaru", "Mazda", "Fiat", "Volvo", "Porsche", "Jaguar", "Land Rover", "Tesla", "Ferrari"];
-    
-        // Obtener el elemento de la lista desplegable
-        var marcaDropdown = document.getElementById("marcaDropdown");
-    
-        // Llenar la lista desplegable con las marcas
-        marcas.forEach(function(marca) {
-            var option = document.createElement("option");
-            option.value = marca;
-            option.text = marca;
-            marcaDropdown.add(option);
-        });
-    });
-</script>
-
-<!-- CARGA DINAMICA DE CANTIDAD DE PUERTAS -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Datos de las marcas
-        var puerta = ["Selecciona una opcion","2 Puertas", "3 Puertas", "4 Puertas", "5 Puertas"];
-    
-        // Obtener el elemento de la lista desplegable
-        var puertasDropdown = document.getElementById("puertasDropdown");
-    
-        // Llenar la lista desplegable con las marcas
-        puerta.forEach(function(puerta) {
-            var option = document.createElement("option");
-            option.value = puerta;
-            option.text = puerta;
-            puertasDropdown.add(option);
-        });
-    });
-</script>
-
-<!-- CARGA DINAMICA DE CANTIDAD DE TRANSMISION -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Datos de las marcas
-        var tiposTransmision = ["Transmisión Manual (MT)", "Transmisión Automática (AT)", "Transmisión Continuamente Variable (CVT)", "Transmisión Semiautomática o Automatizada Manual", "Transmisión de Doble Embrague (DCT o DSG)"];
-    
-        // Obtener el elemento de la lista desplegable
-        var transmisionDropdown = document.getElementById("transmisionDropdown");
-    
-        // Llenar la lista desplegable con las marcas
-        tiposTransmision.forEach(function(tiposTransmision) {
-            var option = document.createElement("option");
-            option.value = tiposTransmision;
-            option.text = tiposTransmision;
-            transmisionDropdown.add(option);
-        });
-    });
-</script>
-
-
-{% endblock extrajs %}

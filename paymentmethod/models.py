@@ -27,8 +27,7 @@ class CreditCardPayment(models.Model):
     typemethod = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE, null=True)
     cardholder_name = models.CharField(max_length=100, verbose_name="Nombre del titular de la tarjeta")
     card_number = models.CharField(max_length=16, verbose_name="Número de tarjeta")
-    # expiration_date = models.DateField(verbose_name="Fecha de expiración")
-    expiration_date = models.CharField(max_length=5, verbose_name="Fecha de expiración")
+    expiration_date = models.DateField(verbose_name="Fecha de expiración")
     cvv = models.CharField(max_length=4, verbose_name="CVV")
     transaction = models.ForeignKey(
         Transaction,

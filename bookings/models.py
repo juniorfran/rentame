@@ -2,7 +2,6 @@
 from django.db import models
 from users.models import Renter
 from vehicles.models import Vehicle, Seguro
-from paymentmethod.models import PaymentMethod
 
 class Booking(models.Model):
     renter = models.ForeignKey(
@@ -15,12 +14,6 @@ class Booking(models.Model):
         on_delete=models.CASCADE,
         related_name='reservas'
     )
-    paymentmethod = models.ForeignKey(
-        PaymentMethod,
-        related_name='metodo_pago', 
-        on_delete=models.CASCADE,
-        null=True
-        )
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     create_add = models.DateField(auto_now=False, auto_now_add=False, null=True)

@@ -5,7 +5,7 @@
 {% block content %}
     
 <div class="container">
-    <h2 class="my-4">Lista de Vehículos</h2>
+    <h1 class="my-4">Lista de Vehículos de {{ usuario.user.username }}</h1>
     
     <table class="table">
         <thead>
@@ -29,14 +29,14 @@
                     <td>{{ vehiculo.price_daily }}</td>
                     <td>
                         {% if vehiculo.availability %}
-                            <span class="text-success"><i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span class="text-success">Disponible</span>
                         {% else %}
-                            <span class="text-danger"><i class="fa fa-check-circle" aria-hidden="false"></i></span>
+                            <span class="text-danger">No disponible</span>
                         {% endif %}
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary open-vehicle-modal" data-vehiculo-id="{{ vehiculo.id }}"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-primary open-vehicle-edit-modal" data-vehiculo-id="{{ vehiculo.id }}"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary open-vehicle-modal" data-vehiculo-id="{{ vehiculo.id }}">Ver</button>
+                        <button type="button" class="btn btn-primary open-vehicle-edit-modal" data-vehiculo-id="{{ vehiculo.id }}">Editar</button>
                         <button type="button" class=" {% if vehiculo.availability %}btn btn-danger{% else %}btn btn-success{% endif %}
                          open-vehicle-disable" data-vehiculo-id="{{ vehiculo.id }}">
                         {% if vehiculo.availability %} <i class="bi bi-x-lg"></i> {% else %}<i class="bi bi-check-circle"></i>{% endif %}

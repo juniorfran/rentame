@@ -5,8 +5,8 @@
 
 {% block content %}
 
-<div class="container mt-2">
-    <h2 class="mb-4">Paso 3: Configuración final</h2>
+<div class="container mt-5">
+    <h1 class="mb-4">Paso 3: Configuración final</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <label for="imagenes[]">Subir imágenes (múltiples):</label>
-            <input type="file" class="form-control" name="imagenes[]" multiple>
+            <input type="file" class="form-control-file" name="imagenes[]" multiple>
         </div>
 
         <button type="submit" class="btn btn-primary">Crear Vehículo</button>

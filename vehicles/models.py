@@ -20,7 +20,7 @@ class Vehicle(models.Model):
     vehicle_type = models.ForeignKey('VehicleType', on_delete=models.CASCADE)  # Tipo de vehículo
     description = models.TextField()  # Descripción del vehículo  
     image = models.ManyToManyField('Imagen', blank=True) # Imagen del vehículo
-    price_hourly = models.DecimalField(max_digits=10, decimal_places=2, null=True)  # Precio por hora
+    price_hourly = models.DecimalField(max_digits=10, decimal_places=2)  # Precio por hora
     price_daily = models.DecimalField(max_digits=10, decimal_places=2)  # Precio por día
     availability = models.BooleanField(default=True)  # Disponibilidad del vehículo
     location = models.ForeignKey('Location', on_delete=models.CASCADE)  # Ubicación del vehículo
