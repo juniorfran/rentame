@@ -138,7 +138,7 @@ DATABASES = {
                 # 'cert': 'cert.pem',
                 # 'key': 'key.pem',
                 # 'check_hostname': True,
-                # 'sslmode': 'require',
+                'sslmode': 'require',
                 # 'sslcert': 'DigiCertGlobalRootCA.crt.pem',
                 # 'sslkey': 'key.pem',
                 # 'sslrootcert': 'DigiCertGlobalRootCA.crt.pem',
