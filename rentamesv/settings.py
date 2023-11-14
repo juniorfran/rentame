@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_0e!is#@uo$15*0=yl)%a#!$dpn(yr$8ma!qus-dsfkqw2(^xl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['rentamesv.azurewebsites.net', '0.0.0.0:8000', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = ['https://rentamesv.azurewebsites.net']
@@ -127,7 +127,7 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rentamesv_mysql',
+        'NAME': 'rentame_desarrollo',
         'USER': 'rentameroot',
         'PASSWORD': 'R3nt4m32023',
         'HOST': 'rentamesv.mysql.database.azure.com',
