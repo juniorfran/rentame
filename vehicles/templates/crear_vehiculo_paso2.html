@@ -5,30 +5,31 @@
 
 {% block content %}
 
-<div class="container mt-5">
-    <h1 class="mb-4">Paso 2: Detalles adicionales</h1>
+<div class="container mt-2">
+    <h2 class="mb-4">Paso 2: Detalles adicionales</h2>
     <form method="post">
         {% csrf_token %}
-        <div class="form-group">
+        {% comment %} <div class="form-group">
             <label for="precio_por_hora">Precio por hora:</label>
             <input type="number" step="any" class="form-control" name="precio_por_hora" required>
-        </div>
+        </div> {% endcomment %}
         <div class="form-group">
             <label for="precio_por_dia">Precio por día:</label>
             <input type="number" step="any" class="form-control" name="precio_por_dia" required>
         </div>
-        <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" name="disponibilidad" id="disponibilidad">
-            <label class="form-check-label" for="disponibilidad">Disponibilidad</label>
+        <div class="form-group ">
+            <label for="" class="form-label">Combustible</label>
+            <select class="form-control" name="combustible" id="combustibleselect">
+                <!--  SE LLENA DE FORMA DINAMICA CON JS -->
+            </select>
         </div>
         <div class="form-group">
-            <label for="combustible">Combustible:</label>
-            <input type="text" class="form-control" name="combustible">
+            <label for="" class="form-label">City</label>
+            <select class="form-control" name="climatizacion" id="climatizacionSelect">
+                <!--  SE LLENA DE FORMA DINAMICA CON JS -->
+            </select>
         </div>
-        <div class="form-group">
-            <label for="motor">Climatizacion:</label>
-            <input type="text" class="form-control" name="climatizacion">
-        </div>
+        
         <div class="form-group">
             <label for="tipo_freno">Kilometraje:</label>
             <input type="text" class="form-control" name="kilometraje">
@@ -37,9 +38,18 @@
             <label for="motor">Motor:</label>
             <input type="text" class="form-control" name="motor">
         </div>
-        <div class="form-group">
-            <label for="tipo_freno">Tipo de freno:</label>
-            <input type="text" class="form-control" name="tipo_freno">
+          <div class="mb-3">
+            <label for="" class="form-label">Tipo de freno</label>
+            <select class="form-control form-select-lg" name="tipo_freno" id="">
+                <option selected>ABS</option>
+                <option value="">Disco y Tambor</option>
+                <option value="">Disco</option>
+                <option value="">Aire</option>
+            </select>
+          </div>
+        <div class="form-group form-check mb-4">
+            <input type="checkbox" class="form-check-input" name="disponibilidad" id="disponibilidad">
+            <label class="form-check-label" for="disponibilidad">Disponibilidad</label>
         </div>
 
         <button type="submit" class="btn btn-primary">Siguiente</button>
@@ -47,3 +57,31 @@
 </div>
 
 {% endblock content %}
+
+{% block extrajs %}
+<script>
+    var inputCombustible = document.getElementById('combustibleinput');
+    var selectCombustible = document.getElementById('combustibleselect');
+    var tiposCombustible = ['Gasolina Superior', 'Gasolina Regular', 'Diese', 'Electrico', 'Híbrido', 'Otros'];
+
+    var selectClimatizacion = document.getElementById('climatizacionSelect');
+    var tiposClimatizacion = ['A/C', 'Descapotable', 'Ninguno'];
+
+    tiposCombustible.forEach(function (tipo){
+        var option = document.createElement('option');
+        option.value = tipo;
+        option.text = tipo;
+        selectCombustible.appendChild(option);
+    });
+
+    tiposClimatizacion.forEach(function (tipo){
+        var option = document.createElement('option');
+        option.value = tipo;
+        option.text = tipo;
+        climatizacionSelect.appendChild(option);
+    });
+
+
+</script>
+
+{% endblock extrajs %}

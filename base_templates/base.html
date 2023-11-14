@@ -54,6 +54,11 @@
       <link href="{% static 'css/mobyle.css' %}" rel="stylesheet" type="text/css">
       <link href="{% static 'css/animate.min.css' %}" rel="stylesheet" type="text/css">
 
+      <!-- Agrega estos enlaces a jQuery y jQuery Timepicker en tu archivo HTML -->
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
       <!-- Google Fonts -->
       <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet">
 
@@ -63,8 +68,9 @@
     {% include "navbar.html" %}
     
     {% if user.is_authenticated %}
+    <form action="{% url 'search_results' %}" method="get">
       {% include "filtro_busqueda.html" %}
-      
+    </form>
       <!-- My Account Start -->
       <div class="my-account">
         <div class="container-fluid">
@@ -79,13 +85,13 @@
                 <div class="row">
                     <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
                         <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-credit-card"></i>Mi Perfil</a>
-                            <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "lista_vehiculos" %}" role="tab"><i class="fa fa-map-marker-alt"></i>Mis Autos</a>
-                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-shopping-bag"></i>Mi Historial</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "lista_credit_card_payments" %}" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
+                            <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-user" aria-hidden="true"></i>Mi Perfil</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "lista_vehiculos" %}" role="tab"><i class="fa fa-car" aria-hidden="true"></i>Mis Autos</a>
+                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-history" aria-hidden="true"></i> Mi Historial</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "list_payments" %}" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
                             <a class="nav-link" id="address-nav" data-toggle="pill" href="my-address.html" role="tab"><i class="fa fa-map-marker-alt"></i>Direcciones</a>
-                            <a class="nav-link" id="account-nav" data-toggle="pill" href="{% url "editar_perfil" %}" role="tab"><i class="fa fa-user"></i>Detalles de Perfil</a>
+                            <a class="nav-link" id="account-nav" data-toggle="pill" href="{% url "editar_perfil" %}" role="tab"><i class="fa fa-user-edit"></i>Detalles de Perfil</a>
                             <form method="post" action="{% url 'logout' %}">
                               {% csrf_token %}
                               <div class="sign_btn">
@@ -132,7 +138,7 @@
     
     <!-- jQuery -->
     
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Custom JavaScript -->
     <script src="{% static "js/scroll.js" %}"></script>

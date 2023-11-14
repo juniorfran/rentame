@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jquery',
+    # 'jquery',
     'rest_framework',
     'users',
     'bookings',
@@ -93,7 +93,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'base_templates'),
+            os.path.join(BASE_DIR, 'base_templates/'),
             os.path.join(BASE_DIR, 'vehicles/templates'),
             os.path.join(BASE_DIR, 'users/templates'),
             os.path.join(BASE_DIR, 'paymentmethod/templates'),
@@ -127,7 +127,7 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rentamesv_mysql',
+        'NAME': 'rentame_desarrollo',
         'USER': 'rentameroot',
         'PASSWORD': 'R3nt4m32023',
         'HOST': 'rentamesv.mysql.database.azure.com',

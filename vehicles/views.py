@@ -228,7 +228,6 @@ def crear_vehiculo_paso1(request):
 @login_required
 def crear_vehiculo_paso2(request):
     if request.method == 'POST':
-        precio_por_hora = request.POST['precio_por_hora']
         precio_por_dia = request.POST['precio_por_dia']
         disponibilidad = request.POST.get('disponibilidad')
         combustible = request.POST['combustible']
@@ -240,7 +239,6 @@ def crear_vehiculo_paso2(request):
         datos_paso1 = request.session.get('datos_paso1', {})
 
         datos_paso2 = {
-            'precio_por_hora': precio_por_hora,
             'precio_por_dia': precio_por_dia,
             'disponibilidad': disponibilidad == 'on',
             'combustible': combustible,

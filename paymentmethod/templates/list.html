@@ -2,52 +2,17 @@
 
 {% block content %}
 <div class="container">
-    <a href="{% url "creditcard_create" %}" class="btn btn-primary " >Agregar</a>
-    <h1 class="my-4">Lista de Pagos con Tarjeta de Crédito</h1>
-    
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre del Titular</th>
-                <th>Número de Tarjeta</th>
-                <th>Fecha de Expiración</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for payment in credit_card_payments %}
-            <tr>
-                <td>{{ payment.id }}</td>
-                <td>{{ payment.cardholder_name }}</td>
-                <td>{{ payment.card_number }}</td>
-                <td>{{ payment.expiration_date }}</td>
-                <td>
-                    <a href="#" class="btn btn-primary open-credit-card-edit-modal" data-payment-id="{{ payment.id }}">Editar</a>
-                    <a href="#" class="btn btn-danger deshabilitar-credit-card-payment" data-payment-id="{{ payment.id }}">Deshabilitar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- Contenido del modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="vehicleModalLabel">Vehículo</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-        <div id="paymentModalContent">
-          
-        </div>
-        </div>
+   
+    <nav>
+      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-credit-card" aria-hidden="true"></i></button>
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fa fa-bank" aria-hidden="true"></i></button>
       </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">{% include "creditcard/listmethod.html" %}</div>
+      <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">.En Desarrollo.</div>
     </div>
-  </div>
 </div>
 
 {% endblock content %}
