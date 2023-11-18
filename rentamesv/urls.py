@@ -1,4 +1,3 @@
-
 from django import views
 from django.conf import settings
 from . import views
@@ -12,11 +11,14 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
+
 urlpatterns = [
     
     path('', views.index, name='home'),
     path('admin/', admin.site.urls),
-    #path('lista_vehiculos/', views.vehicle_list, name='lista_vehiculos'),
+    #ath('lista_vehiculos/', views.vehicle_list, name='lista_vehiculos'),
+    path('search/', views.search_results, name='search_results'),
+    path('', views.search_form, name='search_form'),
     
     #url api
     #path('api/', include(router.urls)),
@@ -38,6 +40,9 @@ urlpatterns = [
     
     #urls de reserva
     path('booking/', include('bookings.urls')),
+    
+    #urls de ubicacion
+    path('locations/', include('locations.urls')),
     
 ]
 

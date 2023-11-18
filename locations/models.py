@@ -2,7 +2,7 @@ from django.db import models
 from users.models import User, UserProfile
 
 class Location(models.Model):
-    user = models.ForeignKey(User, related_name='locations', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)  # Nombre de la ubicación
     pais = models.CharField( max_length=50)
     estado = models.CharField(max_length=50)

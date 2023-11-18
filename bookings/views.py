@@ -53,13 +53,19 @@ def calcular_precio_total(start_date, end_date, vehicle, descuento_codigo=None, 
 
 def reserva(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, pk=vehicle_id)
-    renter, created = Renter.objects.get_or_create(user=request.user)
+    #renter, created = Renter.objects.get_or_create(user=request.user)
     user = request.user
     profile = UserProfile.objects.get(user=request.user)
     vehicle_owner = VehicleOwner.objects.get(user=user)
     seguros_disponibles = Seguro.objects.all()
     reservas = Booking.objects.filter(vehicle=vehicle)
     metodos_pago_disponibles = PaymentMethod.objects.all()
+    
+    try:
+        renter = Renter.objects.get(user=request.user)
+    except Renter.DoesNotExist:
+        # Redirige al usuario a la URL 'create_renter/' para crear el perfil de Renter
+        return redirect('create_renter')
     
     fechas_no_disponibles = []
     for reserva in reservas:
