@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h1>Agregar Pago con Tarjeta de Crédito</h1>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <a class="btn btn-secondary" href="{% url 'list_payments' %}">Cancelar</a>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <!-- Booking Start -->
+ <div class="featured-category category booking">
+    <div class="container-fluid">
+        <div class="container">
+            <form method="post">
+                {% csrf_token %}
+            <div class="booking-container">
+                
+                <div class="row">
+                    <div class="col-xxl-7 col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                        <div class="personal-detail">
+                            <h3>Detalles de usuario</h3>
+                                
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control p-4" placeholder="First Name" value="{{ profile.nombre }}" required="required" disabled>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control p-4" placeholder="Your Email" value="{{ user.email }}" required="required" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control p-4" placeholder="Mobile Number" value="{{ profile.numero_telefono }}" required="required" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2 col-xxl-6 col-xl-2 col-md-6 col-sm-16">
+                                    {% if vehicle_owner.foto_licencia %}
+                                        <img src="{{ vehicle_owner.foto_licencia.url }}" alt="{{ usuario.user.username }}"  class="img-fluid img-thumbnail mt-4 mb-2" style="width: 200px; z-index: 1">
+                                    {% else %}
+                                        <p>No hay imagen actual.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                
+                            </div>
+                        </div>
+                        <div class="booking-detail">
+                            <h3>Detalles de la reserva</h3>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control p-4" placeholder="Mobile Number" value="{{ renter.id_document }}" required="required" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="start_date">Fecha de inicio:</label>
+                                        <input type="text" class="form-control datepicker" id="start_date" name="start_date" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="end_date">Fecha de finalización:</label>
+                                        <input type="text" class="datepicker form-control" id="end_date" name="end_date" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <select class="form-control" id="seguro" name="seguro">
+                                    <option value="" disabled selected>Selecciona un seguro</option>
+                                    {% for seguro in seguros_disponibles %}
+                                        <option value="{{ seguro.id }}">{{ seguro.nombre }} {{ seguro.costo_diario }} </option>
+                                    {% endfor %}
+                                </select>
+                                <div class="form-group">
+                                    <label for="descuento">Código de Descuento:</label>
+                                    <input type="text" class="form-control" id="descuento" name="descuento">
+                                </div>
+                                <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" placeholder="Special Request" required="required"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                        <div class="payment-detail">
+                            <h3>Metodo de pago</h3>
+                            {% if metodos_pago_disponibles %}
+                                {% for metodo_pago in metodos_pago_disponibles %}
+                                    <div class="form-group">
+                                            <input type="radio" class="custom-control-input" value="{{ metodo_pago.id }}" name="metodo_pago_id" id="directcheck{{ metodo_pago.id }}" {% if metodo_pago.id == selected_payment_method_id %}checked{% endif %}>
+                                                <span class="text-white">{{ metodo_pago.name }}</span>
+                                            {% for credit_card in metodo_pago.creditcardpayment_set.all  %}
+                                                <input type="text" class="form-control p-4" placeholder="Mobile Number" value="•••• •••• •••• {{ credit_card.card_number|slice:"-4:" }}" required="required" disabled>
+                                            {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No tiene métodos de pago registrados.</p>
+                            {% endif %}
+                            {% if not metodos_pago_disponibles %}
+                                <a href="{% url 'list_payments' %}" class="btn btn-primary">Registrar Método de Pago</a>
+                            {% endif %}
+                            <button type="submit" class="btn btn-block btn-primary py-3 payment-bt">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </form>
+        </div>
+    </div>
+</div>            
+<!-- Booking End -->
+
+
+{% endblock content %}
+
+
+{% block extrajs %}
+
+<script>
+    var date = new Date();
+    var options = { timeZone: 'America/El_Salvador' };
+    var formattedDate = date.toLocaleDateString('es-SV', options);
+    var fechas_disponibles = {{ fechas_disponibles_json|safe }};
+    var fechas_no_disponibles = {{ fechas_no_disponibles_json|safe }};
+
+   
+$(document).ready(function() {
+    // Configura el datepicker
+    $("#start_date, #end_date").datepicker({
+        dateFormat: 'yy-mm-dd',
+        startDate: 'today',
+        beforeShowDay: function(date) {
+            return [validarFecha(date), ""]; // "validarFecha" es la función que verificará si la fecha es válida
+        },
+    });
+});
+
+function validarFecha(date) {
+    var dateString = $.datepicker.formatDate('yy-mm-dd', date);
+    return (fechas_no_disponibles.indexOf(dateString) === -1);
+}
+</script>
+
+{% endblock extrajs %}

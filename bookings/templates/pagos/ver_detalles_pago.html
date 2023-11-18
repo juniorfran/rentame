@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Detalles de la Transacción</h2>
+
+    <!-- Mostrar detalles de la transacción -->
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">ID de Transacción: {{ id_transaccion }}</h5>
+            <p class="card-text">Resultado de la Transacción: {{ detalles_transaccion.resultadoTransaccion }}</p>
+            <p class="card-text">Fecha de Transacción: {{ detalles_transaccion.fechaTransaccion }}</p>
+            <!-- Agrega más campos según tus necesidades -->
+        </div>
+    </div>
+
+    <!-- Agrega más elementos HTML según tus necesidades -->
+
+
+    
+    <!-- Información Adicional (Vehículo, Ubicación, Número de Contacto) -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Información Adicional del Vehículo
+        </div>
+        <div class="card-body">
+            <p><strong>Vehículo:</strong> {{ nombre_vehiculo }}</p>
+            <p><strong>Ubicación del Vehículo:</strong> {{ ubicacion_vehiculo }}</p>
+            <p><strong>Número de Contacto del Usuario:</strong> {{ numero_contacto_usuario }}</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+
+
+{% endblock extrajs %}

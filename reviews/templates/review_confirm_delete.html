@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <h1>Confirmar Eliminación de Revisión</h1>
+    <p>¿Estás seguro de que deseas eliminar esta revisión?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+    <a class="btn btn-secondary" href="{% url 'review-list' %}">Cancelar</a>
+</div>
+{% endblock %}

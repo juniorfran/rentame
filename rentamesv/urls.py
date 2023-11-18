@@ -27,10 +27,17 @@ urlpatterns = [
     #urls de users
     path('users/', include('users.urls')),
     
+    #urls de reviews
+    path('reviews/', include('reviews.urls')),
     
     #urls de vehicles
-    path('vehicles/', include('vehicles.urls'))
+    path('vehicles/', include('vehicles.urls')),
     
+    #urls de metodos de pago
+    path('paymentmethod/', include('paymentmethod.urls')),
+    
+    #urls de reserva
+    path('booking/', include('bookings.urls')),
     
 ]
 

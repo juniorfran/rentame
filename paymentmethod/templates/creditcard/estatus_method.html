@@ -1,0 +1,11 @@
+<h2>Detalles del Vehículo</h2>
+<p><strong>Tipo:</strong> {{ payment_method.name }}</p>
+<p><strong>Nombre segun Tarjeta:</strong> {{ payment_method.CreditCardPayment.cardholder_name }}</p>
+<p><strong>Refrencia:</strong> {{ payment_method.CreditCardPayment.card_number }}</p>
+<p><strong>Estado Actual:</strong> {% if payment_method.is_active %} No Disponible {% else %}  Disponible {% endif %}</p>
+
+<form method="post" enctype="multipart/form-data" class="needs-validation">
+    {% csrf_token %}
+    <input type="hidden" name="paymentmethod_id" value="{{ payment_method.id }}">
+    <button type="submit" class="btn btn-primary">{% if payment_method.availability %} Habilitar{% else %} Deshabilitar{% endif %}</button>
+</form>

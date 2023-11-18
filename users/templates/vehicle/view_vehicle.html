@@ -1,0 +1,35 @@
+
+        <!-- Aquí se cargará la vista del vehículo mediante AJAX -->
+        <div class="card mb-3" style="max-width: 100%;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <div id="carouselExampleControlsNoTouching" class="carousel slide my-1" data-bs-touch="false">
+                  <div class="carousel-inner">
+                      {% for imagen in vehiculo.image.all %}
+                          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                              <img src="{{ imagen.image.url }}" class="d-block w-100" alt="Imagen del vehículo">
+                          </div>
+                      {% endfor %}
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                  <h5 class="card-title">{{ vehiculo.make }} {{ vehiculo.model }}</h5>
+                  <p class="card-text"><p>Año: {{ vehiculo.year }}</p>
+                  <p>Precio por Hora: {{ vehiculo.price_hourly }}</p>
+                  <p>Precio por Día: {{ vehiculo.price_daily }}</p>
+                  <p>Descripción: {{ vehiculo.description }}</p>
+                  <p>Color: {{ vehiculo.color }}</p>.</p>
+                </div>
+            </div>
+          </div>
+      </div>

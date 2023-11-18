@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-_0e!is#@uo$15*0=yl)%a#!$dpn(yr$8ma!qus-dsfkqw2(^xl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rentamesv.azurewebsites.net', '0.0.0.0:8000']
+ALLOWED_HOSTS = ['rentamesv.azurewebsites.net', '0.0.0.0:8000', '127.0.0.1']
 CORS_ALLOWED_ORIGINS = ['https://rentamesv.azurewebsites.net']
 
 # Security & HTTPS settings
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
     'rest_framework',
     'users',
     'bookings',
@@ -95,6 +96,10 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'base_templates'),
             os.path.join(BASE_DIR, 'vehicles/templates'),
             os.path.join(BASE_DIR, 'users/templates'),
+            os.path.join(BASE_DIR, 'paymentmethod/templates'),
+            os.path.join(BASE_DIR, 'booking/templates'),
+            os.path.join(BASE_DIR, 'reviews/templates'),
+            os.path.join(BASE_DIR, 'transactions/templates'),
             ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -116,20 +121,37 @@ WSGI_APPLICATION = 'rentamesv.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'otro': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'mysql_db': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rentamesv',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',  # O la dirección IP de tu servidor de MySQL
-        'PORT': '3306',       # Puerto de MySQL (por defecto es 3306)
+        'NAME': 'rentamesv_mysql',
+        'USER': 'rentameroot',
+        'PASSWORD': 'R3nt4m32023',
+        'HOST': 'rentamesv.mysql.database.azure.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'ssl': {
+                'key': 'DigiCertGlobalRootCA.crt.pem',
+                # 'cert': 'cert.pem',
+                # 'key': 'key.pem',
+                # 'check_hostname': True,
+                'sslmode': 'require',
+                # 'sslcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslkey': 'key.pem',
+                # 'sslrootcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslpassword': 'R3nt4m32023',
+                # 'sslcert': 'cert.pem',
+                # 'sslkey': 'key.pem',
+                # 'sslrootcert': 'DigiCertGlobalRootCA.crt.pem',
+                # 'sslpassword': 'R3nt4m32023',
+                
+            },
+        }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

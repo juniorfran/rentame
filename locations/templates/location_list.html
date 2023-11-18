@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+    
+{% block content %}
+<div class="container mt-5">
+    <h1>Listado de Ubicaciones</h1>
+    <a href="{% url 'location_create' %}" class="btn btn-primary mb-3">Agregar Ubicación</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>País</th>
+                <th>Ciudad</th>
+                <!-- Agrega más encabezados según tu modelo -->
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+            <tr>
+                <td>{{ location.name }}</td>
+                <td>{{ location.pais }}</td>
+                <td>{{ location.ciudad }}</td>
+                <!-- Agrega más columnas según tu modelo -->
+                <td>
+                    <a href="{% url 'location_detail' location.pk %}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="{% url 'location_update' location.pk %}" class="btn btn-warning btn-sm">Editar</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{ location.pk }}">
+                        Eliminar
+                    </button>
+                    <!-- Modal para confirmar la eliminación -->
+                    <div class="modal fade" id="deleteModal{{ location.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ location.pk }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ location.pk }}">Confirmar eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro que deseas eliminar la ubicación "{{ location.name }}"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteLocation({{ location.pk }})">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<!-- JavaScript para eliminar la ubicación -->
+<script>
+    function deleteLocation(locationId) {
+        // Confirmación adicional antes de eliminar la ubicación
+        if (confirm('¿Estás seguro que deseas eliminar la ubicación?')) {
+            fetch(`/ubicacion/eliminar/${locationId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ocurrió un error al eliminar la ubicación.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Aquí puedes realizar alguna acción después de eliminar la ubicación
+                // Por ejemplo, eliminar la fila correspondiente de la tabla
+                const locationRow = document.getElementById('locationRow' + locationId);
+                if (locationRow) {
+                    locationRow.remove();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Manejo de errores, mostrar mensaje al usuario, etc.
+            });
+        }
+    }
+</script>
+
+{% endblock extrajs %}

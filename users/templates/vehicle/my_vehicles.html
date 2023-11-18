@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+    
+<div class="container">
+    <h2 class="my-4">Lista de Vehículos</h2>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Año</th>
+                <th>Precio por Hora</th>
+                <th>Precio por Día</th>
+                <th>Disponibilidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehiculo in vehiculos %}
+                <tr>
+                    <td>{{ vehiculo.make }}</td>
+                    <td>{{ vehiculo.model }}</td>
+                    <td>{{ vehiculo.year }}</td>
+                    <td>{{ vehiculo.price_hourly }}</td>
+                    <td>{{ vehiculo.price_daily }}</td>
+                    <td>
+                        {% if vehiculo.availability %}
+                            <span class="text-success"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        {% else %}
+                            <span class="text-danger"><i class="fa fa-check-circle" aria-hidden="false"></i></span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary open-vehicle-modal" data-vehiculo-id="{{ vehiculo.id }}"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-primary open-vehicle-edit-modal" data-vehiculo-id="{{ vehiculo.id }}"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                        <button type="button" class=" {% if vehiculo.availability %}btn btn-danger{% else %}btn btn-success{% endif %}
+                         open-vehicle-disable" data-vehiculo-id="{{ vehiculo.id }}">
+                        {% if vehiculo.availability %} <i class="bi bi-x-lg"></i> {% else %}<i class="bi bi-check-circle"></i>{% endif %}
+                      </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Button trigger modal -->
+
+<!-- Contenido del modal -->
+<div class="modal fade" id="vehicleModal" tabindex="-1" aria-labelledby="vehicleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="vehicleModalLabel">Vehículo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <div id="vehicleContent">
+          
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+
+
+
+
+
+{% block extrajs %}
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('.open-vehicle-modal').click(function () {
+          var vehiculoId = $(this).data('vehiculo-id');
+        $.ajax({
+          type: 'GET',
+          url: `/users/ver_vehiculo/${vehiculoId}/`,  // URL DE LA VISTA
+          success: function (data) {
+            $('#vehicleContent').html(data);
+            $('#vehicleModal').modal('show');
+          },
+          error: function () {
+            alert('No se pudo cargar la información del vehículo');
+          }
+        });
+      });
+    });
+
+    $(document).ready(function () {
+        $('.open-vehicle-edit-modal').click(function () {
+            var vehiculoId = $(this).data('vehiculo-id');
+          $.ajax({
+            type: 'GET',
+            url: `/users/editar_vehiculo/${vehiculoId}/`,  // URL DE LA VISTA
+            success: function (data) {
+              $('#vehicleContent').html(data);
+              $('#vehicleModal').modal('show');
+            },
+            error: function () {
+              alert('No se pudo cargar la información del vehículo');
+            }
+          });
+        });
+      });
+
+      $(document).ready(function () {
+        $('.open-vehicle-disable').click(function () {
+            var vehiculoId = $(this).data('vehiculo-id');
+            
+            // Obtener el token CSRF
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            
+            // Datos que se enviarán en la solicitud POST
+            var data = { vehiculo_id: vehiculoId, csrfmiddlewaretoken: csrftoken };
+    
+            $.ajax({
+                type: 'POST',
+                url: `/users/deshabilitar_vehiculo/${vehiculoId}/`,
+                data: data, // Incluir el token CSRF en los datos
+                success: function (data) {
+                    // Manejar la respuesta (si es necesario)
+                    $('#vehicleContent').html(data);
+                    $('#vehicleModal').modal('show');
+                },
+                error: function () {
+                    alert('No se pudo cargar la información del vehículo');
+                }
+            });
+        });
+    });
+  </script>
+{% endblock extrajs %}
+
+
+
+

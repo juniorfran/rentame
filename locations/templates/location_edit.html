@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+    
+{% block content %}
+
+<div class="container mt-5">
+  <h1>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Ubicación</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <!-- Campos ocultos para latitud y longitud -->
+      <input type="hidden" id="id_latitude" name="latitude" value="0.0" readonly>
+      <input type="hidden" id="id_longitude" name="longitude" value="0.0" readonly> 
+
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <a href="{% url 'location_list' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+   <!-- Contenedor del mapa -->
+   <div id="map" style="height: 400px;"></div>
+  <!-- Script de Google Maps API -->
+  <!-- ... -->
+</div>
+
+{% endblock content %}
+
+{% block extrajs %}
+
+<script>
+    let map;
+    let marker;
+    let geocoder;
+
+    async function initMap() {
+        const defaultPosition = { lat: 13.768693110939445, lng: -89.2253672750536 };
+
+        map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 12,
+            center: defaultPosition,
+            mapId: "DEMO_MAP_ID",
+        });
+
+        marker = new google.maps.Marker({
+            position: defaultPosition,
+            map: map,
+            draggable: true,
+        });
+
+        function updateCoordinates(latLng) {
+            document.getElementById("id_latitude").value = latLng.lat();
+            document.getElementById("id_longitude").value = latLng.lng();
+            
+        }
+
+        marker.addListener("dragend", () => {
+            updateCoordinates(marker.getPosition());
+        });
+
+        map.addListener("click", (event) => {
+            marker.setPosition(event.latLng);
+            updateCoordinates(event.latLng);
+        });
+
+        updateCoordinates(defaultPosition);
+    }
+
+    initMap();
+  </script>
+
+  
+<script>
+    // Datos de ejemplo para América Latina
+const countriesData = {
+    "Argentina": {
+        "Buenos Aires": ["Ciudad Autónoma de Buenos Aires", "La Plata", "Mar del Plata"],
+        "Córdoba": ["Córdoba", "Villa María", "Río Cuarto"],
+        // Agrega más estados y ciudades según sea necesario
+    },
+    "Brasil": {
+        "São Paulo": ["São Paulo", "Campinas", "Guarulhos"],
+        "Rio de Janeiro": ["Rio de Janeiro", "Niterói", "São Gonçalo"],
+        // Agrega más estados y ciudades según sea necesario
+    },
+    // Agrega más países según sea necesario
+};
+
+// Función para cargar los países en el primer selector
+function loadCountries() {
+    const countrySelect = document.getElementById("country");
+    
+    for (const country in countriesData) {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        countrySelect.appendChild(option);
+    }
+}
+
+// Función para cargar los estados según el país seleccionado
+function loadStates() {
+    const countrySelect = document.getElementById("country");
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+
+    // Limpiar selectores anteriores
+    stateSelect.innerHTML = "<option value=''>Seleccione un estado</option>";
+    citySelect.innerHTML = "<option value=''>Seleccione una ciudad</option>";
+
+    const selectedCountry = countrySelect.value;
+
+    if (selectedCountry in countriesData) {
+        const states = Object.keys(countriesData[selectedCountry]);
+
+        states.forEach(state => {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+    }
+}
+
+// Función para cargar las ciudades según el estado seleccionado
+function loadCities() {
+    const countrySelect = document.getElementById("country");
+    const stateSelect = document.getElementById("state");
+    const citySelect = document.getElementById("city");
+
+    // Limpiar selectores anteriores
+    citySelect.innerHTML = "<option value=''>Seleccione una ciudad</option>";
+
+    const selectedCountry = countrySelect.value;
+    const selectedState = stateSelect.value;
+
+    if (selectedCountry in countriesData && selectedState in countriesData[selectedCountry]) {
+        const cities = countriesData[selectedCountry][selectedState];
+
+        cities.forEach(city => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
+}
+
+loadCountries();
+</script>
+
+
+
+
+{% endblock extrajs %}
