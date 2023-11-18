@@ -31,8 +31,8 @@ class User(AbstractUser):
         related_name='custom_users_permissions',  # Cambia este nombre
         related_query_name='custom_user_permission'
     )
-    create_add = models.DateField(auto_now=False, auto_now_add=False,  null=True)
-    is_owner = models.BooleanField(default=False, null=True)
+    create_add = models.DateField(auto_now=False, auto_now_add=True,  null=True)
+    is_owner = models.BooleanField(default=False)
     # Utilizamos el modelo AbstractUser de Django para la autenticación de usuarios
     # Puedes agregar campos adicionales si es necesario
 
@@ -45,10 +45,13 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254, null=True)
     numero_telefono = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
+    ciudad = models.CharField(max_length=50)
     nombre = models.CharField(max_length=100)
-    
+    apellido = models.CharField( max_length=50)
+    fecha_nacimeinto = models.DateField(auto_now=False, auto_now_add=True, null=True)
     imagen = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
     create_add = models.DateField(auto_now=True, auto_now_add=False,  null=True)
+    
     
     # Otros campos adicionales, como dirección, imagen de perfil, etc.
 class VehicleOwner(models.Model):
@@ -63,8 +66,8 @@ class VehicleOwner(models.Model):
     # Historial de alquiler de vehículos
     rented_vehicles = models.ManyToManyField('vehicles.Vehicle', blank=True, related_name='owners')
     # Preferencias de alquiler
-    rental_price_hourly = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    rental_price_daily = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    rental_price_hourly = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True)
+    rental_price_daily = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True)
     availability_hours = models.CharField(max_length=100)  # Horarios disponibles
     rental_conditions = models.TextField()  # Condiciones de alquiler
     create_add = models.DateField(auto_now_add=True, null=True)
@@ -72,6 +75,8 @@ class VehicleOwner(models.Model):
     foto2_dui = models.FileField( upload_to=user_directory_path, max_length=100, null=True)
     foto_licencia = models.FileField( upload_to=user_directory_path, max_length=100, null=True)
     # Otros campos según tus necesidades
+    def __str__(self):
+        return self.user.first_name
 
 class Renter(models.Model):
     user = models.OneToOneField(
@@ -89,10 +94,12 @@ class Renter(models.Model):
     budget = models.DecimalField(max_digits=10, decimal_places=2)
     preferred_rental_dates = models.CharField(max_length=100)  # Fechas y horarios preferidos
     preferred_payment_methods = models.ManyToManyField('paymentmethod.PaymentMethod', related_name='preferred_pago_renters')
-    required_documents = models.TextField()  # Documentos requeridos para alquilar
-    driving_history = models.TextField()  # Historial de conducción
+    required_documents = models.CharField(max_length=100)  # Documentos requeridos para alquilar
+    driving_history = models.CharField(max_length=100)  # Historial de conducción
     create_add = models.DateField(auto_now=True, auto_now_add=False, null=True)
     # Otros campos según tus necesidades
+    def __str__(self):
+        return self.user.username
 
 class Review(models.Model):
     rating = models.PositiveIntegerField()  # Calificación (de 1 a 5)

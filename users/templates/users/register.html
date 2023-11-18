@@ -33,6 +33,39 @@
           <div class="card-body pr-2  shadow-5 text-center">
             <h2 class="fw-bold mb-5">Registrate</h2>
 
+            {% comment %} <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                 <label for="username" class="form-label">Usuario</label>
+                 <input type="text" class="form-control" id="username" name="username" required>
+              </div>
+              <div class="mb-3">
+                 <label for="email" class="form-label">Email</label>
+                 <input type="email" class="form-control" id="email" name="email"  required>
+              </div>
+              <div class="mb-3 form-check">
+                 <input type="checkbox" class="form-check-input" id="is_owner" name="is_owner"{% if form.is_owner.value %} checked{% endif %}>
+                 <label class="form-check-label" for="is_owner">Vas a alquilar tu auto?</label>
+              </div>
+              <div class="mb-3">
+                 <label for="password1" class="form-label">Contraseña</label>
+                 <input type="password" class="form-control" id="password1" name="password1" required>
+              </div>
+              <div class="mb-3">
+                 <label for="password2" class="form-label">Confirmar Contraseña</label>
+                 <input type="password" class="form-control" id="password2" name="password2" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Registrarse</button>
+             </form>
+             
+             {% for error in form.non_field_errors %}
+             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ error }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>
+             {% endfor %} {% endcomment %}
+        
+
             <form style="padding-bottom: 0px; margin-bottom: 25px" method="post">
               {% csrf_token %}
               <!-- Username input -->
@@ -41,7 +74,7 @@
                 <label class="form-label" for="form3Example3">Usuario</label>
               </div>
               <!-- 2 column grid layout with text inputs for the first and last names -->
-              <div class="row">
+              {% comment %} <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
                     <input type="text" id="first_name" name="first_name" class="form-control border border-primary-subtle" />
@@ -54,7 +87,7 @@
                     <label class="form-label" for="form3Example2">Apellidos</label>
                   </div>
                 </div>
-              </div>
+              </div> {% endcomment %}
 
               <!-- Email input -->
               <div class="form-outline mb-4">

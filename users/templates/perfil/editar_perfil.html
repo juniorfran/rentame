@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Perfil{% endblock title %}
+
+{% block content %}
+
+        <!-- My Account Start -->
+        <div class="my-account">
+            <div class="container-fluid">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12">
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" aria-labelledby="dashboard-nav">                                    
+                                        <form method="post" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <h4>Perfil de Usuario</h4>
+                                                    <div class="mb-3">
+                                                        <label for="email" class="form-label">Email</label>
+                                                        <input type="email" class="form-control" id="email" name="email" value="{{ user_profile.email }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="numero_telefono" class="form-label">Número de Teléfono</label>
+                                                        <input type="text" class="form-control" id="numero_telefono" name="numero_telefono" value="{{ user_profile.numero_telefono }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="direccion" class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" id="direccion" name="direccion" value="{{ user_profile.direccion }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="nombre" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ user_profile.nombre }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="imagen" class="form-label">Imagen de Perfil</label>
+                                                        <input type="file" class="form-control" id="imagen" name="imagen">
+                                                        {% if user_profile.imagen %}
+                                                            <img src="{{ user_profile.imagen.url }}" alt="{{ usuario.user.username }}"  class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+                                                        {% else %}
+                                                            <p>No hay imagen actual.</p>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h4>Perfil de Propietario</h4>
+                                                    <div class="mb-3">
+                                                        <label for="id_document" class="form-label">Documento de Identificación</label>
+                                                        <input type="text" class="form-control" id="id_document" name="id_document" value="{{ vehicle_owner_profile.id_document }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="emergency_contact" class="form-label">Contacto de Emergencia</label>
+                                                        <input type="text" class="form-control" id="emergency_contact" name="emergency_contact" value="{{ vehicle_owner_profile.emergency_contact }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="rental_price_hourly" class="form-label">Precio de Alquiler por Dia</label>
+                                                        <input type="text" class="form-control" id="rental_price_daily" name="rental_price_daily" value="{{ vehicle_owner_profile.rental_price_daily }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="rental_conditions" class="form-label">Condiciones de Alquiler</label>
+                                                        <textarea class="form-control" id="rental_conditions" name="rental_conditions">{{ vehicle_owner_profile.rental_conditions }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="foto1_dui" class="form-label">Foto Frontal del DUI</label>
+                                                        <input type="file" class="form-control" id="foto1_dui" name="foto1_dui">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="foto2_dui" class="form-label">Foto Trasera del DUI</label>
+                                                        <input type="file" class="form-control" id="foto2_dui" name="foto2_dui">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="foto_licencia" class="form-label">Foto de la Licencia</label>
+                                                        <input type="file" class="form-control" id="foto_licencia" name="foto_licencia">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>        
+                    </div>    
+                </div>
+            </div>
+        </div>            
+        <!-- My Account End -->
+
+
+
+{% endblock content %}

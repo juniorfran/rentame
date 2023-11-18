@@ -8,7 +8,8 @@ class PaymentMethodAdmin(admin.ModelAdmin):
 
 @admin.register(CreditCardPayment)
 class CreditCardPaymentAdmin(admin.ModelAdmin):
-    list_display = ('cardholder_name', 'card_number', 'expiration_date', 'cvv', 'transaction')
+    
+    list_display = ('cardholder_name', 'card_number', 'mes_expiracion','anio_expiracion' , 'cvv', 'transaction')
 
 @admin.register(PayPalPayment)
 class PayPalPaymentAdmin(admin.ModelAdmin):

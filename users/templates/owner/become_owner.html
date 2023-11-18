@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <h2>Conviértete en Propietario de Vehículos</h2>
+            <h2>Verifica tu identidad.</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
@@ -16,35 +16,37 @@
                     <input type="text" name="emergency_contact" id="emergency_contact" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="rental_price_hourly" class="form-label">Precio de renta por hora (Hourly):</label>
-                    <input type="text" name="rental_price_hourly" id="rental_price_hourly" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="rental_price_daily" class="form-label">Rental Price (Daily):</label>
-                    <input type="text" name="rental_price_daily" id="rental_price_daily" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Availability Hours:</label>
+                    <label class="form-label">Horas habilitadas:</label>
                     <input type="text" name="availability_hours" id="availability_hours" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="rental_conditions" class="form-label">Rental Conditions:</label>
+                    <label for="rental_conditions" class="form-label">Condiciones de aquiler:</label>
                     <textarea name="rental_conditions" id="rental_conditions" class="form-control" required></textarea>
                 </div>
                 <!-- Agrega otros campos aquí -->
 
                 <div class="form-group">
-                    <label for="foto1_dui">Foto 1 del DUI (Documento de Identificación):</label>
-                    <input type="file" class="form-control-file" name="foto1_dui" accept="image/*" required>
+                    <label for="foto1_dui"> <i class="fa fa-drivers-license" aria-hidden="true"></i> DUI Frontal:</label>
+                    <input type="file" class="form-control" name="foto1_dui" accept="image/*"  required>
                 </div>
                 <div class="form-group">
-                    <label for="foto2_dui">Foto 2 del DUI:</label>
-                    <input type="file" class="form-control-file" name="foto2_dui" accept="image/*" required>
+                    <label for="foto2_dui"> <i class="fa fa-drivers-license" aria-hidden="true"></i>DUI Reverso:</label>
+                    <input type="file" class="form-control" name="foto2_dui" accept="image/*" required>
                 </div>
                 <div class="form-group">
-                    <label for="foto_licencia">Foto de la Licencia:</label>
-                    <input type="file" class="form-control-file" name="foto_licencia" accept="image/*" required>
+                    <label for="foto_licencia"> <i class="fa fa-drivers-license" aria-hidden="true"></i> Licencia:</label>
+                    <input type="file" class="form-control" name="foto_licencia" accept="image/*" required>
                 </div>
+
+                {% comment %} <div class="form-group mb-3">
+                    <label for="foto_licencia">Eres Propietario</label>
+                    
+                    <input type="checkbox" id="is_owner" name="is_owner" {% if user.is_owner %}checked{% endif %}>
+                </div> {% endcomment %}
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch"  {% if user.is_owner %}checked{% endif %} name="is_owner" id="flexSwitchCheckDefault">
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Aceptas lo erminos y condicioes de uso de la aplicacion.</label>
+                  </div>
 
                 <button type="submit" class="btn btn-primary">Convertirse en Propietario</button>
             </form>

@@ -15,11 +15,12 @@ def vehicle_directory_path(instance, filename):
 class Vehicle(models.Model):
     make = models.CharField(max_length=50)  # Marca del vehículo
     model = models.CharField(max_length=50)  # Modelo del vehículo
+    Category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='vehicle_category', null=True)
     year = models.PositiveIntegerField()  # Año del vehículo
     vehicle_type = models.ForeignKey('VehicleType', on_delete=models.CASCADE)  # Tipo de vehículo
     description = models.TextField()  # Descripción del vehículo  
     image = models.ManyToManyField('Imagen', blank=True) # Imagen del vehículo
-    price_hourly = models.DecimalField(max_digits=10, decimal_places=2)  # Precio por hora
+    price_hourly = models.DecimalField(max_digits=10, decimal_places=2, null=True)  # Precio por hora
     price_daily = models.DecimalField(max_digits=10, decimal_places=2)  # Precio por día
     availability = models.BooleanField(default=True)  # Disponibilidad del vehículo
     location = models.ForeignKey('Location', on_delete=models.CASCADE)  # Ubicación del vehículo
@@ -34,17 +35,26 @@ class Vehicle(models.Model):
     combustible = models.CharField(max_length=50, null=True)
     motor = models.CharField(max_length=50, null=True)
     tipo_freno = models.CharField(max_length=50, null=True)
+    seguro = models.ForeignKey('Seguro', on_delete=models.CASCADE, related_name='seguros', null=True)
     create_add = models.DateField(auto_now_add=True, null=True)
     foto_tarjeta_circulacion_1 = models.FileField( upload_to=vehicle_directory_path, max_length=100, null=True)
     foto_tarjeta_circulacion_2 = models.FileField( upload_to=vehicle_directory_path, max_length=100, null=True)
     
-# class seguro_vehiculo(models.model):
-#     create_add = models.DateField(auto_now=False, auto_now_add=False, null=True)
-#     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
-#     vehiculo = models.ForeignKey('vehicles.Vehicle', on_delete=models.CASCADE)
+class Seguro(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    costo_diario = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.nombre
     
-    
-    
+##MODELO DE CTAEGORIA DE VEHICULOS
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    create_add = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    def __str__(self):
+        return self.name
+
 class Imagen(models.Model):
     image = models.ImageField(upload_to=vehicle_directory_path)
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)  # Agrega un campo de usuario
@@ -54,6 +64,8 @@ class VehicleType(models.Model):
     name = models.CharField(max_length=50)
     capacidad = models.CharField(max_length=50, null=True)
     create_add = models.DateField(auto_now=False, auto_now_add=False, null=True)
+    def __str__(self):
+        return self.name
 
 class Location(models.Model):
     name = models.CharField(max_length=100)  # Nombre de la ubicación
@@ -65,6 +77,8 @@ class Location(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=6)  # Latitud
     longitude = models.DecimalField(max_digits=10, decimal_places=6)  # Longitud
     create_add = models.DateField(auto_now=False, auto_now_add=False,  null=True)
+    def __str__(self):
+        return self.name
 
 class Booking(models.Model):
     renter = models.ForeignKey(Renter, on_delete=models.CASCADE, related_name='reservas')

@@ -1,33 +1,17 @@
 {% load static %}
 
  <!-- Search Start -->
+ <form action="{% url 'search_results' %}" method="get">
  <div class="search">
    <div class="container-fluid">
        <div class="row">
            <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-sm-12">
-               <select class="custom-select px-4">
-                   <option selected>Pickup Location</option>
-                   <option value="1">Toronto Airport</option>
-                   <option value="2">Birmingham</option>
-                   <option value="3">Cardiff</option>
-                   <option value="4">Coventry</option>
-                   <option value="5">Edinburgh</option>
-                   <option value="6">Leeds</option>
-                   <option value="7">Liverpool</option>
-                   <option value="8">Leicester</option>
-                   <option value="9">London</option>
-                   <option value="10">London City</option>
-                   <option value="11">London Gatwick</option>
-                   <option value="12">London Heathrow</option>
-                   <option value="13">London Luton</option>
-                   <option value="14">London Stansted</option>
-                   <option value="15">Manchester</option>
-                   <option value="16">Nottingham</option>
-                   <option value="17">Sheffield</option>
-                   <option value="18">Sunderland</option>
-                   <option value="19">Southampton</option>
-                   <option value="20">Tottenham</option>
-               </select>
+            <select class="custom-select px-4" name="pickup_location">
+                <option selected>Ciudad</option>
+                {% for location in all_locations %}
+                    <option value="{{ location.ciudad }}">{{ location.ciudad }}</option>
+                {% endfor %}
+            </select>
            </div>
            <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-sm-12">
                <select class="custom-select px-4">
@@ -122,10 +106,12 @@
                    <option value="9">Cargo</option>
                </select>
            </div>
-           <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-sm-12">
-               <button class="btn btn-primary btn-block" type="submit" style="height: 50px;">Search</button>
-           </div>
+            <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-sm-12">
+                <button class="btn btn-primary btn-block" type="submit" style="height: 50px;">Search</button>
+            </div>
+        
        </div>
    </div>
 </div>
+</form>
 <!-- Search End -->
