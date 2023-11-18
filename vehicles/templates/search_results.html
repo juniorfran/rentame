@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+
+{% block content %}
+
+<title>{% block name_tab %}Lista de Vehiculos{% endblock %}</title>
+
+<head>
+  <style>
+      .car-rent-item {
+          height: 100%; /* Establece la altura fija al 100% del contenedor */
+      }
+  </style>
+</head>
+<h1>Search Results for {{ city }}</h1>
+        <!-- Car Fleet Start -->
+
+              <div class="car-container">
+                  <div class="row">
+                    {% if vehicles %}
+                        {% for vehicle in vehicles %}
+                          <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                              <div class="car-rent-item d-flex flex-column align-items-end">
+                                  <h4>{{ vehicle.make }} {{ vehicle.model }}</h4>
+                                  <div class="listing-img mr-4">
+                                      {% if vehicle.image.all %}
+                                          <img src="{{ vehicle.image.first.image.url }}" class="card-img-top img-fluid" alt="{{ vehicle.make }} {{ vehicle.model }}">
+                                      {% else %}
+                                          <!-- Agregar una imagen de marcador de posición o mensaje si no hay imágenes relacionadas -->
+                                          <img src="{% static "image/vintage-car-png.webp" %}" class="card-img-top img-fluid">
+                                      {% endif %}
+                                  </div>
+                                  <div class="car-rent-item-info align-items-center">
+                                      <div class="row align-items-center">
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-car text-primary"></i>
+                                              <span class="description-title">Transmisión: </span> {{ vehicle.transmision }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-road text-primary"></i>
+                                              <span class="description-title">Kilometraje: </span> {{ vehicle.kilometraje }} km.
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-cogs text-primary"></i>
+                                              <span class="description-title">Motor: </span> {{ vehicle.motor }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-bar-chart text-primary"></i>
+                                              <span class="description-title">Climatización: </span> {{ vehicle.climatizacion }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-car-alt text-primary"></i>
+                                              <span class="description-title">Tipo: </span> {{ vehicle.vehicle_type }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-users text-primary"></i>
+                                              <span class="description-title">Capacidad: </span> {{ vehicle.vehicle_type.capacidad }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-suitcase text-primary"></i>
+                                              <span class="description-title">Equipaje: </span> {{ vehicle.capacidad }}
+                                          </div>
+                                          <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                              <i class="fa fa-car-side text-primary"></i>
+                                              <span class="description-title">Puertas: </span> {{ vehicle.puertas }}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary px-3 ml-auto" href="{% url 'vehicle_detail' vehicle.id %}">{{ vehicle.price_daily }}/Día</a>
+                            </div>
+                          </div>
+                      {% endfor %}
+                      {% else %}
+                        <p>No vehicles found for the selected city.</p>
+                    {% endif %}
+                  </div>
+              </div>
+          </div>
+          </div>
+      </div>            
+      <!-- Car Fleet End -->
+
+
+
+    <!-- Paginación (si es necesario) -->
+  <!-- Paginación -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-4">
+        {% if vehicles.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="Primera">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ vehicles.previous_page_number }}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+        
+        {% for i in vehicles.paginator.page_range %}
+            <li class="page-item {% if vehicles.number == i %}active{% endif %}">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+        
+        {% if vehicles.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ vehicles.next_page_number }}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ vehicles.paginator.num_pages }}" aria-label="Última">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+    </nav>
+
+    {% endblock %}
+
+
+
+

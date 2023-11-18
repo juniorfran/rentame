@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
+{% comment %} <div class="container">
 
     <h3>Confirma tu identidad y actualiza tus datos para continuar</h3>
     <form method="post">
@@ -29,6 +29,39 @@
         </div>
         <!-- Agrega otros campos del modelo Renter aquí -->
         <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div> {% endcomment %}
+
+
+<div class="container mt-4">
+    <h1>Crear Perfil de Renter</h1>
+    <form id="renterForm" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.id_document.label_tag }}
+            {{ form.id_document }}
+        </div>
+        <div class="mb-3">
+            {{ form.emergency_contact.label_tag }}
+            {{ form.emergency_contact }}
+        </div>
+        <div class="mb-3">
+            {{ form.budget.label_tag }}
+            {{ form.budget }}
+        </div>
+        <div class="mb-3">
+            {{ form.preferred_rental_dates.label_tag }}
+            {{ form.preferred_rental_dates }}
+        </div>
+        <div class="mb-3">
+            {{ form.required_documents.label_tag }}
+            {{ form.required_documents }}
+        </div>
+        <div class="mb-3">
+            {{ form.driving_history.label_tag }}
+            {{ form.driving_history }}
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Perfil</button>
     </form>
 </div>
 

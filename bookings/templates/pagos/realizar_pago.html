@@ -1,0 +1,20 @@
+{% load static %}
+
+        <div class="mb-3">
+            <label for="cardholder_name" class="form-label">Nombre del Titular de la Tarjeta</label>
+            {{ form.cardholder_name }}
+        </div>
+        <div class="mb-3">
+            <label for="card_number" class="form-label">Número de Tarjeta</label>
+            {{ form.card_number }}
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="expiration_date" class="form-label">Fecha de Expiración</label>
+                {{ form.expiration_date }}
+            </div>
+            <div class="col">
+                <label for="cvv" class="form-label">CVV</label>
+                {{ form.cvv }}
+            </div>
+        </div>

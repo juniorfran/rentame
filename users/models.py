@@ -31,8 +31,8 @@ class User(AbstractUser):
         related_name='custom_users_permissions',  # Cambia este nombre
         related_query_name='custom_user_permission'
     )
-    create_add = models.DateField(auto_now=False, auto_now_add=False,  null=True)
-    is_owner = models.BooleanField(default=False, null=True)
+    create_add = models.DateField(auto_now=False, auto_now_add=True,  null=True)
+    is_owner = models.BooleanField(default=False)
     # Utilizamos el modelo AbstractUser de Django para la autenticación de usuarios
     # Puedes agregar campos adicionales si es necesario
 
@@ -45,7 +45,9 @@ class UserProfile(models.Model):
     email = models.EmailField(max_length=254, null=True)
     numero_telefono = models.CharField(max_length=15)
     direccion = models.CharField(max_length=150)
+    ciudad = models.CharField(max_length=50)
     nombre = models.CharField(max_length=100)
+    apellido = models.CharField( max_length=50)
     fecha_nacimeinto = models.DateField(auto_now=False, auto_now_add=True, null=True)
     imagen = models.ImageField(upload_to=user_directory_path, null=True, blank=True)
     create_add = models.DateField(auto_now=True, auto_now_add=False,  null=True)
@@ -97,7 +99,7 @@ class Renter(models.Model):
     create_add = models.DateField(auto_now=True, auto_now_add=False, null=True)
     # Otros campos según tus necesidades
     def __str__(self):
-        return self.user.first_name
+        return self.user.username
 
 class Review(models.Model):
     rating = models.PositiveIntegerField()  # Calificación (de 1 a 5)

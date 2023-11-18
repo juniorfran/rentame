@@ -1,12 +1,56 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-    <h1 class="my-4">Crear Pago con Tarjeta de Crédito</h1>
-    <form method="post" action="{% url 'crear_credit_card_payment' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
-</div>
+  <h2>Crear Método de Pago</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label for="type_method">Selecciona el Método de Pago:</label>
+    <select name="type_method" id="type_method">
+      {% for method in payment_methods %}
+        <option value="{{ method.id }}">{{ method.name }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    
+    <div id="credit_card_form" style="display: none;">
+      <h3>Detalles de Tarjeta de Crédito</h3>
+      <label for="cardholder_name">Nombre del titular:</label>
+      <input type="text" name="cardholder_name" id="cardholder_name">
+      <br>
+      <label for="card_number">Número de tarjeta:</label>
+      <input type="text" name="card_number" id="card_number">
+      <br>
+      <label for="expiration_date">Fecha de vencimiento (MM/YY):</label>
+      <input type="text" name="expiration_date" id="expiration_date">
+      <br>
+      <label for="cvv">CVV:</label>
+      <input type="text" name="cvv" id="cvv">
+    </div>
+    
+    <div id="bank_transfer_form" style="display: none;">
+      <h3>Detalles de Transferencia Bancaria</h3>
+      <!-- Agrega campos para la transferencia bancaria aquí -->
+    </div>
+
+    <button type="submit">Guardar</button>
+  </form>
+
+  <script>
+    document.getElementById('type_method').addEventListener('change', function() {
+      var selectedMethod = this.value;
+      var creditCardForm = document.getElementById('credit_card_form');
+      var bankTransferForm = document.getElementById('bank_transfer_form');
+
+      if (selectedMethod === '1') {  // Cambia '1' al ID de la tarjeta de crédito
+        creditCardForm.style.display = 'block';
+        bankTransferForm.style.display = 'none';
+      } else if (selectedMethod === '2') {  // Cambia '2' al ID de la transferencia bancaria
+        creditCardForm.style.display = 'none';
+        bankTransferForm.style.display = 'block';
+      } else {
+        creditCardForm.style.display = 'none';
+        bankTransferForm.style.display = 'none';
+      }
+    });
+  </script>
 {% endblock %}

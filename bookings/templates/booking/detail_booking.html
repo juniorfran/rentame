@@ -1,22 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<div class="container">
-    <h1>Detalles de la Reserva</h1>
-    <div class="card">
+<div class="container mt-5">
+    <div class="card shadow">
         <div class="card-body">
+
             <h3 class="card-title">Reserva ID: {{ reserva.id }}</h3>
-            <p><strong>Fecha de Inicio:</strong> {{ reserva.start_date }}</p>
-            <p><strong>Fecha de Finalización:</strong> {{ reserva.end_date }}</p>
-            <p><strong>Precio:</strong> ${{ reserva.precio }}</p>
-            <p><strong>Descuento:</strong> {{ reserva.descuento }}</p>
-            <p><strong>Seguro:</strong> {{ reserva.seguro }}</p>
+            <p class="mb-1"><strong>Fecha de Inicio:</strong> {{ reserva.start_date }}</p>
+            <p class="mb-1"><strong>Fecha de Finalización:</strong> {{ reserva.end_date }}</p>
+            <p class="mb-1"><strong>Precio:</strong> ${{ reserva.precio }}</p>
+            <p class="mb-1"><strong>Descuento:</strong> {{ reserva.descuento }}</p>
+            <p class="mb-1"><strong>Seguro:</strong> {{ reserva.seguro }}</p>
+            <p class="mb-1"><strong>Estado de la reserva:</strong> {{ reserva.estado }}  </p>
+            <p class="mb-1"><strong>Estado de pago:</strong> {{ reserva.estado }}  </p>
+            
             <!-- Otros detalles de la reserva -->
             
+            <!-- Mostrar el código QR -->
+            {% if reserva.qr_code %}
+                <img src="{{ reserva.qr_code }}" alt="Código QR" class="img-fluid mt-3">
+            {% endif %}
+
+            <!-- Botón de enlace de pago -->
+            {% if reserva.url_enlace %}
+                <a class="btn btn-primary mt-3" href="{{ reserva.url_enlace }}" target="_blank">Pagar ahora</a>
+            {% endif %}
         </div>
     </div>
 </div>
-
 
 {% endblock content %}

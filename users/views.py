@@ -42,27 +42,40 @@ from django.utils.decorators import method_decorator
 #     return render(request, 'perfil/editar_perfil.html', context)
 
 
+
+# def create_renter_profile(request):
+#     if request.method == 'POST':
+#         id_document = request.POST.get('id_document')
+#         emergency_contact = request.POST.get('emergency_contact')
+#         budget = request.POST.get('budget')
+#         preferred_rental_dates = request.POST.get('preferred_rental_dates')
+#         driving_history = request.POST.get('driving_history')
+#         # Otros campos que desees procesar
+        
+#         user = request.user
+
+#         # Crear el perfil de Renter
+#         renter = Renter(user=user, id_document=id_document, emergency_contact=emergency_contact, budget=budget,
+#                         preferred_rental_dates=preferred_rental_dates, driving_history=driving_history)
+#         renter.save()
+
+#         # Redirigir a la página de perfil de Renter o a donde desees
+#         return redirect('vehicle_list')  # Ajusta el nombre de la vista de perfil de Renter
+
+#     return render(request, 'renter/create_renter.html')
 @login_required
 def create_renter_profile(request):
     if request.method == 'POST':
-        id_document = request.POST.get('id_document')
-        emergency_contact = request.POST.get('emergency_contact')
-        budget = request.POST.get('budget')
-        preferred_rental_dates = request.POST.get('preferred_rental_dates')
-        driving_history = request.POST.get('driving_history')
-        # Otros campos que desees procesar
-        
-        user = request.user
+        form = RenterForm(request.POST)
+        if form.is_valid():
+            renter_profile = form.save(commit=False)
+            renter_profile.user = request.user
+            renter_profile.save()
+            return redirect('vehicle_list')  # Reemplaza 'perfil_creado_exitosamente' con la URL adecuada
+    else:
+        form = RenterForm()
 
-        # Crear el perfil de Renter
-        renter = Renter(user=user, id_document=id_document, emergency_contact=emergency_contact, budget=budget,
-                        preferred_rental_dates=preferred_rental_dates, driving_history=driving_history)
-        renter.save()
-
-        # Redirigir a la página de perfil de Renter o a donde desees
-        return redirect('vehicle_list')  # Ajusta el nombre de la vista de perfil de Renter
-
-    return render(request, 'renter/create_renter.html')
+    return render(request, 'renter/create_renter.html', {'form': form})
 
 ### VISTAS PARA EL VEHICULO DEL USUARIO
 
@@ -247,7 +260,7 @@ def crear_perfil(request):
 
         if is_owner:
             # El usuario es propietario, redirigir a llenar los datos de VehicleOwner
-            return redirect('become_owner')
+            return redirect('complete_verification')
         else:
             # El usuario no es propietario, redirigir al perfil
             return redirect('perfil')
@@ -390,58 +403,69 @@ def become_owner(request):
 
 
 # Vista para completar la información de verificación
-@login_required
-def complete_verification(request):
-    user_profile = UserProfile.objects.get(user=request.user)
+# @login_required
+# def complete_verification(request):
+#     user_profile = UserProfile.objects.get(user=request.user)
 
-    if request.method == 'POST':
-        # Procesa el formulario de información de verificación
-        id_document = request.POST.get('id_document')
-        emergency_contact = request.POST.get('emergency_contact')
+#     if request.method == 'POST':
+#         # Procesa el formulario de información de verificación
+#         id_document = request.POST.get('id_document')
+#         emergency_contact = request.POST.get('emergency_contact')
 
-        availability_hours = request.POST.get('availability_hours')
-        rental_conditions = request.POST.get('rental_conditions')
+#         availability_hours = request.POST.get('availability_hours')
+#         rental_conditions = request.POST.get('rental_conditions')
         
-        # Procesa las imágenes adjuntas si se proporcionan
-        foto1_dui = request.FILES.get('foto1_dui')
-        foto2_dui = request.FILES.get('foto2_dui')
-        foto_licencia = request.FILES.get('foto_licencia')
+#         # Procesa las imágenes adjuntas si se proporcionan
+#         foto1_dui = request.FILES.get('foto1_dui')
+#         foto2_dui = request.FILES.get('foto2_dui')
+#         foto_licencia = request.FILES.get('foto_licencia')
 
-        # Crea un objeto VehicleOwner relacionado con el perfil de usuario
-        vehicle_owner, created = VehicleOwner.objects.get_or_create(user=user_profile.user)
-        vehicle_owner.id_document = id_document
-        vehicle_owner.emergency_contact = emergency_contact
-        vehicle_owner.availability_hours = availability_hours
-        vehicle_owner.rental_conditions = rental_conditions
+#         # Crea un objeto VehicleOwner relacionado con el perfil de usuario
+#         vehicle_owner, created = VehicleOwner.objects.get_or_create(user=user_profile.user)
+#         vehicle_owner.id_document = id_document
+#         vehicle_owner.emergency_contact = emergency_contact
+#         vehicle_owner.availability_hours = availability_hours
+#         vehicle_owner.rental_conditions = rental_conditions
 
-        # Asigna las imágenes si se proporcionan
-        if foto1_dui:
-            vehicle_owner.foto1_dui = foto1_dui
-        if foto2_dui:
-            vehicle_owner.foto2_dui = foto2_dui
-        if foto_licencia:
-            vehicle_owner.foto_licencia = foto_licencia
+#         # Asigna las imágenes si se proporcionan
+#         if foto1_dui:
+#             vehicle_owner.foto1_dui = foto1_dui
+#         if foto2_dui:
+#             vehicle_owner.foto2_dui = foto2_dui
+#         if foto_licencia:
+#             vehicle_owner.foto_licencia = foto_licencia
 
-        vehicle_owner.save()
+#         vehicle_owner.save()
         
-        # Actualiza el atributo is_owner de la instancia de User
-        request.user.is_owner = True
-        request.user.save()
+#         # Actualiza el atributo is_owner de la instancia de User
+#         request.user.is_owner = True
+#         request.user.save()
 
-        return redirect('crear_vehiculo_paso1')  # Redirige al panel de control
+#         return redirect('crear_vehiculo_paso1')  # Redirige al panel de control
       
 
-    return render(request, 'owner/complete_verification.html')
-
+#     return render(request, 'owner/complete_verification.html')
 
 @login_required
-def ultimos_4_vehicle_list(request, usuario_id):
-    try:
-        usuario = VehicleOwner.objects.get(id=usuario_id)  # Supongamos que tienes un ID de usuario
-        ultimos_vehiculos = Vehicle.objects.filter(owner=usuario).order_by('-create_add')[:4]
-    except VehicleOwner.DoesNotExist:
-        usuario = None
-        ultimos_vehiculos = []
+def complete_verification(request):
+    if request.method == 'POST':
+        form = VehicleOwnerForm(request.POST, request.FILES)
+        if form.is_valid():
+            owner_profile = form.save(commit=False)
+            owner_profile.user = request.user
+            owner_profile.save()
+            return redirect('crear_vehiculo_paso1')  # Cambia 'perfil_creado_exitosamente' a la URL adecuada
+    else:
+        form = VehicleOwnerForm()
+
+    return render(request, 'owner/complete_verification.html', {'form': form})
+
+@login_required
+def ultimos_4_vehicle_list(request):
+    usuario = request.user
+
+    # Obtener los últimos 4 vehículos publicados por el usuario autenticado
+    ultimos_vehiculos = Vehicle.objects.filter(owner=usuario).order_by('-create_add')[:4]
 
     context = {
         'usuario': usuario,

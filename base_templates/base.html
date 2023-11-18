@@ -22,6 +22,11 @@
      <meta name="description" content="">
      <meta name="author" content="">
 
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBAdjc8O0ylCAyNC6_cGUPdohIQdIGSGk&libraries=places&callback=initMap" async defer></script>
+
+
       <!-- Bootstrap Icons -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
@@ -54,6 +59,11 @@
       <link href="{% static 'css/mobyle.css' %}" rel="stylesheet" type="text/css">
       <link href="{% static 'css/animate.min.css' %}" rel="stylesheet" type="text/css">
 
+      <!-- Agrega estos enlaces a jQuery y jQuery Timepicker en tu archivo HTML -->
+      <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+
       <!-- Google Fonts -->
       <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet">
 
@@ -63,29 +73,26 @@
     {% include "navbar.html" %}
     
     {% if user.is_authenticated %}
+    <form action="{% url 'search_results' %}" method="get">
       {% include "filtro_busqueda.html" %}
-      
+    </form>
       <!-- My Account Start -->
       <div class="my-account">
         <div class="container-fluid">
             <div class="container">
                 <div class="row">
-                    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12">
                         <div class="page-container-title">
-                            <h2>{% block name_tab %}{% endblock %}</h2>                               
+                            <h2>{% block name_tab %}{% endblock %}</h2>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12">
                         <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-credit-card"></i>Mi Perfil</a>
-                            <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "lista_vehiculos" %}" role="tab"><i class="fa fa-map-marker-alt"></i>Mis Autos</a>
-                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-shopping-bag"></i>Mi Historial</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "lista_credit_card_payments" %}" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
-                            <a class="nav-link" id="address-nav" data-toggle="pill" href="my-address.html" role="tab"><i class="fa fa-map-marker-alt"></i>Direcciones</a>
-                            <a class="nav-link" id="account-nav" data-toggle="pill" href="{% url "editar_perfil" %}" role="tab"><i class="fa fa-user"></i>Detalles de Perfil</a>
+                            <a class="nav-link" id="dashboard-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "perfil" %}" role="tab"><i class="fa fa-user" aria-hidden="true"></i>Mi Perfil</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "lista_vehiculos" %}" role="tab"><i class="fa fa-car" aria-hidden="true"></i>Mis Autos</a>
+                            <a class="nav-link" id="orders-nav" data-toggle="pill" href="#" role="tab"><i class="fa fa-history" aria-hidden="true"></i> Mi Historial</a>
+                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="{% url "list_payments" %}" role="tab"><i class="fa fa-credit-card"></i>Metodos de pago</a>
+                            <a class="nav-link" id="address-nav" data-toggle="pill" href="{% url "location_list" %}" role="tab"><i class="fa fa-map-marker-alt"></i>Direcciones</a>
+                            <a class="nav-link" id="account-nav" data-toggle="pill" href="{% url "editar_perfil" %}" role="tab"><i class="fa fa-user-edit"></i>Detalles de Perfil</a>
                             <form method="post" action="{% url 'logout' %}">
                               {% csrf_token %}
                               <div class="sign_btn">
@@ -95,12 +102,12 @@
                             {% comment %} <a class="nav-link" href="index.html"><i class="fa fa-sign-out-alt"></i>Cerrar Sesion</a> {% endcomment %}
                         </div>
                     </div>
-                    <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12">
+                    <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" aria-labelledby="dashboard-nav">
                                 {% include "message.html" %}
                                 {% block content %}
-
+    
                                 {% endblock %}
                             </div>
                         </div>
@@ -108,7 +115,8 @@
                 </div>        
             </div>
         </div>
-      </div>        
+    </div>
+    
       <!-- My Account End -->
 
       {% include "footer.html" %}
@@ -132,7 +140,7 @@
     
     <!-- jQuery -->
     
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Custom JavaScript -->
     <script src="{% static "js/scroll.js" %}"></script>
@@ -141,6 +149,8 @@
     <script src="{% static "js/main.js" %}"></script>
     <script src="{% static "js/datepicker.min.js" %}"></script>
     <script src="{% static "js/datecar.js" %}"></script>
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+      ({key: "AIzaSyCBAdjc8O0ylCAyNC6_cGUPdohIQdIGSGk", v: "beta"});</script>
     
     {% block extrajs %}
     {% endblock extrajs %}

@@ -228,7 +228,6 @@ def crear_vehiculo_paso1(request):
 @login_required
 def crear_vehiculo_paso2(request):
     if request.method == 'POST':
-        precio_por_hora = request.POST['precio_por_hora']
         precio_por_dia = request.POST['precio_por_dia']
         disponibilidad = request.POST.get('disponibilidad')
         combustible = request.POST['combustible']
@@ -240,7 +239,6 @@ def crear_vehiculo_paso2(request):
         datos_paso1 = request.session.get('datos_paso1', {})
 
         datos_paso2 = {
-            'precio_por_hora': precio_por_hora,
             'precio_por_dia': precio_por_dia,
             'disponibilidad': disponibilidad == 'on',
             'combustible': combustible,
@@ -265,14 +263,11 @@ def crear_vehiculo_paso3(request):
     if request.method == 'POST':
         datos_combinados = request.session.get('datos_combinados', {})
 
-               # Obtén el propietario de vehículo (VehicleOwner) asociado con el usuario autenticado
         try:
             vehicle_owner = VehicleOwner.objects.get(user=request.user)
         except VehicleOwner.DoesNotExist:
-            # Maneja el caso donde no existe un propietario de vehículo
-            return redirect('become_owner')
+            return redirect('complete_verification')
 
-        # Crea un nuevo vehículo con el propietario y otros datos
         vehicle = Vehicle(owner=vehicle_owner)
         vehicle.availability = datos_combinados.get('disponibilidad', False)
         vehicle.make = datos_combinados.get('marca', '')
@@ -290,7 +285,6 @@ def crear_vehiculo_paso3(request):
         vehicle.combustible = datos_combinados.get('combustible')
         vehicle.motor = datos_combinados.get('motor')
         vehicle.tipo_freno = datos_combinados.get('tipo_freno')
-        # Otros campos según tus modelos
 
         try:
             tipo_vehiculo_id = request.POST.get('tipo_vehiculo')
@@ -317,7 +311,7 @@ def crear_vehiculo_paso3(request):
 
             return redirect('vehicle_list')
         except (VehicleType.DoesNotExist, Location.DoesNotExist):
-            return redirect('become_owner')
+            return redirect('complete_verification')
 
     return render(request, 'crear_vehiculo_paso3.html', {'locations': locations, 'vehicle_types': vehicle_types})
 

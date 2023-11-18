@@ -12,49 +12,48 @@
 </head>
 <body style="background-color: #fff; color: #000;">
     {% block content %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title text-center">Verifica tus datos</h2>
-                        <form method="post" >
-                            {% csrf_token %}
-                            <!-- Campos del formulario -->
-                            <div class="mb-3">
-                                <label for="id_document" class="form-label">Numero de DUI:</label>
-                                <input type="text" name="id_document" id="id_document" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="emergency_contact" class="form-label">Contacto de emergencia:</label>
-                                <input type="text" name="emergency_contact" id="emergency_contact" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Availability Hours:</label>
-                                <input type="text" name="availability_hours" id="availability_hours" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="rental_conditions" class="form-label">Rental Conditions:</label>
-                                <textarea name="rental_conditions" id="rental_conditions" class="form-control" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="foto1_dui" class="form-label">Photo 1 of ID (DUI):</label>
-                                <input type="file" name="foto1_dui" id="foto1_dui" class="form-control" accept="image/*">
-                            </div>
-                            <div class="mb-3">
-                                <label for="foto2_dui" class="form-label">Photo 2 of ID (DUI):</label>
-                                <input type="file" name="foto2_dui" id="foto2_dui" class="form-control" accept="image/*">
-                            </div>
-                            <div class="mb-3">
-                                <label for="foto_licencia" class="form-label">Driver's License Photo:</label>
-                                <input type="file" name="foto_licencia" id="foto_licencia" class="form-control" accept="image/*">
-                            </div>
-                            <button type="submit" class="btn btn-warning">Complete Verification</button>
-                        </form>
-                    </div>
-                </div>
+    <div class="container mt-4">
+        <h1>Crear Perfil de Owner</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.id_document.label_tag }}
+                {{ form.id_document }}
             </div>
-        </div>
+            <div class="mb-3">
+                {{ form.emergency_contact.label_tag }}
+                {{ form.emergency_contact }}
+            </div>
+            <div class="mb-3">
+                {{ form.rental_price_hourly.label_tag }}
+                {{ form.rental_price_hourly }}
+            </div>
+            <div class="mb-3">
+                {{ form.rental_price_daily.label_tag }}
+                {{ form.rental_price_daily }}
+            </div>
+            <div class="mb-3">
+                {{ form.availability_hours.label_tag }}
+                {{ form.availability_hours }}
+            </div>
+            <div class="mb-3">
+                {{ form.rental_conditions.label_tag }}
+                {{ form.rental_conditions }}
+            </div>
+            <div class="mb-3">
+                {{ form.foto1_dui.label_tag }}
+                {{ form.foto1_dui }}
+            </div>
+            <div class="mb-3">
+                {{ form.foto2_dui.label_tag }}
+                {{ form.foto2_dui }}
+            </div>
+            <div class="mb-3">
+                {{ form.foto_licencia.label_tag }}
+                {{ form.foto_licencia }}
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Perfil</button>
+        </form>
     </div>
 {% endblock content %}
 </body>

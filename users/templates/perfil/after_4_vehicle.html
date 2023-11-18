@@ -1,14 +1,28 @@
+
 {% load static %}
 
-  <div class="row g-2">
-    <h1>Últimos Vehículos del Usuario: {{ usuario.user.username }}</h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      {% if usuario %}
+        <h1>Últimos Vehículos del Usuario: {{ usuario.username }}</h1>
 
-    <ul>
-        {% for vehiculo in ultimos_vehiculos %}
-        <li>
-            <img src="{{ vehiculo.image.first.url }}" alt="{{ vehiculo.make }} {{ vehiculo.model }}" width="100">
-            <p>Marca: {{ vehiculo.make }}</p>
-        </li>
-        {% endfor %}
-    </ul>
+        <ul class="list-unstyled d-flex flex-wrap">
+          {% for vehiculo in ultimos_vehiculos %}
+          <li class="me-3 mb-3">
+            <div class="card" style="width: 18rem;">
+              <img src="{{ vehiculo.image.first.url }}" class="card-img-top" alt="{{ vehiculo.make }} {{ vehiculo.model }}">
+              <div class="card-body">
+                <h5 class="card-title">Marca: {{ vehiculo.make }}</h5>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No se encontró al usuario.</p>
+        <p>Usuario: {{ request.user }}</p> <!-- Agregar este mensaje de depuración -->
+      {% endif %}
+    </div>
   </div>
+</div>

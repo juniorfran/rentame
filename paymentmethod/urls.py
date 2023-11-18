@@ -4,12 +4,19 @@ from . import views
 
 urlpatterns = [
     
-    path('credit_card/create/', views.create_payment_methodCredit, name='creditcard_create'),
-    path('estatus_method/<int:paymentmethod_id>/', views.method_estatus, name='estatus_method'),
+    ## URL PARA METODO (TARJETA DE CREDITO)
+    path('lista_tarjeta', views.list_creditcard_payment, name='lista_tarjetas'),
+    path('agregar_tarjeta_credito',views.add_creditcard_payment,name='tarjeta_credito'),
+    path('editar_tarjeta_credito/<int:pk>',views.edit_creditcard_payment,name='editar_tarjeta_credito'),    
+    path('eliminar_tarjeta_credito/<int:pk>',views.delete_creditcard_payment,name='eliminar_tarjeta_credito'),
+    
+    ## URL PARA METODO (TRANSFERENCIA BANCARIA)
+    path('agregar_transferencia_bancaria',views.add_bank_transfer_payment,name='transferencia_bancaria'),
+    path('editar_transferencia_bancaria/<int:pk>',views.edit_bank_transfer_payment,name='editar_transferencia_bancaria'),
+    path('eliminar_transferencia_bancaria/<int:pk>',views.delete_bank_transfer_payment,name='eliminar_transferencia_bancaria'),
     
     
-    path('credit_card_payments/', views.lista_credit_card_payments, name='lista_credit_card_payments'),
-    path('credit_card_payments/crear/', views.crear_credit_card_payment, name='crear_credit_card_payment'),
-    path('credit_card_payments/editar/<int:payment_id>/', views.editar_credit_card_payment, name='editar_credit_card_payment'),
-    path('credit_card_payments/deshabilitar/<int:payment_id>/', views.deshabilitar_credit_card_payment, name='deshabilitar_credit_card_payment'),
+
+    path('payments_methods/', views.lista_payment_method, name='list_payments'),
+
 ]

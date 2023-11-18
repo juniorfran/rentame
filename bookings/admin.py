@@ -5,7 +5,7 @@ from .models import Booking, Descuento
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('renter', 'vehicle', 'start_date', 'end_date')
+    list_display = ('id','renter', 'vehicle', 'start_date', 'end_date')
     
 @admin.register(Descuento)
 class DescuentoAdmin(admin.ModelAdmin):
