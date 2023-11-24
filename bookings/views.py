@@ -1,8 +1,8 @@
 import datetime
+import requests
 from decimal import Decimal
 import json
 from django.shortcuts import render, redirect, get_object_or_404
-import requests
 from django.http import HttpResponse
 from bookings.forms import PaymentConfirmationForm
 from paymentmethod.models import CreditCardPayment, PaymentMethod
@@ -16,8 +16,6 @@ from django.db import transaction as db_transaction
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-from datetime import datetime
-import requests
 from django.contrib.auth.decorators import login_required
 
 

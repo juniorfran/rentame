@@ -1,6 +1,5 @@
 from django import forms
 from .models import Location
-from django_countries.fields import CountryField
 
 class LocationForm(forms.ModelForm):
     class Meta:
