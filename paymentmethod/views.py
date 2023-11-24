@@ -12,8 +12,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def lista_payment_method(request):
+    user = request.user
+    #payment_methods = PaymentMethod.objects.filter(user=user)
+    credit_card_payments = CreditCardPayment.objects.filter(user=user)
     payment_methods = PaymentMethod.objects.all()
-    credit_card_payments = CreditCardPayment.objects.all()
+    # credit_card_payments = CreditCardPayment.objects.all()
     
     context = {
         'payment_methods': payment_methods,
@@ -46,7 +49,7 @@ def add_creditcard_payment(request):
 
 @login_required
 def edit_creditcard_payment(request, pk):
-    credit_card_payment = get_object_or_404(CreditCardPayment, pk=pk)
+    credit_card_payment = get_object_or_404(CreditCardPayment, id=pk)
     if request.method == 'POST':
         form = CreditCardPaymentForm(request.POST, instance=credit_card_payment)
         if form.is_valid():
@@ -56,11 +59,11 @@ def edit_creditcard_payment(request, pk):
             return redirect('list_payments')
     else:
         form = CreditCardPaymentForm(instance=credit_card_payment)
-    return render(request, 'creditcard/edit_creditcard_payment.html', {'form': form})
+    return render(request, 'creditcard/editmethod.html', {'form': form})
 
 @login_required
 def delete_creditcard_payment(request, pk):
-    credit_card_payment = get_object_or_404(CreditCardPayment, pk=pk)
+    credit_card_payment = get_object_or_404(CreditCardPayment, id=pk)
     if request.method == 'POST':
         credit_card_payment.delete()
         return redirect('list_payments')
