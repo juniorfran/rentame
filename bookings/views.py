@@ -200,8 +200,8 @@ def detail_booking(request, reserva_id):
 ## FUNCIONES Y VISTAS PARA REALIZAR PAGOS
 def obtener_token_de_acceso():
     # Credenciales de la aplicación Wompi
-    app_id = '84697956-57f9-4171-ac57-0e885d45a630'
-    api_secret = 'dfb98854-b75b-40ad-8a0e-5e4914ba32f6'
+    app_id = '81edf52c-2210-45e2-8226-560a0a0deea8'
+    api_secret = 'e392745e-c5eb-4ab8-8045-0363246051c6'
 
     # URL de Wompi para obtener el token de acceso
     token_url = 'https://id.wompi.sv/connect/token'
