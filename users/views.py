@@ -16,53 +16,6 @@ from vehicles.models import Location, Vehicle, VehicleType
 from django.utils.decorators import method_decorator
 
 
-# @login_required
-# def update_profile(request):
-#      # Verificar si el usuario ya tiene un perfil UserProfile
-#     if not hasattr(request.user, 'profile'):
-#         return redirect('crear_perfil')  # Redirige al usuario a la vista de creación de perfil
-
-#     user_profile = request.user.profile
-#     userform = UserForm(request.POST, instance=request.user)
-#     userprofileform = UserProfileForm(request.POST, instance=request.user.user_profile)
-#     vehicleownerform = VehicleOwnerForm(request.POST, request.FILES, instance=request.user.user_profile.vehicleowner)
-     
-#     if userform.is_valid() and userprofileform.is_valid() and vehicleownerform.is_valid():
-#         userform.save()
-#         userprofileform.save()
-#         vehicleownerform.save()
-#         messages.success(request, _('Your account has been updated successfully!'))
-#         return redirect('perfil')
-    
-#     context = {
-#         'userform': userform,
-#         'userprofileform': userprofileform,
-#         'vehicleownerform': vehicleownerform,
-#     }
-#     return render(request, 'perfil/editar_perfil.html', context)
-
-
-
-# def create_renter_profile(request):
-#     if request.method == 'POST':
-#         id_document = request.POST.get('id_document')
-#         emergency_contact = request.POST.get('emergency_contact')
-#         budget = request.POST.get('budget')
-#         preferred_rental_dates = request.POST.get('preferred_rental_dates')
-#         driving_history = request.POST.get('driving_history')
-#         # Otros campos que desees procesar
-        
-#         user = request.user
-
-#         # Crear el perfil de Renter
-#         renter = Renter(user=user, id_document=id_document, emergency_contact=emergency_contact, budget=budget,
-#                         preferred_rental_dates=preferred_rental_dates, driving_history=driving_history)
-#         renter.save()
-
-#         # Redirigir a la página de perfil de Renter o a donde desees
-#         return redirect('vehicle_list')  # Ajusta el nombre de la vista de perfil de Renter
-
-#     return render(request, 'renter/create_renter.html')
 @login_required
 def create_renter_profile(request):
     if request.method == 'POST':

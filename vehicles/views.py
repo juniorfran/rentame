@@ -333,18 +333,4 @@ def vehicle_type_edit(request, pk):
     context = {'form': form}
     return render(request, 'create_edit.html', context)
 
-def location_create(request):
-    form = LocationForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        form = LocationForm()
-    context = {'form': form}
-    return render(request, 'create_edit.html', context)
-
-def location_edit(request, pk):
-    location = Location.objects.get(id=pk)
-    form = LocationForm(request.POST or None, instance=location)
-    if form.is_valid():
-        form.save()
-    context = {'form': form}
-    return render(request, 'create_edit.html', context)
+##vistas para ubicaciones del vehiculo

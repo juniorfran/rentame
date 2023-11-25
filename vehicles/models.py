@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Renter
+from users.models import Renter, User
 
 def vehicle_directory_path(instance, filename):
     # instance es el modelo UserProfile al que se adjuntará la imagen
@@ -69,6 +69,7 @@ class VehicleType(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=100)  # Nombre de la ubicación
+    pais = models.CharField(max_length=50, null=True)
     departamento = models.CharField(max_length=50, null=True)
     ciudad = models.CharField(max_length=50, null=True)
     canton = models.CharField(max_length=50, null=True)

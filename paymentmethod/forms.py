@@ -6,11 +6,7 @@ from .models import CreditCardPayment, BankTransferPayment
 import re
 
 class CreditCardPaymentForm(forms.ModelForm):
-    expiration_date = forms.CharField(
-        max_length=5,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'MM/YY', 'autocomplete': 'off'}),
-        help_text='Formato: MM/YY',
-    )
+
 
     class Meta:
         model = CreditCardPayment
@@ -31,14 +27,6 @@ class CreditCardPaymentForm(forms.ModelForm):
             'anio_expiracion': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
             'cvv': forms.TextInput(attrs={'class': 'form-control', 'autocomplete': 'off'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(CreditCardPaymentForm, self).__init__(*args, **kwargs)
-        self.instance.user = kwargs.get('initial', {}).get('user')
-        self.fields['user'] = forms.ModelChoiceField(
-            queryset=User.objects.filter(id=self.instance.user.id),
-            widget=forms.HiddenInput(),
-        )
 
     def clean(self):
         cleaned_data = super().clean()

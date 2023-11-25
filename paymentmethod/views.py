@@ -46,15 +46,14 @@ def add_creditcard_payment(request):
     else:
         form = CreditCardPaymentForm(initial={'user': request.user})
     return render(request, 'creditcard/createmethod.html', {'form': form})
-
 @login_required
 def edit_creditcard_payment(request, pk):
     credit_card_payment = get_object_or_404(CreditCardPayment, id=pk)
+    credit_card_payment.user = request.user  # Asignar el usuario al objeto CreditCardPayment
     if request.method == 'POST':
         form = CreditCardPaymentForm(request.POST, instance=credit_card_payment)
         if form.is_valid():
             credit_card_payment = form.save(commit=False)
-            credit_card_payment.user = request.user
             credit_card_payment.save()
             return redirect('list_payments')
     else:
