@@ -68,8 +68,8 @@ class VehicleOwner(models.Model):
     # Preferencias de alquiler
     rental_price_hourly = models.DecimalField(max_digits=10, decimal_places=2, default=0.0, null=True)
     rental_price_daily = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True)
-    availability_hours = models.CharField(max_length=100)  # Horarios disponibles
-    rental_conditions = models.TextField()  # Condiciones de alquiler
+    availability_hours = models.CharField(max_length=100, null=True)  # Horarios disponibles
+    rental_conditions = models.TextField(null=True)  # Condiciones de alquiler
     create_add = models.DateField(auto_now_add=True, null=True)
     foto1_dui = models.FileField( upload_to=user_directory_path, max_length=100, null=True)
     foto2_dui = models.FileField( upload_to=user_directory_path, max_length=100, null=True)

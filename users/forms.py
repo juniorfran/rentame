@@ -110,14 +110,14 @@ class RenterForm(forms.ModelForm):
 class VehicleOwnerForm(forms.ModelForm):
     class Meta:
         model = VehicleOwner
-        fields = ('id_document', 'emergency_contact', 'rental_price_hourly', 'rental_price_daily', 'availability_hours', 'rental_conditions', 'foto1_dui', 'foto2_dui', 'foto_licencia')
+        fields = ('id_document', 'emergency_contact', 'foto1_dui', 'foto2_dui', 'foto_licencia')
         widgets = {
             'id_document': forms.TextInput(attrs={'class': 'form-control'}),
             'emergency_contact': forms.TextInput(attrs={'class': 'form-control'}),
-            'rental_price_hourly': forms.NumberInput(attrs={'class': 'form-control'}),
-            'rental_price_daily': forms.NumberInput(attrs={'class': 'form-control'}),
-            'availability_hours': forms.TextInput(attrs={'class': 'form-control'}),
-            'rental_conditions': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            # 'rental_price_hourly': forms.NumberInput(attrs={'class': 'form-control'}),
+            # 'rental_price_daily': forms.NumberInput(attrs={'class': 'form-control'}),
+            #'availability_hours': forms.TextInput(attrs={'class': 'form-control'}),
+            #'rental_conditions': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'foto1_dui': forms.FileInput(attrs={'class': 'form-control'}),
             'foto2_dui': forms.FileInput(attrs={'class': 'form-control'}),
             'foto_licencia': forms.FileInput(attrs={'class': 'form-control'}),

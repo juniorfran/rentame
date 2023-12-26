@@ -13,7 +13,7 @@
 <body style="background-color: #fff; color: #000;">
     {% block content %}
     <div class="container mt-4">
-        <h1>Crear Perfil de Owner</h1>
+        <h1>Crea tu perfil de arrendatario</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">
@@ -24,14 +24,14 @@
                 {{ form.emergency_contact.label_tag }}
                 {{ form.emergency_contact }}
             </div>
-            <div class="mb-3">
+            {% comment %} <div class="mb-3">
                 {{ form.rental_price_hourly.label_tag }}
                 {{ form.rental_price_hourly }}
             </div>
             <div class="mb-3">
                 {{ form.rental_price_daily.label_tag }}
                 {{ form.rental_price_daily }}
-            </div>
+            </div> 
             <div class="mb-3">
                 {{ form.availability_hours.label_tag }}
                 {{ form.availability_hours }}
@@ -39,7 +39,7 @@
             <div class="mb-3">
                 {{ form.rental_conditions.label_tag }}
                 {{ form.rental_conditions }}
-            </div>
+            </div> {% endcomment %}
             <div class="mb-3">
                 {{ form.foto1_dui.label_tag }}
                 {{ form.foto1_dui }}

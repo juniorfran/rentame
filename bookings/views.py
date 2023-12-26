@@ -1,6 +1,8 @@
 import datetime
 import requests
 from decimal import Decimal
+from dateutil.parser import parse
+from django.utils import timezone
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
@@ -92,12 +94,13 @@ def reserva(request, vehicle_id):
         metodo_pago_id = request.POST.get('metodo_pago_id')
         
         # Convert the ISO format strings to datetime objects
-        start_date = datetime.fromisoformat(start_date_iso)
-        end_date = datetime.fromisoformat(end_date_iso)
+        start_date = parse(start_date_iso)
+        end_date = parse(end_date_iso)
 
         # Make them timezone aware
         start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
         end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
         
         metodo_pago_seleccionado = get_object_or_404(PaymentMethod, pk=metodo_pago_id)
         
@@ -198,8 +201,8 @@ def detail_booking(request, reserva_id):
 ## FUNCIONES Y VISTAS PARA REALIZAR PAGOS
 def obtener_token_de_acceso():
     # Credenciales de la aplicación Wompi
-    app_id = '81edf52c-2210-45e2-8226-560a0a0deea8'
-    api_secret = 'e392745e-c5eb-4ab8-8045-0363246051c6'
+    app_id = '50163375-39c0-4dc7-8d8b-b1bc34f6e419'
+    api_secret = '2c68b6a6-9b41-42c7-b418-8315913bd006'
 
     # URL de Wompi para obtener el token de acceso
     token_url = 'https://id.wompi.sv/connect/token'
