@@ -88,7 +88,7 @@ class Renter(models.Model):
     id_document = models.CharField(max_length=20)  # Documento de identificación
     emergency_contact = models.CharField(max_length=100)  # Contacto de emergencia
     # Historial de alquiler de vehículos
-    bookings = models.ManyToManyField('vehicles.Booking', blank=True, related_name='renters')
+    #bookings = models.ManyToManyField('vehicles.Booking', blank=True, related_name='renters')
     # Preferencias de alquiler
     preferred_vehicle_types = models.ManyToManyField('vehicles.VehicleType', related_name='preferred_renters')
     budget = models.DecimalField(max_digits=10, decimal_places=2)

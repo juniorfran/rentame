@@ -12,6 +12,7 @@ from transactions.models import Transaction
 from users.models import Renter, UserProfile, User, VehicleOwner
 from vehicles.models import Seguro
 from .models import Booking, Vehicle, Descuento
+#from vehicles.models import Booking
 from datetime import date, timedelta
 from django.contrib import messages
 from django.db import transaction as db_transaction
@@ -134,8 +135,9 @@ def reserva(request, vehicle_id):
             amount=precio_total,
             create_add=date.today(),
         )
+        transaction.save()
         
-        renter.bookings.add(reserva.id)
+        #renter.bookings.add(reserva.id)
         vehicle_owner.rented_vehicles.add(vehicle)
 
         messages.success(request, 'Reserva exitosa.')
@@ -371,6 +373,8 @@ def listar_enlaces_pago_view(request):
     # Crear una respuesta HTTP con el mensaje de error
     response = HttpResponse(mensaje_error, content_type='text/plain')
     return response
+
+
 # def realizar_transaccion_compra_3ds(access_token, numero_tarjeta, cvv, mes_vencimiento, anio_vencimiento, monto, url_redirect, nombre, apellido, email, ciudad, direccion, id_pais, id_region, codigo_postal, telefono):
 #     url_transaccion_compra_3ds = "https://api.wompi.sv/TransaccionCompra/3Ds"
 
@@ -412,6 +416,8 @@ def listar_enlaces_pago_view(request):
 #     except requests.exceptions.RequestException as e:
 #         print(f"Error en la solicitud para realizar la transacción de compra 3DS: {e}")
 #         return {"error": f"Error en la solicitud: {e}"}
+
+
 # @login_required
 # def procesar_transaccion_compra_3ds(request):
 #     try:
